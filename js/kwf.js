@@ -416,9 +416,10 @@ var ajax = {
 
     return data.substring(1);
     }
-  };
+  },
 
-var kwf = {
+
+kwf = {
   FULLPATH: '',
   onclick: null,
   onload: null,
@@ -501,9 +502,9 @@ var kwf = {
 
     return html;
     }
-  };
+  },
 
-var content_request = {
+content_request = {
   onbefore_callback: null,
   onafter_callback: null,
 
@@ -583,9 +584,9 @@ var content_request = {
         });
       }
     }
-  };
+  },
 
-var boxing_request = {
+boxing_request = {
   width: 0,
   height: 0,
   onbefore_callback: null,
@@ -671,9 +672,9 @@ var boxing_request = {
         });
       }
     }
-  };
+  },
 
-var boxing = {
+boxing = {
   initiated: 0,
   state: 0,
   html_tag: null,
