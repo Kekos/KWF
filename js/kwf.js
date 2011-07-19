@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-06-09
- * @version 3.2
+ * @date 2011-07-05
+ * @version 3.3
  */
 
 function elem(id)
@@ -19,12 +19,22 @@ function elem(id)
     }
   }
 
-function addEvent(elem, state, func)
+function addEvent(elem, state, func, context)
   {
+  var new_func = func;
+
+  if (context)
+    {
+    new_func = function(e)
+      {
+      func.call(context, e);
+      };
+    }
+
   if (elem.addEventListener)
-    elem.addEventListener(state, func, 0);
+    elem.addEventListener(state, new_func, 0);
   else if (elem.attachEvent)
-    elem.attachEvent('on' + state, func);
+    elem.attachEvent('on' + state, new_func);
   }
 
 function addSubmitEvent(elem, func)
