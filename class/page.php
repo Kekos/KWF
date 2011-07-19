@@ -3,8 +3,8 @@
  * KWF Class: page, runs all controllers that is defined to be run in the page
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-06-11
- * @version 3.1
+ * @date 2011-06-18
+ * @version 3.2
  */
 
 class page
@@ -44,9 +44,14 @@ class page
       --$max_param;
       }
 
-    if (!$this->page && !($this->page = $this->model->getPage('404')))
+    if (!$this->page)
       {
-      throw new Exception('The page "' . $use_route . '" could not be found. Additionally, the internal 404 page does not exist.');
+      $use_route = '404';
+      $this->page = $this->model->getPage($use_route);
+      if (!$this->page)
+        {
+        throw new Exception('The page "' . $use_route . '" could not be found. Additionally, the internal 404 page does not exist.');
+        }
       }
 
     $this->response->title = (is_object($this->page) ? $this->page->title : $this->page['title']);
