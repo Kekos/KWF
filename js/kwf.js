@@ -467,10 +467,7 @@ kwf = {
 
   infoHandler: function(obj)
     {
-    var html = '', row, list, remove = 0, 
-      k = kwf;
-
-    clearTimeout(k.timer);
+    var html = '', row, k = kwf;
 
     if (obj.errors)
       {
@@ -478,8 +475,6 @@ kwf = {
       for (row in obj.errors)
         html += '<li>' + obj.errors[row] + '</li>';
       html += '</ul>';
-
-      remove = 1;
       }
 
     if (obj.info)
@@ -488,19 +483,14 @@ kwf = {
       for (row in obj.info)
         html += '<li>' + obj.info[row] + '</li>';
       html += '</ul>';
-
-      remove = 1;
       }
 
-    list = elem('errorlist');
-    if (list && remove)
-      list.parentNode.removeChild(list);
-
-    list = elem('infolist');
-    if (list && remove)
-      list.parentNode.removeChild(list);
-
-    k.timer = setTimeout(k.hideInfo, 10000);
+    if (html != '')
+      {
+      k.hideInfo();
+      clearTimeout(k.timer);
+      k.timer = setTimeout(k.hideInfo, 10000);
+      }
 
     return html;
     }
