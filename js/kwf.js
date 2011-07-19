@@ -37,6 +37,14 @@ function addEvent(elem, state, func, context)
     elem.attachEvent('on' + state, new_func);
   }
 
+function removeEvent(elem, state, func)
+  {
+  if (elem.removeEventListener)
+    elem.removeEventListener(state, func, 0);
+  else if (elem.attachEvent)
+    elem.detachEvent('on' + state, func);
+  }
+
 function addSubmitEvent(elem, func)
   {
   addEvent(elem, 'click', function(e)
