@@ -314,13 +314,13 @@ var ajax = {
         content_type = ajax_req.getResponseHeader('Content-Type');
         content_type = content_type.substring(0, content_type.indexOf(';'));
         response = {
-            response: ajax_req.responseText,
+            page: ajax_req.responseText,
             content_type: content_type,
             status: ajax_req.status
           };
 
         if (response.content_type == 'application/json')
-          response.response = parseJSON(response.response);
+          response.page = parseJSON(response.page);
 
         if (a.onafterajax != null)
           a.onafterajax();
@@ -342,7 +342,7 @@ var ajax = {
           {
           response = {
               success: 0,
-              response: {error: ['Filen hittades inte.']},
+              page: {error: ['Filen hittades inte.']},
               content_type: 'application/json',
               status: '404'
               };
@@ -418,7 +418,6 @@ var ajax = {
     }
   },
 
-
 kwf = {
   FULLPATH: '',
   onclick: null,
@@ -443,11 +442,14 @@ kwf = {
 
   loading: function(e)
     {
-    if (elem('content'))
-      content_request.findForms();
-
     if (kwf.onload != null)
       kwf.onload(e);
+
+    if (elem('content'))
+      {
+      content_request.findForms();
+      content_request.dispatchEvent('ready');
+      }
     },
 
   hideInfo: function()
@@ -504,132 +506,199 @@ kwf = {
     }
   },
 
-content_request = {
-  onbefore_callback: null,
-  onafter_callback: null,
+/* With help from http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/ */
+KWFEventTarget = function()
+  {
+  var self = this;
 
-  load: function(e, url, before_callback, after_callback)
+  self._listeners = {};
+
+  self.addEventListener = function(type, listener)
+    {
+    if (typeof self._listeners[type] == 'undefined')
+      {
+      self._listeners[type] = [];
+      }
+
+    self._listeners[type].push(listener);
+    }
+
+  self.removeEventListener = function(type, listener)
+    {
+    if (self._listeners[type] instanceof Array)
+      {
+      var listeners = self._listeners[type], 
+        i;
+
+      for (i = 0; i < listeners.length; i++)
+        {
+        if ('' + listeners[i] === '' + listener)
+          {
+          listeners.splice(i, 1);
+          break;
+          }
+        }
+      }
+    }
+
+  self.dispatchEvent = function(event, target)
+    {
+    if (typeof event == 'string')
+      {
+      event = { type: event };
+      if (typeof target != 'undefined')
+        event.target = target;
+      }
+
+    if (!event.target)
+      event.target = this;
+
+    if (!event.type)
+      alert('Request Event object missing "type" property.'); // Errors can't be thrown from here in Firefox
+
+     if (self._listeners[event.type] instanceof Array)
+      {
+      var listeners = self._listeners[event.type], 
+        i;
+
+      for (i = 0; i < listeners.length; i++)
+        {
+        try
+          {
+          listeners[i].call(this, event);
+          }
+        catch (e)
+          {
+          alert(e.message + ' at line ' + (e.lineNumber ? e.lineNumber : 'null') + ' in file ' + (e.fileName ? e.fileName : 'null')); // Errors can't be thrown from here in Firefox
+          }
+        }
+      }
+    }
+  },
+
+ContentRequest = function()
+  {
+  var self = this, 
+    caller = null;
+
+  self.response = null;
+  self.form_btn = null;
+
+  self.load = function(e, url)
     {
     returnFalse(e);
-    var targ = getTarget(e), 
-      req = content_request;
+    caller = getTarget(e);
+    self.dispatchEvent('beforeload', caller);
+    ajax.get(url, self.parseResponse, self.parseResponse);
+    };
 
-    req.onbefore_callback = (before_callback ? before_callback : null);
-    req.onafter_callback = (after_callback ? after_callback : null);
-
-    if (req.onbefore_callback != null)
-      req.onbefore_callback(targ);
-
-    ajax.get(url, req.response, req.response);
-    },
-
-  response: function(resp, is_static)
+  self.parseResponse = function(response)
     {
-    var req = content_request, info, content = '', 
-      context = elem('content');
+    var info = '', content = '', 
+      context = elem('content'), 
+      btn = self.form_btn;
 
-    if (is_static)
+    self.response = response;
+    self.dispatchEvent('afterload', caller);
+    response = self.response;
+
+    if (response.content_type == 'application/json')
       {
-      req.onbefore_callback = null;
-      req.onafter_callback = null;
-      }
-
-    if (req.onafter_callback != null)
-      resp = req.onafter_callback(resp);
-
-    if (resp.content_type == 'application/json')
-      {
-      info = kwf.infoHandler(resp.response);
-      if (resp.response.content)
-        content = info + resp.response.content;
+      info = kwf.infoHandler(response.page);
+      if (response.page.content)
+        content = info + response.page.content;
       }
     else
-      content = resp.response;
+      content = response.page;
 
     if (content == '' && info != '')
       context.insertBefore(toDOMnode(info), context.firstChild);
     else
       {
       context.innerHTML = content;
-      req.findForms();
+      self.findForms();
       }
-    },
 
-  findForms: function(callback)
+    self.dispatchEvent('ready', caller);
+    caller = null;
+    self.response = null;
+
+    if (btn != null)
+      {
+      btn.disabled = '';
+      self.form_btn = null;
+      }
+    };
+
+  self.findForms = function()
     {
-    var req = content_request, 
-      context = elem('content'), 
+    var context = elem('content'), 
       forms = context.getElementsByTagName('form'), 
       i, action, form, targ;
 
     for (i = 0; i < forms.length; i++)
       {
       form = forms[i];
-      if (form.className.indexOf('ajax-form') < 0)
-        continue;
-
-      action = (form.action == '') ? document.location.href : form.action;
-      addSubmitEvent(form, function(e)
+      if (form.className.indexOf('ajax-form') > -1)
         {
-        targ = window.submit_target;
-        returnFalse(e);
-        if (window.submit_target.className.indexOf('hide-boxing') < 0)
+        action = (form.action == '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
+        addSubmitEvent(form, function(e)
           {
-          targ.style.display = 'none';
-          if (req.onbefore_callback != null)
-            req.onbefore_callback(form);
+          returnFalse(e);
 
-          ajax.post(action, req.response, req.response, form, window.submit_target);
-          }
-        });
+          targ = self.form_btn = window.submit_target;
+          targ.disabled = 'disabled';
+          caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+          self.dispatchEvent('beforeload', caller);
+
+          ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
+          });
+        form.className = form.className.replace(/\bajax-form\b/, '');
+        }
       }
-    }
+    };
   },
 
-boxing_request = {
-  width: 0,
-  height: 0,
-  onbefore_callback: null,
-  onafter_callback: null,
+BoxingRequest = function()
+  {
+  var self = this, 
+    caller = null;
 
-  load: function(e, url, width, height, before_callback, after_callback)
+  self.response = null;
+  self.width = 0;
+  self.height = 0;
+  self.form_btn = null;
+
+  self.load = function(e, url, width, height)
     {
     returnFalse(e);
-    var targ = getTarget(e),
-      req = boxing_request;
+    caller = getTarget(e);
 
-    req.width = width;
-    req.height = height;
-    req.onbefore_callback = (before_callback ? before_callback : null);
-    req.onafter_callback = (after_callback ? after_callback : null);
+    self.width = (width ? width : 300);
+    self.height = (height ? height : 200);
 
-    if (req.onbefore_callback != null)
-      req.onbefore_callback(targ);
+    self.dispatchEvent('beforeload', caller);
 
-    ajax.get(url, req.response, req.response);
-    },
+    ajax.get(url, self.parseResponse, self.parseResponse);
+    };
 
-  response: function(resp, is_static)
+  self.parseResponse = function(response)
     {
-    var req = boxing_request, info, content = '';
+    var info = '', content = '', 
+      btn = self.form_btn;
 
-    if (is_static)
+    self.response = response;
+    self.dispatchEvent('afterload', caller);
+    response = self.response;
+
+    if (response.content_type == 'application/json')
       {
-      req.onbefore_callback = null;
-      req.onafter_callback = null;
-      }
-
-    if (req.onafter_callback != null)
-      resp = req.onafter_callback(resp);
-
-    if (resp.content_type == 'application/json')
-      {
-      info = kwf.infoHandler(resp.response);
-      if (resp.response.content)
-        content = info + resp.response.content;
+      info = kwf.infoHandler(response.page);
+      if (response.page.content)
+        content = info + response.page.content;
       }
     else
-      content = resp.response;
+      content = response.page;
 
     if (content == '')
       {
@@ -640,38 +709,50 @@ boxing_request = {
       }
     else
       {
-      boxing.show(content, req.width, req.height);
-      req.findForms();
+      boxing.show(content, self.width, self.height);
+      self.findForms();
       }
-    },
 
-  findForms: function(callback)
+    self.dispatchEvent('ready', caller);
+    caller = null;
+    self.response = null;
+
+    if (btn != null)
+      {
+      btn.disabled = '';
+      self.form_btn = null;
+      }
+    };
+
+  self.findForms = function(callback)
     {
     var forms = boxing.window.getElementsByTagName('form'), 
-      i, action, form, req = boxing_request, targ;
+      i, action, form, targ;
 
     for (i = 0; i < forms.length; i++)
       {
       form = forms[i];
-      if (form.className.indexOf('ajax-form') < 0)
-        continue;
-
-      action = (form.action == '') ? document.location.href : form.action;
-      addSubmitEvent(form, function(e)
+      if (form.className.indexOf('ajax-form') > -1)
         {
-        targ = window.submit_target;
-        returnFalse(e);
-        if (targ.className.indexOf('hide-boxing') < 0)
+        action = (form.action == '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
+        addSubmitEvent(form, function(e)
           {
-          targ.style.display = 'none';
-          if (req.onbefore_callback != null)
-            req.onbefore_callback(form);
+          returnFalse(e);
+          targ = window.submit_target;
+          if (targ.className.indexOf('hide-boxing') < 0)
+            {
+            targ.disabled = 'disabled';
+            self.form_btn = targ;
+            caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+            self.dispatchEvent('beforeload', caller);
 
-          ajax.post(action, req.response, req.response, form, targ);
-          }
-        });
+            ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
+            }
+          });
+        form.className = form.className.replace(/\bajax-form\b/, '');
+        }
       }
-    }
+    };
   },
 
 boxing = {
@@ -774,6 +855,11 @@ boxing = {
       boxing.hide();
     }
   };
+
+ContentRequest.prototype = new KWFEventTarget();
+content_request = new ContentRequest();
+BoxingRequest.prototype = new KWFEventTarget();
+boxing_request = new BoxingRequest();
 
 addEvent(document, 'click', kwf.clicking);
 addEvent(window, 'load', kwf.loading);
