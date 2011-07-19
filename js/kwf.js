@@ -83,6 +83,26 @@ function nextNode(sib)
   return null;
   }
 
+function firstChildElement(parent)
+  {
+  var children = parent.childNodes, c;
+  for (c = 0; c < children.length; c++)
+    {
+    if (!is_ignorable(children[c])) return children[c];
+    }
+  return null;
+  }
+
+function lastChildElement(parent)
+  {
+  var children = parent.childNodes, c;
+  for (c = children.length - 1; c >= 0; c--)
+    {
+    if (!is_ignorable(children[c])) return children[c];
+    }
+  return null;
+  }
+
 function giveOpacity(elm, value)
   {
   if (typeof elm.filters == 'object')
