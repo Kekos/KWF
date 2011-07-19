@@ -1,0 +1,10 @@
+  <h1>Ladda upp fil</h1>
+
+  <form action="<?php echo urlModr('ladda-upp'); ?>" method="post" enctype="multipart/form-data">
+    <fieldset>
+      <ol>
+        <li><label for="file">Fil</label> <input type="file" name="file" id="file" /></li>
+        <li><button type="submit" name="upload" value="yes">Ladda upp</button></li>
+      </ol>
+    </fieldset>
+  </form>

@@ -1,0 +1,78 @@
+/**
+ * KWF Style: kwf.css
+ * 
+ * @author Christoffer Lindahl <christoffer@kekos.se>
+ * @date 2011-04-13
+ * @version 3.0
+ */
+
+@import 'kwf_global.css';
+
+html, body { background: #efefef; }
+
+#error-wrapper
+  {
+  margin: 5%;
+  background: #fff;
+  border: 1px solid #ffb900;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  }
+
+h1
+  { 
+  margin: 0;
+  padding: 2%;
+  background: #ffe4a3;
+  }
+
+h1, h2, h3 { font-weight: normal; }
+h2, h3, p, ul, ol { margin: 2%; }
+p, th, td { font-size: 0.8em; color: #3d3d3d; }
+
+th, td { padding: 0.5em; }
+th { background: #ffb900; font-weight: bold; }
+td { border-bottom: 1px solid #afafaf; }
+
+/* Boxing */
+
+#boxing-overlayer
+  {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #93aebc;
+  opacity: 0.6;
+  z-index: 100;
+  text-align: center;
+  }
+
+#close_boxing
+  {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  padding-bottom: 100px;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  }
+
+#boxing-window
+  {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  border: 1px solid #93aebc;
+  z-index: 101;
+  overflow: auto;
+  text-align: left;
+  }

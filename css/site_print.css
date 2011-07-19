@@ -1,0 +1,50 @@
+/**
+ * Your Site Style: site_print.css
+ * 
+ * @author Christoffer Lindahl <christoffer@kekos.se>
+ * @date 2011-05-30
+ * @version 3.1
+ */
+
+@import 'kwf_global.min.css';
+
+h1, h2, h3, p, dl, table, form { margin-left: 0; margin-right: 0; }
+a { color: #000; }
+
+td, th, dt, dd, p, li, #footer { font-size: 0.8em; }
+
+/* Hide elements */
+
+.no-print, #close_boxing
+  {
+  display: none !important;
+  }
+
+/* Boxing */
+
+#boxing-overlayer
+  {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 100;
+  }
+
+#boxing-window
+  {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible;
+  z-index: 101;
+  background: #fff;
+  border: 0;
+  }

@@ -1,0 +1,55 @@
+<?php
+/**
+ * KWF Controller: index
+ * 
+ * @author Christoffer Lindahl <christoffer@kekos.se>
+ * @date 2011-05-19
+ * @version 2.2
+ */
+
+class index extends controller
+  {
+  #private $db = null;
+
+  public function _default()
+    {
+    $this->view = new view('index');
+    #$this->response->addInfo('Kakan innehåller ' . $this->request->cookie->get('kwf_cookie'));
+
+    #$this->db = db_mysqli::getInstance();
+    }
+
+  public function set($value)
+    {
+    $this->view = new view('index');
+
+    if (strlen($value) > 0)
+      {
+      $this->request->cookie->set('kwf_cookie', $value, 0, '/');
+      $this->response->addInfo('Kakan sattes till ' . $value);
+      }
+    }
+
+  public function delete()
+    {
+    $this->view = new view('index');
+
+    $this->request->cookie->delete('kwf_cookie', '/');
+    $this->response->addInfo('Kakan togs bort.');
+    }
+
+  public function redirect()
+    {
+    $this->response->redirect(urlModr('kontakt'));
+    }
+
+  public function run()
+    {
+    if ($this->view != null)
+      {
+      $this->response->setContentType('html');
+      $this->response->addContent($this->view->compile($this->route, $this->params));
+      }
+    }
+  }
+?>

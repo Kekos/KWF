@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <title>KWF &gt; <?php echo $this->title; ?></title>
+  <meta charset="utf-8" />
+  <link title="KWF" href="<?php echo FULLPATH; ?>/css/kwf.css" rel="stylesheet" media="screen" />
+  <link href="<?php echo FULLPATH; ?>/css/site_print.css" rel="stylesheet" media="print" />
+  <!--<link type="image/vnd.microsoft.icon" href="<?php echo FULLPATH; ?>/favicon.ico" rel="icon" />-->
+  <script src="<?php echo FULLPATH; ?>/js/kwf.js"></script>
+  <script src="<?php echo FULLPATH; ?>/js/site.js"></script>
+  <!--[if lte IE 8]><script src="<?php echo FULLPATH; ?>/js/html5.js" type="text/javascript"></script><![endif]-->
+</head>
+
+<body>
+
+<header id="header">
+  <h1><a href="<?php echo urlModr(); ?>">KWF</a></h1>
+</header>
+
+<nav id="menu">
+  <ul>
+    <li><a href="<?php echo urlModr(); ?>">Hem</a></li>
+    <li><a href="<?php echo urlModr('kontakt'); ?>">Kontakt</a></li>
+    <li><a href="<?php echo urlModr('ladda-upp'); ?>">Ladda upp fil</a></li>
+    <li><a href="<?php echo urlModr('anvandare'); ?>">Användare</a></li>
+  </ul>
+</nav>
+
+<div id="content">
+<?php if (count($this->error_messages)): ?>
+  <ul id="errorlist">
+<?php foreach ($this->error_messages as $msg): ?>
+    <li><?php echo $msg; ?></li>
+<?php endforeach; ?>
+  </ul>
+<?php endif; 
+
+if (count($this->info_messages)): ?>
+  <ul id="infolist">
+<?php foreach ($this->info_messages as $msg): ?>
+    <li><?php echo $msg; ?></li>
+<?php endforeach; ?>
+  </ul>
+<?php endif; ?>
+
+<?php echo $this->content_data; ?>
+
+</div>
+
+<footer id="footer">
+  <p>Av <a href="http://kekos.se/">Christoffer Lindahl</a>, 2009-2011</p>
+</footer>
+
+</body>
+
+</html>
