@@ -103,6 +103,22 @@ function lastChildElement(parent)
   return null;
   }
 
+function hasClass(elem, classname)
+  {
+  return elem.className.match(new RegExp('(\\s|^)' + classname + '(\\s|$)'));
+  }
+
+function addClass(elem, classname)
+  {
+  if (!hasClass(elem, classname))
+    elem.className += ' ' + classname;
+  }
+
+function removeClass(elem, classname)
+  {
+  elem.className = elem.className.replace(new RegExp('(\\s|^)' + classname + '(\\s|$)'), ' ').replace(/\s+/g,' ').replace(/^\s|\s$/,'');
+  }
+
 function giveOpacity(elm, value)
   {
   if (typeof elm.filters == 'object')
