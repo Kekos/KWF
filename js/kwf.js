@@ -105,7 +105,7 @@ function lastChildElement(parent)
 
 function hasClass(elem, classname)
   {
-  return elem.className.match(new RegExp('(\\s|^)' + classname + '(\\s|$)'));
+  return (elem.className ? elem.className.match(new RegExp('(\\s|^)' + classname + '(\\s|$)')) : 0);
   }
 
 function addClass(elem, classname)
