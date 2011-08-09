@@ -3,7 +3,7 @@
  * KWF Class: response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-05-14
+ * @date 2011-08-09
  * @version 3.0
  */
 
@@ -161,7 +161,7 @@ class response
 
         $this->content_data = json_encode($resp);
         }
-      else
+      else if (empty($this->content_type))
         {
         $this->content_type = 'text/plain';
         }
