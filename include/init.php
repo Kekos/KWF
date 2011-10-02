@@ -10,7 +10,7 @@
 if (!defined('BASE'))
   die('Access denied.');
 
-define('KWF_VERSION', '3.4');
+define('KWF_VERSION', '3.5');
 
 require(BASE . 'include/errors.php');
 require(BASE . 'include/functions.php');
