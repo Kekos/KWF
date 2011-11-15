@@ -7,6 +7,7 @@ define('MySQL_PASSWORD', 'password');
 define('MySQL_DB', 'db_name');
 define('DB_PREFIX', '');
 
+define('MINIFIED', 0);  // True if the RESPONSE_LAYOUT should use the minified versions of CSS and JS
 define('RESPONSE_LAYOUT', 'view/layout.phtml');  // The main template file in which other templates will be included in
 define('ERROR_LAYOUT', 'view/error_layout.phtml');  // The error template file in which other error templates will be included in
 
