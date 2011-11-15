@@ -2,7 +2,7 @@
 
   <p>Här kan du skriva ett gulligt, argt eller roligt meddelande till mig ;)</p>
 
-  <form action="<?php echo urlModr($route); ?>" method="post" class="ajax-form">
+  <form action="<?php echo htmlspecialchars(urlModr($route)); ?>" method="post" class="ajax-form">
     <fieldset>
       <legend>Kontakta mig</legend>
       <ol>
