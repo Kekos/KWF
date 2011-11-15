@@ -3,14 +3,14 @@
  * KWF System: Initiation
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-10-02
+ * @date 2011-11-15
  * @version 3.0
  */
 
 if (!defined('BASE'))
   die('Access denied.');
 
-define('KWF_VERSION', '3.5.1');
+define('KWF_VERSION', '3.6');
 
 require(BASE . 'include/errors.php');
 require(BASE . 'include/functions.php');

@@ -3,8 +3,8 @@
  * KWF Class: request, handles the request of the document, like POST, AJAX, cookies and sessions
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-06-17
- * @version 2.2
+ * @date 2011-11-15
+ * @version 2.3
  */
 
 class request
