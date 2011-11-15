@@ -33,7 +33,8 @@ class request
       {
       $this->ajax_request = true;
       }
-    else if ($this->session->get('was_ajax_request'))
+
+    if ($this->session->get('was_ajax_request'))
       {
       $this->ajax_request = true;
       $this->session->delete('was_ajax_request');
