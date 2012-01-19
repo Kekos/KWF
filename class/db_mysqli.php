@@ -87,7 +87,7 @@ class db_mysqli extends mysqli
       }
 
     /* Execute the query */
-    return $this->statement->execute();
+    return ($this->statement->execute() ? true : false);
     }
 
   /*
