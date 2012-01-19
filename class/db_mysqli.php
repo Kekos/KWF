@@ -3,26 +3,36 @@
  * KWF Class: db_mysqli (MySQL Improved), establish connection, makes queries to the database and returns data
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-05-19
- * @version 1.1
+ * @date 2012-01-19
+ * @version 1.2
  */
 
 class db_mysqli extends mysqli
   {
+  private $connected = false;
+
   public $statement;
 
   static $instance = null;
 
   public function __construct()
     {
-    parent::__construct(MySQL_SERVER, MySQL_USER, MySQL_PASSWORD, MySQL_DB);
+    }
 
-    if ($this->connect_error)
+  private function _connect()
+    {
+    if (!$this->connected)
       {
-      throw new Exception('Database connection error: ' . $this->connect_error);
-      }
+      parent::__construct(MySQL_SERVER, MySQL_USER, MySQL_PASSWORD, MySQL_DB);
 
-    $this->set_charset('utf8');
+      if ($this->connect_error)
+        {
+        throw new Exception('Database connection error: ' . $this->connect_error);
+        }
+
+      $this->set_charset('utf8');
+      $this->connected = true;
+      }
     }
 
   /*
@@ -41,6 +51,18 @@ class db_mysqli extends mysqli
     }
 
   /*
+   * Performs a query on the database
+   *
+   * @param string $query The query to ask, in SQL
+   * @return mixed
+   */
+  public function query($query)
+    {
+    $this->_connect();
+    return parent::query($query);
+    }
+
+  /*
    * Prepares and executes queries to database
    *
    * @param string $query The query to ask, in SQL
@@ -50,6 +72,8 @@ class db_mysqli extends mysqli
    */
   public function exec($query, $types = '', $args = array())
     {
+    $this->_connect();
+
     /* Replace PREFIX_ with DB_PREFIX from config */
     $query = str_replace('PREFIX', DB_PREFIX, $query);
 
