@@ -447,9 +447,10 @@ kwf = {
 
     var targ = getTarget(e);
 
-    if (targ.className.indexOf('nolink') > -1 || (targ.parentNode.className && targ.parentNode.className.indexOf('nolink') > -1))
+    if (hasClass(targ, 'nolink') || hasClass(targ.parentNode, 'nolink'))
       returnFalse(e);
-    if (targ.className.indexOf('hide-boxing') > -1)
+
+    if (hasClass(targ, 'hide-boxing'))
       {
       returnFalse(e);
       boxing.hide();
@@ -648,7 +649,7 @@ ContentRequest = function()
     for (i = 0; i < forms.length; i++)
       {
       form = forms[i];
-      if (form.className.indexOf('ajax-form') > -1)
+      if (hasClass(form, 'ajax-form'))
         {
         action = (form.action == '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
         addSubmitEvent(form, function(e)
@@ -662,7 +663,8 @@ ContentRequest = function()
 
           ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
           });
-        form.className = form.className.replace(/\bajax-form\b/, '');
+
+        removeClass(form, 'ajax-form');
         }
       }
     };
@@ -741,14 +743,14 @@ BoxingRequest = function()
     for (i = 0; i < forms.length; i++)
       {
       form = forms[i];
-      if (form.className.indexOf('ajax-form') > -1)
+      if (hasClass(form, 'ajax-form'))
         {
         action = (form.action == '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
         addSubmitEvent(form, function(e)
           {
           returnFalse(e);
           targ = window.submit_target;
-          if (targ.className.indexOf('hide-boxing') < 0)
+          if (!hasClass(targ, 'hide-boxing'))
             {
             targ.disabled = 'disabled';
             self.form_btn = targ;
@@ -758,7 +760,8 @@ BoxingRequest = function()
             ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
             }
           });
-        form.className = form.className.replace(/\bajax-form\b/, '');
+
+        removeClass(form, 'ajax-form');
         }
       }
     };
