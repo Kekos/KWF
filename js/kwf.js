@@ -450,7 +450,10 @@ kwf = {
     if (targ.className.indexOf('nolink') > -1 || (targ.parentNode.className && targ.parentNode.className.indexOf('nolink') > -1))
       returnFalse(e);
     if (targ.className.indexOf('hide-boxing') > -1)
+      {
+      returnFalse(e);
       boxing.hide();
+      }
 
     if (kwf.onclick != null)
       kwf.onclick(e, targ);
