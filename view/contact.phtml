@@ -6,9 +6,18 @@
     <fieldset>
       <legend>Kontakta mig</legend>
       <ol>
-        <li><label for="from">Ditt namn</label> <input type="text" name="from" id="from" maxlength="50"<?php request::formStatePost('from', 'text'); ?> /></li>
-        <li><label for="email">Din e-postadress</label> <input type="text" name="email" id="email" maxlength="256"<?php request::formStatePost('email', 'text'); ?> /></li>
-        <li><label for="message">Meddelande</label> <textarea name="message" id="message" cols="20" rows="5"><?php request::formStatePost('message', 'textarea'); ?></textarea></li>
+        <li>
+          <label for="from">Ditt namn</label>
+          <input type="text" name="from" id="from" maxlength="50"<?php request::formStatePost('from', 'text'); ?> /><?php response::getFormError('from'); ?>
+        </li>
+        <li>
+          <label for="email">Din e-postadress</label>
+          <input type="text" name="email" id="email" maxlength="256"<?php request::formStatePost('email', 'text'); ?> /><?php response::getFormError('email'); ?>
+        </li>
+        <li>
+          <label for="message">Meddelande</label>
+          <textarea name="message" id="message" cols="20" rows="5"><?php request::formStatePost('message', 'textarea'); ?></textarea><?php response::getFormError('message'); ?>
+        </li>
         <li><button type="submit" name="send" value="yes">Skicka</button><input type="hidden" id="nothing" value="null" /></li>
       </ol>
     </fieldset>

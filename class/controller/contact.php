@@ -3,8 +3,8 @@
  * KWF Controller: contact
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-04-24
- * @version 2.1
+ * @date 2012-03-27
+ * @version 3.0
  */
 
 class contact extends controller
@@ -26,11 +26,11 @@ class contact extends controller
     $message = $this->request->post('message');
 
     if (empty($from))
-      $errors[] = 'Du måste ange ditt namn.';
+      $errors['from'] = 'Du måste ange ditt namn.';
     if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$/', $email))
-      $errors[] = 'Du måste ange en korrekt e-postadress.';
+      $errors['email'] = 'Du måste ange en korrekt e-postadress.';
     if (strlen($message) < 30)
-      $errors[] = 'Skriv ett lite längre meddelande.';
+      $errors['message'] = 'Skriv ett lite längre meddelande.';
 
     if (!count($errors))
       {
@@ -39,7 +39,7 @@ class contact extends controller
       }
     else
       {
-      $this->response->addError($errors);
+      $this->response->addFormError($errors);
       }
     }
 
