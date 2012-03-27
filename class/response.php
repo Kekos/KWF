@@ -3,12 +3,14 @@
  * KWF Class: response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-08-09
- * @version 3.0
+ * @date 2012-03-27
+ * @version 4.0
  */
 
 class response
   {
+  static $form_messages = array();
+
   private $request;
   private $content_type = null;
   private $content_data;
@@ -58,6 +60,40 @@ class response
       {
       $this->info_messages[] = $msg;
       }
+    }
+
+  /*
+   * Adds a error message to form error-array
+   *
+   * @param array(string)/string $msg A string describing the error, or a array containing such strings
+   * @return void
+   */
+  public function addFormError($msg)
+    {
+    if (is_array($msg))
+      {
+      response::$form_messages = array_merge(response::$form_messages, $msg);
+      }
+    else
+      {
+      response::$form_messages[] = $msg;
+      }
+    }
+
+  /*
+   * Echoes a <span> containing a form error message
+   *
+   * @param string $element The name of form element to return error message for
+   * @return void
+   */
+  static function getFormError($element)
+    {
+    if (isset(response::$form_messages[$element]))
+      {
+      echo '<span class="form-error">' . response::$form_messages[$element] . '</span>';
+      }
+
+    echo "\n";
     }
 
   /*
