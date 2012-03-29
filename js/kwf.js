@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-07-05
- * @version 3.3
+ * @date 2012-03-28
+ * @version 4.0
  */
 
 function elem(id)
@@ -245,7 +245,7 @@ var ajax = {
                   ['Content-Length', data.length]
                 ], 1);
             }
-          }
+          };
 
         for (f = 0; f < file_list.length; f++)
           {
@@ -737,7 +737,7 @@ BoxingRequest = function()
 
   self.findForms = function(callback)
     {
-    var forms = boxing.window.getElementsByTagName('form'), 
+    var forms = boxing.getWindow().getElementsByTagName('form'), 
       i, action, form, targ;
 
     for (i = 0; i < forms.length; i++)
@@ -767,106 +767,114 @@ BoxingRequest = function()
     };
   },
 
-boxing = {
-  initiated: 0,
-  state: 0,
-  html_tag: null,
-  overlayer: null,
-  close: null,
-  window: null,
-  onhide_callback: null,
+boxing = (function(undefined)
+  {
+  var initiated = 0, 
+    state = 0, 
+    html_tag = null, 
+    overlayer = null, 
+    close = null, 
+    window = null, 
+    onhide_callback = null;
 
-  init: function()
+  function getWindow()
     {
-    var doc = document,
-      box = boxing,
-      overlayer = doc.createElement('div'),
-      window = doc.createElement('div'),
-      close = doc.createElement('a');
+    return window;
+    }
+
+  function keys(e)
+    {
+    if (e.keyCode == 27)
+      hide();
+    }
+
+  function init()
+    {
+    var doc = document;
+
+    overlayer = doc.createElement('div');
+    window = doc.createElement('div');
+    close = doc.createElement('a');
 
     overlayer.id = 'boxing-overlayer';
-    box.overlayer = doc.body.appendChild(overlayer);
-    addEvent(box.overlayer, 'click', box.hide);
-    addEvent(doc, 'keyup', box.keys);
+    doc.body.appendChild(overlayer);
     giveOpacity(overlayer, 60);
+
+    addEvent(overlayer, 'click', hide);
+    addEvent(doc, 'keyup', keys);
 
     close.id = 'close_boxing';
     close.className = 'hide-boxing';
     close.href = 'javascript: void(0);';
     close.appendChild(doc.createTextNode('Stäng'));
-    box.close = box.overlayer.appendChild(close);
+    overlayer.appendChild(close);
 
     window.id = 'boxing-window';
-    box.window = doc.body.appendChild(window);
+    doc.body.appendChild(window);
 
-    box.html_tag = doc.getElementsByTagName('HTML')[0];
-    box.initiated = 1;
-    },
+    html_tag = doc.getElementsByTagName('HTML')[0];
+    initiated = 1;
+    }
 
-  show: function(text, width, height)
+  function show(text, width, height, callback)
     {
-    if (!boxing.initiated)
-      boxing.init();
+    if (!initiated)
+      init();
 
-    var box = boxing, 
-      win = box.window, 
-      close = box.close;
+    if (callback !== undefined)
+      onhide_callback = callback;
 
-    w_unit = (width > 100 ? 'px' : '%');
-    h_unit = (height > 100 ? 'px' : '%');
+    var w_unit = (width > 100 ? 'px' : '%'), 
+      h_unit = (height > 100 ? 'px' : '%');
 
-    box.overlayer.style.display = 'block';
-    win.style.display = 'block';
-    close.style.width = win.style.width = width + w_unit;
-    win.style.height = height + h_unit;
+    overlayer.style.display = 'block';
+    window.style.display = 'block';
+
+    close.style.width = window.style.width = width + w_unit;
+    window.style.height = height + h_unit;
+
     if (h_unit == '%')
       {
-      win.style.margin = '0 0 0 -' + (width / 2) + w_unit;
-      win.style.top = (100 - height) / 2 + '%';
+      window.style.margin = '0 0 0 -' + (width / 2) + w_unit;
+      window.style.top = (100 - height) / 2 + '%';
       close.style.margin = '0 0 0 -' + (width / 2) + w_unit;
       close.style.top = (100 - height) / 2 - 3 + '%';
       }
     else
       {
-      win.style.margin = '-' + (height / 2) + h_unit + ' 0 0 -' + (width / 2) + w_unit;
-      win.style.top = '50%';
-      close.style.margin = '-' + (height / 2) - 20 + h_unit + ' 0 0 -' + (width / 2) + w_unit;win.style.top = '50%';
+      window.style.margin = '-' + (height / 2) + h_unit + ' 0 0 -' + (width / 2) + w_unit;
+      window.style.top = '50%';
+      close.style.margin = '-' + (height / 2) - 20 + h_unit + ' 0 0 -' + (width / 2) + w_unit;
       close.style.top = '50%';
       }
 
-    win.innerHTML = text;
-    box.html_tag.style.overflow = 'hidden';
-    box.state = 1;
-    },
+    window.innerHTML = text;
+    html_tag.style.overflow = 'hidden';
+    state = 1;
+    }
 
-  hide: function()
+  function hide()
     {
-    if (!boxing.initiated)
+    if (!initiated)
       return;
 
-    var box = boxing,
-      win = box.window;
-
-    if (box.onhide_callback != null)
+    if (onhide_callback != null)
       {
-      if (!box.onhide_callback())
+      if (!onhide_callback())
         return;
       }
 
-    box.overlayer.style.display = 'none';
-    win.style.display = 'none';
-    win.innerHTML = '';
-    box.html_tag.style.overflow = '';
-    box.onhide_callback = null;
-    box.state = 0;
-    },
+    overlayer.style.display = 'none';
+    window.style.display = 'none';
 
-  keys: function(e)
-    {
-    if (e.keyCode == 27)
-      boxing.hide();
-    }
-  };
+    window.innerHTML = '';
+    html_tag.style.overflow = '';
+    onhide_callback = null;
+    state = 0;
+    };
+
+  return {'show': show, 'hide': hide, 'getWindow': getWindow};
+  })();
 
 ContentRequest.prototype = new KWFEventTarget();
 content_request = new ContentRequest();
