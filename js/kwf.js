@@ -531,7 +531,7 @@ var ajax = {
     }
   },
 
-boxing = (function(undefined)
+boxing = (function()
   {
   var initiated = 0, 
     state = 0, 
@@ -558,7 +558,7 @@ boxing = (function(undefined)
       tagname = elements[i].tagName.toLowerCase();
       if (tagname.match(/^input|select|textarea|button|a$/))
         {
-        if ((tagname === 'input' && (elements[i].disabled || elements[i].type === 'hidden') || (tagname === 'a' && !elements[i].href)))
+        if ((tagname === 'input' && (elements[i].disabled || elements[i].type === 'hidden')) || (tagname === 'a' && !elements[i].href))
           {
           continue;
           }
@@ -677,7 +677,7 @@ boxing = (function(undefined)
       init();
       }
 
-    if (callback !== undefined)
+    if (typeof callback !== 'undefined')
       {
       onhide_callback = callback;
       }
@@ -725,6 +725,9 @@ boxing = (function(undefined)
 
   return {'show': show, 'hide': hide, 'getWindow': getWindow};
   }()),
+
+content_request, 
+boxing_request, 
 
 kwf = {
   FULLPATH: '',
@@ -825,32 +828,31 @@ kwf = {
 /* With help from http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/ */
 KWFEventTarget = function()
   {
-  var self = this;
-
-  self._listeners = {}; // Rewrite this later, this property should be a real private property
+  var self = this, 
+    listeners = {};
 
   self.addEventListener = function(type, listener)
     {
-    if (typeof self._listeners[type] === 'undefined')
+    if (typeof listeners[type] === 'undefined')
       {
-      self._listeners[type] = [];
+      listeners[type] = [];
       }
 
-    self._listeners[type].push(listener);
+    listeners[type].push(listener);
     };
 
   self.removeEventListener = function(type, listener)
     {
-    if (self._listeners[type] instanceof Array)
+    if (listeners[type] instanceof Array)
       {
-      var listeners = self._listeners[type], 
+      var type_listeners = listeners[type], 
         i;
 
-      for (i = 0; i < listeners.length; i++)
+      for (i = 0; i < type_listeners.length; i++)
         {
-        if ('' + listeners[i] === '' + listener)
+        if (String(type_listeners[i]) === String(listener))
           {
-          listeners.splice(i, 1);
+          type_listeners.splice(i, 1);
           break;
           }
         }
@@ -878,16 +880,16 @@ KWFEventTarget = function()
       alert('Request Event object missing "type" property.'); // Errors can't be thrown from here in Firefox
       }
 
-     if (self._listeners[event.type] instanceof Array)
+     if (listeners[event.type] instanceof Array)
       {
-      var listeners = self._listeners[event.type], 
+      var type_listeners = listeners[event.type], 
         i;
 
-      for (i = 0; i < listeners.length; i++)
+      for (i = 0; i < type_listeners.length; i++)
         {
         try
           {
-          listeners[i].call(this, event);
+          type_listeners[i].call(this, event);
           }
         catch (e)
           {
@@ -962,7 +964,19 @@ ContentRequest = function()
     {
     var context = elem('content'), 
       forms = context.getElementsByTagName('form'), 
-      i, action, form, targ;
+      i, action, form;
+
+    function formSubmit(e)
+      {
+      var targ = self.form_btn = window.submit_target, 
+        caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+
+      returnFalse(e);
+      targ.disabled = 'disabled';
+      self.dispatchEvent('beforeload', caller);
+
+      ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
+      }
 
     for (i = 0; i < forms.length; i++)
       {
@@ -970,18 +984,7 @@ ContentRequest = function()
       if (hasClass(form, 'ajax-form'))
         {
         action = (form.action === '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
-        addSubmitEvent(form, function(e)
-          {
-          returnFalse(e);
-
-          targ = self.form_btn = window.submit_target;
-          targ.disabled = 'disabled';
-          caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
-          self.dispatchEvent('beforeload', caller);
-
-          ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
-          });
-
+        addSubmitEvent(form, formSubmit);
         removeClass(form, 'ajax-form');
         }
       }
@@ -1059,10 +1062,27 @@ BoxingRequest = function()
       }
     };
 
-  self.findForms = function(callback)
+  self.findForms = function()
     {
     var forms = boxing.getWindow().getElementsByTagName('form'), 
-      i, action, form, targ;
+      i, action, form;
+
+    function formSubmit(e)
+      {
+      var targ = window.submit_target, 
+        caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+
+      returnFalse(e);
+
+      if (!hasClass(targ, 'hide-boxing'))
+        {
+        targ.disabled = 'disabled';
+        self.form_btn = targ;
+        self.dispatchEvent('beforeload', caller);
+
+        ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
+        }
+      }
 
     for (i = 0; i < forms.length; i++)
       {
@@ -1070,21 +1090,7 @@ BoxingRequest = function()
       if (hasClass(form, 'ajax-form'))
         {
         action = (form.action === '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
-        addSubmitEvent(form, function(e)
-          {
-          returnFalse(e);
-          targ = window.submit_target;
-          if (!hasClass(targ, 'hide-boxing'))
-            {
-            targ.disabled = 'disabled';
-            self.form_btn = targ;
-            caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
-            self.dispatchEvent('beforeload', caller);
-
-            ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
-            }
-          });
-
+        addSubmitEvent(form, formSubmit);
         removeClass(form, 'ajax-form');
         }
       }
@@ -1094,8 +1100,8 @@ BoxingRequest = function()
 ContentRequest.prototype = new KWFEventTarget();
 BoxingRequest.prototype = new KWFEventTarget();
 
-var content_request = new ContentRequest(), 
-  boxing_request = new BoxingRequest();
+content_request = new ContentRequest();
+boxing_request = new BoxingRequest();
 
 addEvent(document, 'click', kwf.clicking);
 addEvent(window, 'load', kwf.loading);
