@@ -6,7 +6,7 @@
  * @date 2012-03-28
  * @version 4.0
  */
-
+//"use strict"; ger fel på rad 915
 function elem(id)
   {
   try
@@ -775,6 +775,7 @@ boxing = (function(undefined)
     overlayer = null, 
     close = null, 
     window = null, 
+    elements = null, 
     onhide_callback = null;
 
   function getWindow()
@@ -786,6 +787,8 @@ boxing = (function(undefined)
     {
     if (e.keyCode == 27)
       hide();
+    else if (e.keyCode == 9 && state)
+      focusChanged(getTarget(e), e.shiftKey);
     }
 
   function init()
@@ -816,6 +819,65 @@ boxing = (function(undefined)
     initiated = 1;
     }
 
+  function getFocusableElements()
+    {
+    var i, 
+      focus_elements = [], 
+      tagname;
+
+    for (i = 0; i < elements.length; i++)
+      {
+      tagname = elements[i].tagName.toLowerCase();
+      if (tagname.match(/^input|select|textarea|button|a$/))
+        {
+        if ((tagname === 'input' && (elements[i].disabled || elements[i].type === 'hidden') || (tagname === 'a' && !elements[i].href)))
+          continue;
+
+        focus_elements.push(elements[i]);
+        }
+      }
+
+    return focus_elements;
+    }
+
+  function getElement(idx)
+    {
+    var focus_elements = getFocusableElements();
+    return (focus_elements.length > 0 ? focus_elements[idx] : null);
+    }
+
+  function focusChanged(new_focus_elem, is_reverse)
+    {
+    var test_node = new_focus_elem.parentNode;
+
+    // Focusing on the close button is allowed, so checking that button is not needed
+    if (new_focus_elem !== close)
+      {
+      // Traverse the DOM upwards to see if the newly focused element is a child of the Boxing window
+      while (test_node !== null)
+        {
+        // If the element is child of Bowing window, this will be true
+        if (test_node === window)
+          {
+          return;
+          }
+
+        test_node = test_node.parentNode;
+        }
+
+      if (is_reverse)
+        {
+        // Set focus to the last focusable element
+        getFocusableElements().pop().focus();
+        }
+      else
+        {
+        // Set focus to the close button
+        close.focus();
+        }
+      }
+    }
+
   function show(text, width, height, callback)
     {
     if (!initiated)
@@ -825,7 +887,8 @@ boxing = (function(undefined)
       onhide_callback = callback;
 
     var w_unit = (width > 100 ? 'px' : '%'), 
-      h_unit = (height > 100 ? 'px' : '%');
+      h_unit = (height > 100 ? 'px' : '%'), 
+      first_elem;
 
     overlayer.style.display = 'block';
     window.style.display = 'block';
@@ -849,6 +912,17 @@ boxing = (function(undefined)
       }
 
     window.innerHTML = text;
+
+    // Create a reference to the window's child elements for future
+    elements = window.getElementsByTagName('*');
+
+    // Find the first focusable element
+    first_elem = getElement(0);
+    if (first_elem !== null)
+      {
+      first_elem.focus();
+      }
+
     html_tag.style.overflow = 'hidden';
     state = 1;
     }
