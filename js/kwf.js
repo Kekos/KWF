@@ -3,10 +3,10 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-03-28
+ * @date 2012-03-30
  * @version 4.0
  */
-//"use strict"; ger fel på rad 915
+
 function elem(id)
   {
   try
@@ -16,6 +16,24 @@ function elem(id)
   catch (e)
     {
     return false;
+    }
+  }
+
+function getTarget(e)
+  {
+  e = e || window.event;
+  return e.target || e.srcElement;
+  }
+
+function returnFalse(e)
+  {
+  if (window.event)
+    {
+    event.returnValue = false;
+    }
+  else
+    {
+    e.preventDefault();
     }
   }
 
@@ -32,17 +50,25 @@ function addEvent(elem, state, func, context)
     }
 
   if (elem.addEventListener)
+    {
     elem.addEventListener(state, new_func, 0);
+    }
   else if (elem.attachEvent)
+    {
     elem.attachEvent('on' + state, new_func);
+    }
   }
 
 function removeEvent(elem, state, func)
   {
   if (elem.removeEventListener)
+    {
     elem.removeEventListener(state, func, 0);
+    }
   else if (elem.attachEvent)
+    {
     elem.detachEvent('on' + state, func);
+    }
   }
 
 function addSubmitEvent(elem, func)
@@ -59,47 +85,70 @@ function isWs(node)
   return !(/[^\t\n\r ]/.test(node.data));
   }
 
-function is_ignorable(node)
+function isIgnorable(node)
   {
-  return (node.nodeType == 8) || 
-    ((node.nodeType == 3) && isWs(node));
+  return (node.nodeType === 8) ||  ((node.nodeType === 3) && isWs(node));
   }
 
 function previousNode(sib)
   {
-  while (sib = sib.previousSibling)
+  while (sib)
     {
-    if (!is_ignorable(sib)) return sib;
+    if (!isIgnorable(sib))
+      {
+      return sib;
+      }
+
+    sib = sib.previousSibling;
     }
+
   return null;
   }
 
 function nextNode(sib)
   {
-  while (sib = sib.nextSibling)
+  while (sib)
     {
-    if (!is_ignorable(sib)) return sib;
+    if (!isIgnorable(sib))
+      {
+      return sib;
+      }
+
+    sib = sib.nextSibling;
     }
+
   return null;
   }
 
 function firstChildElement(parent)
   {
-  var children = parent.childNodes, c;
+  var children = parent.childNodes, 
+    c;
+
   for (c = 0; c < children.length; c++)
     {
-    if (!is_ignorable(children[c])) return children[c];
+    if (!isIgnorable(children[c]))
+      {
+      return children[c];
+      }
     }
+
   return null;
   }
 
 function lastChildElement(parent)
   {
-  var children = parent.childNodes, c;
+  var children = parent.childNodes, 
+    c;
+
   for (c = children.length - 1; c >= 0; c--)
     {
-    if (!is_ignorable(children[c])) return children[c];
+    if (!isIgnorable(children[c]))
+      {
+      return children[c];
+      }
     }
+
   return null;
   }
 
@@ -111,7 +160,9 @@ function hasClass(elem, classname)
 function addClass(elem, classname)
   {
   if (!hasClass(elem, classname))
+    {
     elem.className += ' ' + classname;
+    }
   }
 
 function removeClass(elem, classname)
@@ -121,19 +172,10 @@ function removeClass(elem, classname)
 
 function giveOpacity(elm, value)
   {
-  if (typeof elm.filters == 'object')
+  if (typeof elm.filters === 'object')
+    {
     elm.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + value + ')';
-  }
-
-function getTarget(e)
-  {
-  e = e || window.event;
-  return e.target || e.srcElement;
-  }
-
-function returnFalse(e)
-  {
-  (window.event) ? event.returnValue = false : e.preventDefault();
+    }
   }
 
 function parseJSON(j)
@@ -148,7 +190,7 @@ function parseJSON(j)
       {
       j = eval('(' + j + ')');
       }
-    catch (e)
+    catch (e2)
       {
       }
     }
@@ -162,32 +204,49 @@ function var_dump(variable, depth)
     {
     var i, str = '';
     for (i = 0; i < (num * 2); i++)
+      {
       str += ' ';
+      }
+
     return str;
     }
 
   var type = typeof variable, str = '', i;
 
   if (!depth)
+    {
     depth = 1;
+    }
   else if (depth > 5)
+    {
     return '';
+    }
 
-  if (type == 'object')
+  if (type === 'object')
     {
     str += '{\n';
+
     for (i in variable)
+      {
       str += spaces(depth) + i + ': ' + var_dump(variable[i], depth + 1);
+      }
+
     str += spaces(depth) + '}';
     }
   else
+    {
     str = variable.toString();
+    }
 
   str = '(' + type + ') ' + str + '\n';
-  if (depth == 1)
+  if (depth === 1)
+    {
     alert(str);
+    }
   else
+    {
     return str;
+    }
   }
 
 function toDOMnode(html)
@@ -203,7 +262,7 @@ var ajax = {
 
   get: function(url, success, fail, data)
     {
-    data = (typeof data == 'object' ? '?' + ajax.array2query(data) : '');
+    data = (typeof data === 'object' ? '?' + ajax.array2query(data) : '');
     return ajax.send(url + data, 'GET', success, fail, null);
     },
 
@@ -216,16 +275,16 @@ var ajax = {
 
   upload: function(url, success, fail, file_elem, sender)
     {
-    if (typeof File != 'undefined')
+    if (typeof File !== 'undefined')
       {
       var file_list = file_elem.files, file, f, filename, reader, 
         boundary = '---------------------------' + new Date().getTime(), 
         data = '--' + boundary + '\r\n';
 
-      if (typeof FileReader == 'undefined')
+      if (typeof FileReader === 'undefined')
         {
         file = file_list[0];
-        filename = (file.fileName != null) ? file.fileName : file.name;
+        filename = (file.fileName !== null) ? file.fileName : file.name;
 
         return ajax.send(url, 'POST', success, fail, file, [['X-ajax-upload', encodeURIComponent(filename)]]);
         }
@@ -235,24 +294,29 @@ var ajax = {
         reader.onloadend = function()
           {
           data += 'Content-Disposition: form-data; name="' + file_elem.name + '"; filename="' + filename + '"\r\nContent-Type: ' + file.type + '\r\n\r\n' + reader.result + '\r\n--' + boundary;
-          if (f == file_list.length)
+          if (f === file_list.length)
             {
             data += '\r' + ajax.form2query(file_elem.form, sender, boundary);
 
             if (f)
+              {
               return ajax.send(url, 'POST', success, fail, data + '--', [
                   ['Content-Type', 'multipart/form-data; boundary=' + boundary],
                   ['Content-Length', data.length]
                 ], 1);
+              }
             }
           };
 
         for (f = 0; f < file_list.length; f++)
           {
           file = file_list[f];
-          filename = (file.fileName != null) ? file.fileName : file.name;
+          filename = (file.fileName !== null) ? file.fileName : file.name;
           if (f)
+            {
             data += '\r\n';
+            }
+
           reader.readAsBinaryString(file);
           }
         }
@@ -262,8 +326,10 @@ var ajax = {
       var orig_form = file_elem.parentNode, form, frame, frame_doc, a = ajax, 
         body = document.body, resp;
 
-      if (a.onbeforeajax != null)
+      if (a.onbeforeajax !== null)
+        {
         a.onbeforeajax();
+        }
 
       form = body.appendChild(toDOMnode('<form style="visibility: hidden;" action="' + url 
          + '" method="post" enctype="multipart/form-data" target="ajax_upload_frame'
@@ -280,18 +346,19 @@ var ajax = {
         {
         setTimeout(function()
           {
-          frame_doc = (frame.contentDocument) ? frame.contentDocument : 
-              frame.contentWindow.document;
+          frame_doc = frame.contentDocument || frame.contentWindow.document;
           resp = frame_doc.body.innerHTML;
           success({
               response: parseJSON(resp),
-              content_type: (resp.substring(0, 1) == '{' && resp.substring(resp.length - 1) == '}' ? 'application/json' : 'text/plain'),
+              content_type: (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}' ? 'application/json' : 'text/plain'),
               status: '200'
             });
           body.removeChild(frame);
 
-          if (a.onafterajax != null)
+          if (a.onafterajax !== null)
+            {
             a.onafterajax();
+            }
           }, 1);
         });
 
@@ -310,22 +377,28 @@ var ajax = {
     ajax_req.open(method, url);
     ajax_req.setRequestHeader('X-ajax-request', 'true');
 
-    if (typeof headers == 'object')
+    if (typeof headers === 'object')
       {
       for (h in headers)
         {
-        if (headers[h][0] == 'Content-Type')
-          content_type = 1; // Fix for Chrome who otherwise concatenates the different content-types
+        if (headers[h][0] === 'Content-Type')
+          {
+          // Fix for Chrome who otherwise concatenates the different content-types
+          content_type = 1;
+          }
+
         ajax_req.setRequestHeader(headers[h][0], headers[h][1]);
         }
       }
 
     if (!content_type)
+      {
       ajax_req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
+      }
 
     ajax_req.onreadystatechange = function()
       {
-      if (ajax_req.readyState == 4)
+      if (ajax_req.readyState === 4)
         {
         content_type = ajax_req.getResponseHeader('Content-Type');
         content_type = content_type.substring(0, content_type.indexOf(';'));
@@ -335,13 +408,17 @@ var ajax = {
             status: ajax_req.status
           };
 
-        if (response.content_type == 'application/json')
+        if (response.content_type === 'application/json')
+          {
           response.page = parseJSON(response.page);
+          }
 
-        if (a.onafterajax != null)
+        if (a.onafterajax !== null)
+          {
           a.onafterajax();
+          }
 
-        if (ajax_req.status == 200)
+        if (ajax_req.status === 200)
           {
           if (ajax_req.getResponseHeader('X-ajax-error'))
             {
@@ -354,7 +431,7 @@ var ajax = {
             success(response);
             }
           }
-        else if (ajax_req.status == 404)
+        else if (ajax_req.status === 404)
           {
           response = {
               success: 0,
@@ -367,13 +444,19 @@ var ajax = {
         }
       };
 
-    if (a.onbeforeajax != null)
+    if (a.onbeforeajax !== null)
+      {
       a.onbeforeajax();
+      }
 
     if (ajax_req.sendAsBinary && binary_data)
+      {
       ajax_req.sendAsBinary(data);
+      }
     else
+      {
       ajax_req.send(data);
+      }
 
     return ajax_req;
     },
@@ -392,379 +475,60 @@ var ajax = {
 
   form2query: function(form, sender, boundary)
     {
-    var data = '', ret;
+    var data = '', 
+      inputs = form.getElementsByTagName('input'), 
+      selects = form.getElementsByTagName('select'), 
+      textareas = form.getElementsByTagName('textarea'), 
+      i;
 
     function encode(elm)
       {
+      var ret;
+
       if (boundary)
-        ret = (elm.name == '' ? '' : '\r\nContent-Disposition: form-data; name="' + elm.name + '"\r\n\r\n' + encodeURIComponent(elm.value) + '\r\n--' + boundary);
+        {
+        ret = (elm.name === '' ? '' : '\r\nContent-Disposition: form-data; name="' + elm.name + '"\r\n\r\n' + encodeURIComponent(elm.value) + '\r\n--' + boundary);
+        }
       else
-        ret = (elm.name == '' ? '' : '&' + elm.name + '=' + encodeURIComponent(elm.value));
+        {
+        ret = (elm.name === '' ? '' : '&' + elm.name + '=' + encodeURIComponent(elm.value));
+        }
+
       return ret;
       }
 
-    if (form != null)
+    if (form !== null)
       {
-      var inputs = form.getElementsByTagName('input'), 
-        selects = form.getElementsByTagName('select'), 
-        textareas = form.getElementsByTagName('textarea'), 
-        i;
-
       for (i = 0; i < inputs.length; i++)
         {
-        if (((inputs[i].type == 'radio' || inputs[i].type == 'checkbox')
-            && !inputs[i].checked) || (inputs[i].type == 'button' || 
-            inputs[i].type == 'submit'))
+        if (((inputs[i].type === 'radio' || inputs[i].type === 'checkbox')
+            && !inputs[i].checked) || (inputs[i].type === 'button' || 
+            inputs[i].type === 'submit'))
+          {
           continue;
+          }
 
         data += encode(inputs[i]);
         }
 
       for (i = 0; i < selects.length; i++)
+        {
         data += encode(selects[i]);
+        }
 
       for (i = 0; i < textareas.length; i++)
+        {
         data += encode(textareas[i]);
+        }
       }
 
     if (sender)
+      {
       data += encode(sender);
+      }
 
     return data.substring(1);
     }
-  },
-
-kwf = {
-  FULLPATH: '',
-  onclick: null,
-  onload: null,
-  info_timer: null,
-
-  clicking: function(e)
-    {
-    if (e.button > 1)
-      return;
-
-    var targ = getTarget(e);
-
-    if (hasClass(targ, 'nolink') || hasClass(targ.parentNode, 'nolink'))
-      returnFalse(e);
-
-    if (hasClass(targ, 'hide-boxing'))
-      {
-      returnFalse(e);
-      boxing.hide();
-      }
-
-    if (kwf.onclick != null)
-      kwf.onclick(e, targ);
-    },
-
-  loading: function(e)
-    {
-    if (kwf.onload != null)
-      kwf.onload(e);
-
-    if (elem('content'))
-      {
-      content_request.findForms();
-      content_request.dispatchEvent('ready');
-      }
-    },
-
-  hideInfo: function()
-    {
-    var list = elem('errorlist');
-
-    if (list)
-      list.parentNode.removeChild(list);
-
-    list = elem('infolist');
-
-    if (list)
-      list.parentNode.removeChild(list);
-    },
-
-  infoHandler: function(obj)
-    {
-    var html = '', row, k = kwf;
-
-    if (obj.errors)
-      {
-      html += '<ul id="errorlist">';
-      for (row in obj.errors)
-        html += '<li>' + obj.errors[row] + '</li>';
-      html += '</ul>';
-      }
-
-    if (obj.info)
-      {
-      html += '<ul id="infolist">';
-      for (row in obj.info)
-        html += '<li>' + obj.info[row] + '</li>';
-      html += '</ul>';
-      }
-
-    if (html != '')
-      {
-      k.hideInfo();
-      clearTimeout(k.timer);
-      k.timer = setTimeout(k.hideInfo, 10000);
-      }
-
-    return html;
-    }
-  },
-
-/* With help from http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/ */
-KWFEventTarget = function()
-  {
-  var self = this;
-
-  self._listeners = {};
-
-  self.addEventListener = function(type, listener)
-    {
-    if (typeof self._listeners[type] == 'undefined')
-      {
-      self._listeners[type] = [];
-      }
-
-    self._listeners[type].push(listener);
-    }
-
-  self.removeEventListener = function(type, listener)
-    {
-    if (self._listeners[type] instanceof Array)
-      {
-      var listeners = self._listeners[type], 
-        i;
-
-      for (i = 0; i < listeners.length; i++)
-        {
-        if ('' + listeners[i] === '' + listener)
-          {
-          listeners.splice(i, 1);
-          break;
-          }
-        }
-      }
-    }
-
-  self.dispatchEvent = function(event, target)
-    {
-    if (typeof event == 'string')
-      {
-      event = { type: event };
-      if (typeof target != 'undefined')
-        event.target = target;
-      }
-
-    if (!event.target)
-      event.target = this;
-
-    if (!event.type)
-      alert('Request Event object missing "type" property.'); // Errors can't be thrown from here in Firefox
-
-     if (self._listeners[event.type] instanceof Array)
-      {
-      var listeners = self._listeners[event.type], 
-        i;
-
-      for (i = 0; i < listeners.length; i++)
-        {
-        try
-          {
-          listeners[i].call(this, event);
-          }
-        catch (e)
-          {
-          alert(e.message + ' at line ' + (e.lineNumber ? e.lineNumber : 'null') + ' in file ' + (e.fileName ? e.fileName : 'null')); // Errors can't be thrown from here in Firefox
-          }
-        }
-      }
-    }
-  },
-
-ContentRequest = function()
-  {
-  var self = this, 
-    caller = null;
-
-  self.response = null;
-  self.form_btn = null;
-
-  self.load = function(e, url)
-    {
-    returnFalse(e);
-    caller = getTarget(e);
-    self.dispatchEvent('beforeload', caller);
-    ajax.get(url, self.parseResponse, self.parseResponse);
-    };
-
-  self.parseResponse = function(response)
-    {
-    var info = '', content = '', 
-      context = elem('content'), 
-      btn = self.form_btn;
-
-    self.response = response;
-    self.dispatchEvent('afterload', caller);
-    response = self.response;
-
-    if (response.content_type == 'application/json')
-      {
-      info = kwf.infoHandler(response.page);
-      if (response.page.content)
-        content = info + response.page.content;
-      }
-    else
-      content = response.page;
-
-    if (content == '' && info != '')
-      context.insertBefore(toDOMnode(info), context.firstChild);
-    else
-      {
-      context.innerHTML = content;
-      self.findForms();
-      }
-
-    self.dispatchEvent('ready', caller);
-    caller = null;
-    self.response = null;
-
-    if (btn != null)
-      {
-      btn.disabled = '';
-      self.form_btn = null;
-      }
-    };
-
-  self.findForms = function()
-    {
-    var context = elem('content'), 
-      forms = context.getElementsByTagName('form'), 
-      i, action, form, targ;
-
-    for (i = 0; i < forms.length; i++)
-      {
-      form = forms[i];
-      if (hasClass(form, 'ajax-form'))
-        {
-        action = (form.action == '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
-        addSubmitEvent(form, function(e)
-          {
-          returnFalse(e);
-
-          targ = self.form_btn = window.submit_target;
-          targ.disabled = 'disabled';
-          caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
-          self.dispatchEvent('beforeload', caller);
-
-          ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
-          });
-
-        removeClass(form, 'ajax-form');
-        }
-      }
-    };
-  },
-
-BoxingRequest = function()
-  {
-  var self = this, 
-    caller = null;
-
-  self.response = null;
-  self.width = 0;
-  self.height = 0;
-  self.form_btn = null;
-
-  self.load = function(e, url, width, height)
-    {
-    returnFalse(e);
-    caller = getTarget(e);
-
-    self.width = (width ? width : 300);
-    self.height = (height ? height : 200);
-
-    self.dispatchEvent('beforeload', caller);
-
-    ajax.get(url, self.parseResponse, self.parseResponse);
-    };
-
-  self.parseResponse = function(response)
-    {
-    var info = '', content = '', 
-      btn = self.form_btn;
-
-    self.response = response;
-    self.dispatchEvent('afterload', caller);
-    response = self.response;
-
-    if (response.content_type == 'application/json')
-      {
-      info = kwf.infoHandler(response.page);
-      if (response.page.content)
-        content = info + response.page.content;
-      }
-    else
-      content = response.page;
-
-    if (content == '')
-      {
-      if (info != '')
-        elem('content').insertBefore(toDOMnode(info), elem('content').firstChild);
-
-      boxing.hide();
-      }
-    else
-      {
-      boxing.show(content, self.width, self.height);
-      self.findForms();
-      }
-
-    self.dispatchEvent('ready', caller);
-    caller = null;
-    self.response = null;
-
-    if (btn != null)
-      {
-      btn.disabled = '';
-      self.form_btn = null;
-      }
-    };
-
-  self.findForms = function(callback)
-    {
-    var forms = boxing.getWindow().getElementsByTagName('form'), 
-      i, action, form, targ;
-
-    for (i = 0; i < forms.length; i++)
-      {
-      form = forms[i];
-      if (hasClass(form, 'ajax-form'))
-        {
-        action = (form.action == '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
-        addSubmitEvent(form, function(e)
-          {
-          returnFalse(e);
-          targ = window.submit_target;
-          if (!hasClass(targ, 'hide-boxing'))
-            {
-            targ.disabled = 'disabled';
-            self.form_btn = targ;
-            caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
-            self.dispatchEvent('beforeload', caller);
-
-            ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
-            }
-          });
-
-        removeClass(form, 'ajax-form');
-        }
-      }
-    };
   },
 
 boxing = (function(undefined)
@@ -783,42 +547,6 @@ boxing = (function(undefined)
     return window;
     }
 
-  function keys(e)
-    {
-    if (e.keyCode == 27)
-      hide();
-    else if (e.keyCode == 9 && state)
-      focusChanged(getTarget(e), e.shiftKey);
-    }
-
-  function init()
-    {
-    var doc = document;
-
-    overlayer = doc.createElement('div');
-    window = doc.createElement('div');
-    close = doc.createElement('a');
-
-    overlayer.id = 'boxing-overlayer';
-    doc.body.appendChild(overlayer);
-    giveOpacity(overlayer, 60);
-
-    addEvent(overlayer, 'click', hide);
-    addEvent(doc, 'keyup', keys);
-
-    close.id = 'close_boxing';
-    close.className = 'hide-boxing';
-    close.href = 'javascript: void(0);';
-    close.appendChild(doc.createTextNode('Stäng'));
-    overlayer.appendChild(close);
-
-    window.id = 'boxing-window';
-    doc.body.appendChild(window);
-
-    html_tag = doc.getElementsByTagName('HTML')[0];
-    initiated = 1;
-    }
-
   function getFocusableElements()
     {
     var i, 
@@ -831,7 +559,9 @@ boxing = (function(undefined)
       if (tagname.match(/^input|select|textarea|button|a$/))
         {
         if ((tagname === 'input' && (elements[i].disabled || elements[i].type === 'hidden') || (tagname === 'a' && !elements[i].href)))
+          {
           continue;
+          }
 
         focus_elements.push(elements[i]);
         }
@@ -878,13 +608,79 @@ boxing = (function(undefined)
       }
     }
 
+  function hide()
+    {
+    if (initiated)
+      {
+      if (onhide_callback !== null)
+        {
+        if (!onhide_callback())
+          {
+          return;
+          }
+        }
+
+      overlayer.style.display = 'none';
+      window.style.display = 'none';
+
+      window.innerHTML = '';
+      html_tag.style.overflow = '';
+      onhide_callback = null;
+      state = 0;
+      }
+    }
+
+  function keys(e)
+    {
+    if (e.keyCode === 27)
+      {
+      hide();
+      }
+    else if (e.keyCode === 9 && state)
+      {
+      focusChanged(getTarget(e), e.shiftKey);
+      }
+    }
+
+  function init()
+    {
+    var doc = document;
+
+    overlayer = doc.createElement('div');
+    window = doc.createElement('div');
+    close = doc.createElement('a');
+
+    overlayer.id = 'boxing-overlayer';
+    doc.body.appendChild(overlayer);
+    giveOpacity(overlayer, 60);
+
+    addEvent(overlayer, 'click', hide);
+    addEvent(doc, 'keyup', keys);
+
+    close.id = 'close_boxing';
+    close.className = 'hide-boxing';
+    close.href = 'javascript: void(0);';
+    close.appendChild(doc.createTextNode('Stäng'));
+    overlayer.appendChild(close);
+
+    window.id = 'boxing-window';
+    doc.body.appendChild(window);
+
+    html_tag = doc.getElementsByTagName('HTML')[0];
+    initiated = 1;
+    }
+
   function show(text, width, height, callback)
     {
     if (!initiated)
+      {
       init();
+      }
 
     if (callback !== undefined)
+      {
       onhide_callback = callback;
+      }
 
     var w_unit = (width > 100 ? 'px' : '%'), 
       h_unit = (height > 100 ? 'px' : '%'), 
@@ -896,7 +692,7 @@ boxing = (function(undefined)
     close.style.width = window.style.width = width + w_unit;
     window.style.height = height + h_unit;
 
-    if (h_unit == '%')
+    if (h_unit === '%')
       {
       window.style.margin = '0 0 0 -' + (width / 2) + w_unit;
       window.style.top = (100 - height) / 2 + '%';
@@ -927,33 +723,379 @@ boxing = (function(undefined)
     state = 1;
     }
 
-  function hide()
-    {
-    if (!initiated)
-      return;
+  return {'show': show, 'hide': hide, 'getWindow': getWindow};
+  }()),
 
-    if (onhide_callback != null)
+kwf = {
+  FULLPATH: '',
+  onclick: null,
+  onload: null,
+  info_timer: null,
+
+  clicking: function(e)
+    {
+    if (e.button < 1)
       {
-      if (!onhide_callback())
-        return;
+      var targ = getTarget(e);
+
+      if (hasClass(targ, 'nolink') || hasClass(targ.parentNode, 'nolink'))
+        {
+        returnFalse(e);
+        }
+
+      if (hasClass(targ, 'hide-boxing'))
+        {
+        returnFalse(e);
+        boxing.hide();
+        }
+
+      if (kwf.onclick !== null)
+        {
+        kwf.onclick(e, targ);
+        }
+      }
+    },
+
+  loading: function(e)
+    {
+    if (kwf.onload !== null)
+      {
+      kwf.onload(e);
       }
 
-    overlayer.style.display = 'none';
-    window.style.display = 'none';
+    if (elem('content'))
+      {
+      content_request.findForms();
+      content_request.dispatchEvent('ready');
+      }
+    },
 
-    window.innerHTML = '';
-    html_tag.style.overflow = '';
-    onhide_callback = null;
-    state = 0;
+  hideInfo: function()
+    {
+    var list = elem('errorlist');
+
+    if (list)
+      {
+      list.parentNode.removeChild(list);
+      }
+
+    list = elem('infolist');
+
+    if (list)
+      {
+      list.parentNode.removeChild(list);
+      }
+    },
+
+  infoHandler: function(obj)
+    {
+    var html = '', row, k = kwf;
+
+    if (obj.errors)
+      {
+      html += '<ul id="errorlist">';
+      for (row in obj.errors)
+        {
+        html += '<li>' + obj.errors[row] + '</li>';
+        }
+      html += '</ul>';
+      }
+
+    if (obj.info)
+      {
+      html += '<ul id="infolist">';
+      for (row in obj.info)
+        {
+        html += '<li>' + obj.info[row] + '</li>';
+        }
+      html += '</ul>';
+      }
+
+    if (html !== '')
+      {
+      k.hideInfo();
+      clearTimeout(k.timer);
+      k.timer = setTimeout(k.hideInfo, 10000);
+      }
+
+    return html;
+    }
+  },
+
+/* With help from http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/ */
+KWFEventTarget = function()
+  {
+  var self = this;
+
+  self._listeners = {}; // Rewrite this later, this property should be a real private property
+
+  self.addEventListener = function(type, listener)
+    {
+    if (typeof self._listeners[type] === 'undefined')
+      {
+      self._listeners[type] = [];
+      }
+
+    self._listeners[type].push(listener);
     };
 
-  return {'show': show, 'hide': hide, 'getWindow': getWindow};
-  })();
+  self.removeEventListener = function(type, listener)
+    {
+    if (self._listeners[type] instanceof Array)
+      {
+      var listeners = self._listeners[type], 
+        i;
+
+      for (i = 0; i < listeners.length; i++)
+        {
+        if ('' + listeners[i] === '' + listener)
+          {
+          listeners.splice(i, 1);
+          break;
+          }
+        }
+      }
+    };
+
+  self.dispatchEvent = function(event, target)
+    {
+    if (typeof event === 'string')
+      {
+      event = { type: event };
+      if (typeof target !== 'undefined')
+        {
+        event.target = target;
+        }
+      }
+
+    if (!event.target)
+      {
+      event.target = this;
+      }
+
+    if (!event.type)
+      {
+      alert('Request Event object missing "type" property.'); // Errors can't be thrown from here in Firefox
+      }
+
+     if (self._listeners[event.type] instanceof Array)
+      {
+      var listeners = self._listeners[event.type], 
+        i;
+
+      for (i = 0; i < listeners.length; i++)
+        {
+        try
+          {
+          listeners[i].call(this, event);
+          }
+        catch (e)
+          {
+          alert(e.message + ' at line ' + (e.lineNumber || 'null') + ' in file ' + (e.fileName || 'null')); // Errors can't be thrown from here in Firefox
+          }
+        }
+      }
+    };
+  },
+
+ContentRequest = function()
+  {
+  var self = this, 
+    caller = null;
+
+  self.response = null;
+  self.form_btn = null;
+
+  self.load = function(e, url)
+    {
+    returnFalse(e);
+    caller = getTarget(e);
+    self.dispatchEvent('beforeload', caller);
+    ajax.get(url, self.parseResponse, self.parseResponse);
+    };
+
+  self.parseResponse = function(response)
+    {
+    var info = '', content = '', 
+      context = elem('content'), 
+      btn = self.form_btn;
+
+    self.response = response;
+    self.dispatchEvent('afterload', caller);
+    response = self.response;
+
+    if (response.content_type === 'application/json')
+      {
+      info = kwf.infoHandler(response.page);
+      if (response.page.content)
+        {
+        content = info + response.page.content;
+        }
+      }
+    else
+      {
+      content = response.page;
+      }
+
+    if (content === '' && info !== '')
+      {
+      context.insertBefore(toDOMnode(info), context.firstChild);
+      }
+    else
+      {
+      context.innerHTML = content;
+      self.findForms();
+      }
+
+    self.dispatchEvent('ready', caller);
+    caller = null;
+    self.response = null;
+
+    if (btn !== null)
+      {
+      btn.disabled = '';
+      self.form_btn = null;
+      }
+    };
+
+  self.findForms = function()
+    {
+    var context = elem('content'), 
+      forms = context.getElementsByTagName('form'), 
+      i, action, form, targ;
+
+    for (i = 0; i < forms.length; i++)
+      {
+      form = forms[i];
+      if (hasClass(form, 'ajax-form'))
+        {
+        action = (form.action === '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
+        addSubmitEvent(form, function(e)
+          {
+          returnFalse(e);
+
+          targ = self.form_btn = window.submit_target;
+          targ.disabled = 'disabled';
+          caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+          self.dispatchEvent('beforeload', caller);
+
+          ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
+          });
+
+        removeClass(form, 'ajax-form');
+        }
+      }
+    };
+  },
+
+BoxingRequest = function()
+  {
+  var self = this, 
+    caller = null;
+
+  self.response = null;
+  self.width = 0;
+  self.height = 0;
+  self.form_btn = null;
+
+  self.load = function(e, url, width, height)
+    {
+    returnFalse(e);
+    caller = getTarget(e);
+
+    self.width = (width || 300);
+    self.height = (height || 200);
+
+    self.dispatchEvent('beforeload', caller);
+
+    ajax.get(url, self.parseResponse, self.parseResponse);
+    };
+
+  self.parseResponse = function(response)
+    {
+    var info = '', content = '', 
+      btn = self.form_btn;
+
+    self.response = response;
+    self.dispatchEvent('afterload', caller);
+    response = self.response;
+
+    if (response.content_type === 'application/json')
+      {
+      info = kwf.infoHandler(response.page);
+      if (response.page.content)
+        {
+        content = info + response.page.content;
+        }
+      }
+    else
+      {
+      content = response.page;
+      }
+
+    if (content === '')
+      {
+      if (info !== '')
+        {
+        elem('content').insertBefore(toDOMnode(info), elem('content').firstChild);
+        }
+
+      boxing.hide();
+      }
+    else
+      {
+      boxing.show(content, self.width, self.height);
+      self.findForms();
+      }
+
+    self.dispatchEvent('ready', caller);
+    caller = null;
+    self.response = null;
+
+    if (btn !== null)
+      {
+      btn.disabled = '';
+      self.form_btn = null;
+      }
+    };
+
+  self.findForms = function(callback)
+    {
+    var forms = boxing.getWindow().getElementsByTagName('form'), 
+      i, action, form, targ;
+
+    for (i = 0; i < forms.length; i++)
+      {
+      form = forms[i];
+      if (hasClass(form, 'ajax-form'))
+        {
+        action = (form.action === '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
+        addSubmitEvent(form, function(e)
+          {
+          returnFalse(e);
+          targ = window.submit_target;
+          if (!hasClass(targ, 'hide-boxing'))
+            {
+            targ.disabled = 'disabled';
+            self.form_btn = targ;
+            caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+            self.dispatchEvent('beforeload', caller);
+
+            ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
+            }
+          });
+
+        removeClass(form, 'ajax-form');
+        }
+      }
+    };
+  };
 
 ContentRequest.prototype = new KWFEventTarget();
-content_request = new ContentRequest();
 BoxingRequest.prototype = new KWFEventTarget();
-boxing_request = new BoxingRequest();
+
+var content_request = new ContentRequest(), 
+  boxing_request = new BoxingRequest();
 
 addEvent(document, 'click', kwf.clicking);
 addEvent(window, 'load', kwf.loading);
