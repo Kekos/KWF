@@ -425,7 +425,16 @@ var ajax = (function()
 
   function get(url, success, fail, data)
     {
-    data = (typeof data === 'object' ? '?' + array2query(data) : '');
+    if (typeof data === 'object')
+      {
+      data = array2query(data);
+      }
+
+    if (data !== '')
+      {
+      data = '?' + data;
+      }
+
     return send(url + data, 'GET', success, fail, null);
     }
 
