@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-04-24
- * @version 3.0
+ * @date 2012-04-05
+ * @version 3.1
  */
 
 kwf.onclick = function(e, targ)
@@ -17,8 +17,8 @@ kwf.onclick = function(e, targ)
 
 kwf.onload = function(e)
   {
-  ajax.onbeforeajax = site.beforeAjax;
-  ajax.onafterajax = site.afterAjax;
+  ajax.setBeforeCallback(site.beforeAjax);
+  ajax.setAfterCallback(site.afterAjax);
   };
 
 var site = {
