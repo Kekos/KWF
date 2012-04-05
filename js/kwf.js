@@ -306,7 +306,7 @@ var ajax = (function()
           response.page = parseJSON(response.page);
           }
 
-        if (onafterajax !== null)
+        if (onafterajax)
           {
           onafterajax();
           }
@@ -337,7 +337,7 @@ var ajax = (function()
         }
       };
 
-    if (onbeforeajax !== null)
+    if (onbeforeajax)
       {
       onbeforeajax();
       }
@@ -390,7 +390,7 @@ var ajax = (function()
       return ret;
       }
 
-    if (form !== null)
+    if (form)
       {
       for (i = 0; i < inputs.length; i++)
         {
@@ -447,7 +447,7 @@ var ajax = (function()
       if (typeof FileReader === 'undefined')
         {
         file = file_list[0];
-        filename = (file.fileName !== null) ? file.fileName : file.name;
+        filename = (file.fileName) ? file.fileName : file.name;
 
         return send(url, 'POST', success, fail, file, [['X-ajax-upload', encodeURIComponent(filename)]]);
         }
@@ -489,7 +489,7 @@ var ajax = (function()
       var orig_form = file_elem.parentNode, form, frame, frame_doc, 
         body = document.body, resp;
 
-      if (onbeforeajax !== null)
+      if (onbeforeajax)
         {
         onbeforeajax();
         }
@@ -518,7 +518,7 @@ var ajax = (function()
             });
           body.removeChild(frame);
 
-          if (onafterajax !== null)
+          if (onafterajax)
             {
             onafterajax();
             }
@@ -597,7 +597,7 @@ boxing = (function()
     if (new_focus_elem !== close)
       {
       // Traverse the DOM upwards to see if the newly focused element is a child of the Boxing window
-      while (test_node !== null)
+      while (test_node)
         {
         // If the element is child of Bowing window, this will be true
         if (test_node === window)
@@ -625,7 +625,7 @@ boxing = (function()
     {
     if (initiated)
       {
-      if (onhide_callback !== null)
+      if (onhide_callback)
         {
         if (!onhide_callback())
           {
@@ -727,7 +727,7 @@ boxing = (function()
 
     // Find the first focusable element
     first_elem = getElement(0);
-    if (first_elem !== null)
+    if (first_elem)
       {
       first_elem.focus();
       }
@@ -765,7 +765,7 @@ kwf = {
         boxing.hide();
         }
 
-      if (kwf.onclick !== null)
+      if (kwf.onclick)
         {
         kwf.onclick(e, targ);
         }
@@ -774,7 +774,7 @@ kwf = {
 
   loading: function(e)
     {
-    if (kwf.onload !== null)
+    if (kwf.onload)
       {
       kwf.onload(e);
       }
@@ -966,7 +966,7 @@ ContentRequest = function()
     caller = null;
     self.response = null;
 
-    if (btn !== null)
+    if (btn)
       {
       btn.disabled = '';
       self.form_btn = null;
@@ -1068,7 +1068,7 @@ BoxingRequest = function()
     caller = null;
     self.response = null;
 
-    if (btn !== null)
+    if (btn)
       {
       btn.disabled = '';
       self.form_btn = null;
