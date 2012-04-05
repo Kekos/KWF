@@ -52,7 +52,7 @@ var site = {
   upload: function(e, targ)
     {
     returnFalse(e);
-    ajax.upload(document.location.href, content_request.response, 
-      content_request.response, elem('file'), targ)
+    ajax.upload(document.location.href, content_request.parseResponse, 
+      content_request.parseResponse, elem('file'), targ)
     }
   };
