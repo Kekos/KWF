@@ -447,7 +447,7 @@ var ajax = (function()
       if (typeof FileReader === 'undefined')
         {
         file = file_list[0];
-        filename = (file.fileName) ? file.fileName : file.name;
+        filename = file.fileName || file.name;
 
         return send(url, 'POST', success, fail, file, [['X-ajax-upload', encodeURIComponent(filename)]]);
         }
@@ -474,7 +474,7 @@ var ajax = (function()
         for (f = 0; f < file_list.length; f++)
           {
           file = file_list[f];
-          filename = (file.fileName) ? file.fileName : file.name;
+          filename = file.fileName || file.name;
           if (f)
             {
             data += '\r\n';
