@@ -256,123 +256,16 @@ function toDOMnode(html)
   return div.firstChild;
   }
 
-var ajax = {
-  onbeforeajax: null,
-  onafterajax: null,
+var ajax = (function()
+  {
+  var onbeforeajax = null,
+    onafterajax = null;
 
-  get: function(url, success, fail, data)
-    {
-    data = (typeof data === 'object' ? '?' + ajax.array2query(data) : '');
-    return ajax.send(url + data, 'GET', success, fail, null);
-    },
-
-  post: function(url, success, fail, data, sender)
-    {
-    data = (data.nodeType ? ajax.form2query(data, sender) : 
-        ajax.array2query(data));
-    return ajax.send(url, 'POST', success, fail, data);
-    },
-
-  upload: function(url, success, fail, file_elem, sender)
-    {
-    if (typeof File !== 'undefined')
-      {
-      var file_list = file_elem.files, file, f, filename, reader, 
-        boundary = '---------------------------' + new Date().getTime(), 
-        data = '--' + boundary + '\r\n';
-
-      if (typeof FileReader === 'undefined')
-        {
-        file = file_list[0];
-        filename = (file.fileName !== null) ? file.fileName : file.name;
-
-        return ajax.send(url, 'POST', success, fail, file, [['X-ajax-upload', encodeURIComponent(filename)]]);
-        }
-      else
-        {
-        reader = new FileReader();
-        reader.onloadend = function()
-          {
-          data += 'Content-Disposition: form-data; name="' + file_elem.name + '"; filename="' + filename + '"\r\nContent-Type: ' + file.type + '\r\n\r\n' + reader.result + '\r\n--' + boundary;
-          if (f === file_list.length)
-            {
-            data += '\r' + ajax.form2query(file_elem.form, sender, boundary);
-
-            if (f)
-              {
-              return ajax.send(url, 'POST', success, fail, data + '--', [
-                  ['Content-Type', 'multipart/form-data; boundary=' + boundary],
-                  ['Content-Length', data.length]
-                ], 1);
-              }
-            }
-          };
-
-        for (f = 0; f < file_list.length; f++)
-          {
-          file = file_list[f];
-          filename = (file.fileName !== null) ? file.fileName : file.name;
-          if (f)
-            {
-            data += '\r\n';
-            }
-
-          reader.readAsBinaryString(file);
-          }
-        }
-      }
-    else
-      {
-      var orig_form = file_elem.parentNode, form, frame, frame_doc, a = ajax, 
-        body = document.body, resp;
-
-      if (a.onbeforeajax !== null)
-        {
-        a.onbeforeajax();
-        }
-
-      form = body.appendChild(toDOMnode('<form style="visibility: hidden;" action="' + url 
-         + '" method="post" enctype="multipart/form-data" target="ajax_upload_frame'
-         + '"><input type="hidden" name="X-ajax-request" value="true" />'
-         + '<input type="hidden" name="X-frame-upload" value="true" /></form>'));
-
-      orig_form.removeChild(file_elem);
-      form.appendChild(file_elem);
-
-      frame = body.appendChild(toDOMnode('<iframe style="visibility: hidden;" src="javascript: false;" '
-         + 'name="ajax_upload_frame" id="ajax_upload_frame"></iframe>'));
-
-      addEvent(frame, 'load', function()
-        {
-        setTimeout(function()
-          {
-          frame_doc = frame.contentDocument || frame.contentWindow.document;
-          resp = frame_doc.body.innerHTML;
-          success({
-              response: parseJSON(resp),
-              content_type: (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}' ? 'application/json' : 'text/plain'),
-              status: '200'
-            });
-          body.removeChild(frame);
-
-          if (a.onafterajax !== null)
-            {
-            a.onafterajax();
-            }
-          }, 1);
-        });
-
-      form.submit();
-      body.removeChild(form);
-      orig_form.appendChild(file_elem);
-      }
-    },
-
-  send: function(url, method, success, fail, data, headers, binary_data)
+  function send(url, method, success, fail, data, headers, binary_data)
     {
     var ajax_req = (window.ActiveXObject) ? 
         new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest(),
-      response, content_type = 0, h, a = ajax;
+      response, content_type = 0, h;
 
     ajax_req.open(method, url);
     ajax_req.setRequestHeader('X-ajax-request', 'true');
@@ -413,9 +306,9 @@ var ajax = {
           response.page = parseJSON(response.page);
           }
 
-        if (a.onafterajax !== null)
+        if (onafterajax !== null)
           {
-          a.onafterajax();
+          onafterajax();
           }
 
         if (ajax_req.status === 200)
@@ -444,9 +337,9 @@ var ajax = {
         }
       };
 
-    if (a.onbeforeajax !== null)
+    if (onbeforeajax !== null)
       {
-      a.onbeforeajax();
+      onbeforeajax();
       }
 
     if (ajax_req.sendAsBinary && binary_data)
@@ -459,9 +352,9 @@ var ajax = {
       }
 
     return ajax_req;
-    },
+    }
 
-  array2query: function(data)
+  function array2query(data)
     {
     var query = '', key;
 
@@ -471,9 +364,9 @@ var ajax = {
       }
 
     return query.substring(1);
-    },
+    }
 
-  form2query: function(form, sender, boundary)
+  function form2query(form, sender, boundary)
     {
     var data = '', 
       inputs = form.getElementsByTagName('input'), 
@@ -529,7 +422,127 @@ var ajax = {
 
     return data.substring(1);
     }
-  },
+
+  function get(url, success, fail, data)
+    {
+    data = (typeof data === 'object' ? '?' + array2query(data) : '');
+    return send(url + data, 'GET', success, fail, null);
+    }
+
+  function post(url, success, fail, data, sender)
+    {
+    data = (data.nodeType ? form2query(data, sender) : 
+        array2query(data));
+    return send(url, 'POST', success, fail, data);
+    }
+
+  function upload(url, success, fail, file_elem, sender)
+    {
+    if (typeof File !== 'undefined')
+      {
+      var file_list = file_elem.files, file, f, filename, reader, 
+        boundary = '---------------------------' + new Date().getTime(), 
+        data = '--' + boundary + '\r\n';
+
+      if (typeof FileReader === 'undefined')
+        {
+        file = file_list[0];
+        filename = (file.fileName !== null) ? file.fileName : file.name;
+
+        return send(url, 'POST', success, fail, file, [['X-ajax-upload', encodeURIComponent(filename)]]);
+        }
+      else
+        {
+        reader = new FileReader();
+        reader.onloadend = function()
+          {
+          data += 'Content-Disposition: form-data; name="' + file_elem.name + '"; filename="' + filename + '"\r\nContent-Type: ' + file.type + '\r\n\r\n' + reader.result + '\r\n--' + boundary;
+          if (f === file_list.length)
+            {
+            data += '\r' + form2query(file_elem.form, sender, boundary);
+
+            if (f)
+              {
+              return send(url, 'POST', success, fail, data + '--', [
+                  ['Content-Type', 'multipart/form-data; boundary=' + boundary],
+                  ['Content-Length', data.length]
+                ], 1);
+              }
+            }
+          };
+
+        for (f = 0; f < file_list.length; f++)
+          {
+          file = file_list[f];
+          filename = (file.fileName) ? file.fileName : file.name;
+          if (f)
+            {
+            data += '\r\n';
+            }
+
+          reader.readAsBinaryString(file);
+          }
+        }
+      }
+    else
+      {
+      var orig_form = file_elem.parentNode, form, frame, frame_doc, 
+        body = document.body, resp;
+
+      if (onbeforeajax !== null)
+        {
+        onbeforeajax();
+        }
+
+      form = body.appendChild(toDOMnode('<form style="visibility: hidden;" action="' + url 
+         + '" method="post" enctype="multipart/form-data" target="ajax_upload_frame'
+         + '"><input type="hidden" name="X-ajax-request" value="true" />'
+         + '<input type="hidden" name="X-frame-upload" value="true" /></form>'));
+
+      orig_form.removeChild(file_elem);
+      form.appendChild(file_elem);
+
+      frame = body.appendChild(toDOMnode('<iframe style="visibility: hidden;" src="javascript: false;" '
+         + 'name="ajax_upload_frame" id="ajax_upload_frame"></iframe>'));
+
+      addEvent(frame, 'load', function()
+        {
+        setTimeout(function()
+          {
+          frame_doc = frame.contentDocument || frame.contentWindow.document;
+          resp = frame_doc.body.innerHTML;
+          success({
+              response: parseJSON(resp),
+              content_type: (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}' ? 'application/json' : 'text/plain'),
+              status: '200'
+            });
+          body.removeChild(frame);
+
+          if (onafterajax !== null)
+            {
+            onafterajax();
+            }
+          }, 1);
+        });
+
+      form.submit();
+      body.removeChild(form);
+      orig_form.appendChild(file_elem);
+      }
+    }
+
+  function setBeforeCallback(callback)
+    {
+    onbeforeajax = callback;
+    }
+
+  function setAfterCallback(callback)
+    {
+    onafterajax = callback;
+    }
+
+  return {'get': get, 'post': post, 'upload': upload, 'setBeforeCallback': setBeforeCallback, 'setAfterCallback': setAfterCallback};
+  }()),
 
 boxing = (function()
   {
