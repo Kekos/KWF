@@ -1379,8 +1379,9 @@ ContentRequest = function()
     // The Submit event listener
     function formSubmit(e)
       {
-      var targ = self.form_btn = window.submit_target, 
-        caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+      var targ = self.form_btn = window.submit_target;
+
+      caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
 
       returnFalse(e);
       targ.disabled = 'disabled';
@@ -1519,8 +1520,9 @@ BoxingRequest = function()
     // The Submit event listener
     function formSubmit(e)
       {
-      var targ = window.submit_target, 
-        caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+      var targ = window.submit_target;
+
+      caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
 
       returnFalse(e);
 
