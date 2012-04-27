@@ -682,7 +682,7 @@ var ajax = (function()
           frame_doc = frame.contentDocument || frame.contentWindow.document;
           resp = frame_doc.body.innerHTML;
           success({
-              response: parseJSON(resp),
+              page: parseJSON(resp),
               content_type: (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}' ? 'application/json' : 'text/plain'),
               status: '200'
             });
