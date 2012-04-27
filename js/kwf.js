@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-03-30
+ * @date 2012-04-27
  * @version 4.0
  */
 
@@ -612,9 +612,13 @@ var ajax = (function()
       data = array2query(data);
       }
 
-    if (data !== '')
+    if (data)
       {
       data = '?' + data;
+      }
+    else
+      {
+      data = '';
       }
 
     return send(url + data, 'GET', success, fail, null);
