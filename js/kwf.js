@@ -404,10 +404,10 @@ var ajax = (function()
    * @param function fail Callback to call if request failed
 	 * @param string data Data to send
    * @param object headers Extra HTTP headers
-   * @param boolean binary_data True if data is binary
+   * @param boolean ignore_content_type True if Content-Type header should be set by browser
 	 * @return XMLHttpRequest
 	 */
-  function send(url, method, success, fail, data, headers, binary_data)
+  function send(url, method, success, fail, data, headers, ignore_content_type)
     {
     var ajax_req = (window.ActiveXObject) ? 
         new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest(),
@@ -431,8 +431,8 @@ var ajax = (function()
         }
       }
 
-    // If no Content-Type was set, use default
-    if (!content_type)
+    // If no Content-Type was set, use default, or ignore Content-Type if needed
+    if (!content_type && !ignore_content_type)
       {
       ajax_req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
       }
@@ -495,15 +495,7 @@ var ajax = (function()
       onbeforeajax();
       }
 
-    // Send data as binary or as string
-    if (ajax_req.sendAsBinary && binary_data)
-      {
-      ajax_req.sendAsBinary(data);
-      }
-    else
-      {
-      ajax_req.send(data);
-      }
+    ajax_req.send(data);
 
     return ajax_req;
     }
@@ -654,52 +646,14 @@ var ajax = (function()
 	 */
   function upload(url, success, fail, file_elem, sender)
     {
-    if (typeof File !== 'undefined')
+    // Check for File and FormData support
+    if (typeof FormData !== 'undefined' && typeof File !== 'undefined')
       {
-      var file_list = file_elem.files, file, f, filename, reader, 
-        boundary = '---------------------------' + new Date().getTime(), 
-        data = '--' + boundary + '\r\n';
-
-      if (typeof FileReader === 'undefined')
-        {
-        file = file_list[0];
-        filename = file.fileName || file.name;
-
-        return send(url, 'POST', success, fail, file, [['X-ajax-upload', encodeURIComponent(filename)]]);
-        }
-      else
-        {
-        reader = new FileReader();
-        reader.onloadend = function()
-          {
-          data += 'Content-Disposition: form-data; name="' + file_elem.name + '"; filename="' + filename + '"\r\nContent-Type: ' + file.type + '\r\n\r\n' + reader.result + '\r\n--' + boundary;
-          if (f === file_list.length)
-            {
-            data += '\r' + form2query(file_elem.form, sender, boundary);
-
-            if (f)
-              {
-              return send(url, 'POST', success, fail, data + '--', [
-                  ['Content-Type', 'multipart/form-data; boundary=' + boundary],
-                  ['Content-Length', data.length]
-                ], 1);
-              }
-            }
-          };
-
-        for (f = 0; f < file_list.length; f++)
-          {
-          file = file_list[f];
-          filename = file.fileName || file.name;
-          if (f)
-            {
-            data += '\r\n';
-            }
-
-          reader.readAsBinaryString(file);
-          }
-        }
+      var form_data = new FormData();
+      form_data.append(file_elem.name, file_elem.files[0]);
+      return send(url, 'POST', success, fail, form_data, [], 1);
       }
+    // No FormData support: Resort to <iframe> solution
     else
       {
       var orig_form = file_elem.parentNode, form, frame, frame_doc, 
