@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-04-27
+ * @date 2012-04-29
  * @version 4.0
  */
 
@@ -1332,14 +1332,16 @@ ContentRequest = function()
     {
     var context = elem('content'), 
       forms = context.getElementsByTagName('form'), 
-      i, action, form;
+      i, form;
 
     // The Submit event listener
     function formSubmit(e)
       {
-      var targ = self.form_btn = window.submit_target;
+      var targ = self.form_btn = window.submit_target, 
+        action;
 
       caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+      action = (caller.action === '') ? document.location.href : caller.action; // For backwards compatibility, may change in future versions
 
       returnFalse(e);
       targ.disabled = 'disabled';
@@ -1353,7 +1355,6 @@ ContentRequest = function()
       form = forms[i];
       if (hasClass(form, 'ajax-form'))
         {
-        action = (form.action === '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
         addSubmitEvent(form, formSubmit);
         removeClass(form, 'ajax-form');
         }
@@ -1473,14 +1474,16 @@ BoxingRequest = function()
   self.findForms = function()
     {
     var forms = boxing.getWindow().getElementsByTagName('form'), 
-      i, action, form;
+      i, form;
 
     // The Submit event listener
     function formSubmit(e)
       {
-      var targ = window.submit_target;
+      var targ = window.submit_target, 
+        action;
 
       caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
+      action = (form.action === '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
 
       returnFalse(e);
 
@@ -1499,7 +1502,6 @@ BoxingRequest = function()
       form = forms[i];
       if (hasClass(form, 'ajax-form'))
         {
-        action = (form.action === '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
         addSubmitEvent(form, formSubmit);
         removeClass(form, 'ajax-form');
         }
