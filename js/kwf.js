@@ -641,10 +641,9 @@ var ajax = (function()
 	 * @param function success Callback to call if request succeeded
    * @param function fail Callback to call if request failed
 	 * @param HTMLInputElement file_elem The <input type="file"> element to send
-   * @param HTMLElement sender The button that fired the request
 	 * @return XMLHttpRequest
 	 */
-  function upload(url, success, fail, file_elem, sender)
+  function upload(url, success, fail, file_elem)
     {
     // Check for File and FormData support
     if (typeof FormData !== 'undefined' && typeof File !== 'undefined')
