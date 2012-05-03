@@ -3,7 +3,7 @@
  * KWF Class: response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-03-27
+ * @date 2012-05-03
  * @version 4.0
  */
 
@@ -191,11 +191,15 @@ class response
           }
 
         if ($this->request->post('X-frame-upload'))
+          {
           $this->content_type = 'text/html'; // For iframe based AJAX file upload (IE tries to download this JSON otherwise)
+          $this->content_data = htmlspecialchars(json_encode($resp)); // Otherwise IE parses possible HTML in the response
+          }
         else
+          {
           $this->content_type = 'application/json';
-
-        $this->content_data = json_encode($resp);
+          $this->content_data = json_encode($resp);
+          }
         }
       else if (empty($this->content_type))
         {

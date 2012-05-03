@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-04-29
+ * @date 2012-05-03
  * @version 4.0
  */
 
@@ -679,7 +679,7 @@ var ajax = (function()
         setTimeout(function()
           {
           frame_doc = frame.contentDocument || frame.contentWindow.document;
-          resp = frame_doc.body.innerHTML;
+          resp = frame_doc.body.firstChild.nodeValue;
           success({
               page: parseJSON(resp),
               content_type: (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}' ? 'application/json' : 'text/plain'),
