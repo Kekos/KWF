@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-05-03
+ * @date 2012-05-08
  * @version 4.0
  */
 
@@ -1482,7 +1482,7 @@ BoxingRequest = function()
         action;
 
       caller = getTarget(e); // The event target is the form who creates this new event, not the button who triggered this event
-      action = (form.action === '') ? document.location.href : form.action; // For backwards compatibility, may change in future versions
+      action = (caller.action === '') ? document.location.href : caller.action; // For backwards compatibility, may change in future versions
 
       returnFalse(e);
 
