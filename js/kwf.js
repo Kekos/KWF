@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-05-08
+ * @date 2012-05-25
  * @version 4.0
  */
 
@@ -656,7 +656,8 @@ var ajax = (function()
     else
       {
       var orig_form = file_elem.parentNode, form, frame, frame_doc, 
-        body = document.body, resp;
+        body = document.body, resp, 
+        is_json = 0;
 
       if (onbeforeajax)
         {
@@ -680,9 +681,19 @@ var ajax = (function()
           {
           frame_doc = frame.contentDocument || frame.contentWindow.document;
           resp = frame_doc.body.firstChild.nodeValue;
+          if (resp === null)
+            {
+            resp = frame_doc.body.innerHTML;
+            }
+
+          if (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}')
+            {
+            is_json = 1;
+            }
+
           success({
-              page: parseJSON(resp),
-              content_type: (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}' ? 'application/json' : 'text/plain'),
+              page: (is_json ? parseJSON(resp) : resp),
+              content_type: (is_json ? 'application/json' : 'text/plain'),
               status: '200'
             });
           body.removeChild(frame);
