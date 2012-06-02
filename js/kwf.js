@@ -270,6 +270,20 @@ function removeClass(elem, classname)
   }
 
 /*
+ * Replaces specified CSS class with new class from element
+ *
+ * @param HTMLElement elem Element to replace on
+ * @param string old_classname Name of class to remove
+ * @param string new_classname Name of class to add
+ * @return void
+ */
+function replaceClass(elem, old_classname, new_classname)
+  {
+  removeClass(elem, old_classname);
+  addClass(elem, new_classname);
+  }
+
+/*
  * Gives opacity for an element in Internet Explorer (using Alpha filter)
  *
  * @param HTMLElement elm Element to give opacity
