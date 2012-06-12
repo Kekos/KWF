@@ -1,4 +1,5 @@
 *.rar
 images/
+uploads/
 _snapshot/
 config.php
