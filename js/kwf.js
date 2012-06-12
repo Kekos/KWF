@@ -390,10 +390,10 @@ function toDOMnode(html)
 
 /**
  * AJAX class provides an easy interface for requesting data asynchronous
- * @class ajax
+ * @class Ajax
  * @static
  */
-var ajax = (function()
+var Ajax = (function()
   {
   /**
    * Callback called when AJAX request is started
@@ -757,10 +757,10 @@ var ajax = (function()
 
 /**
  * Boxing class provides functions for showing a popup dialog on the center of the screen with an overlay behind
- * @class boxing
+ * @class Boxing
  * @static
  */
-boxing = (function()
+Boxing = (function()
   {
   /**
    * 1 if the Boxing window is created
@@ -1079,10 +1079,10 @@ boxing_request,
 
 /**
  * KWF object handles load and click events, messages and starts the JavaScript framework
- * @class kwf
+ * @class Kwf
  * @static
  */
-kwf = {
+Kwf = {
   FULLPATH: '',
 
   /**
@@ -1132,12 +1132,12 @@ kwf = {
       if (hasClass(targ, 'hide-boxing'))
         {
         returnFalse(e);
-        boxing.hide();
+        Boxing.hide();
         }
 
-      if (kwf.onclick)
+      if (Kwf.onclick)
         {
-        kwf.onclick(e, targ);
+        Kwf.onclick(e, targ);
         }
       }
     },
@@ -1150,9 +1150,9 @@ kwf = {
 	 */
   loading: function(e)
     {
-    if (kwf.onload)
+    if (Kwf.onload)
       {
-      kwf.onload(e);
+      Kwf.onload(e);
       }
 
     if (elem('content'))
@@ -1194,7 +1194,7 @@ kwf = {
 	 */
   infoHandler: function(obj)
     {
-    var html = '', row, k = kwf;
+    var html = '', row, k = Kwf;
 
     if (obj.errors)
       {
@@ -1396,7 +1396,7 @@ ContentRequest = function()
     returnFalse(e);
     caller = getTarget(e);
     self.dispatchEvent('beforeload', caller);
-    ajax.get(url, self.parseResponse, self.parseResponse);
+    Ajax.get(url, self.parseResponse, self.parseResponse);
     };
 
   /**
@@ -1421,7 +1421,7 @@ ContentRequest = function()
     // If the response contains JSON: look for error and info messages
     if (response.content_type === 'application/json')
       {
-      info = kwf.infoHandler(response.page);
+      info = Kwf.infoHandler(response.page);
       if (response.page.content)
         {
         // Get the HTML from content property
@@ -1481,7 +1481,7 @@ ContentRequest = function()
       targ.disabled = 'disabled';
       self.dispatchEvent('beforeload', caller);
 
-      ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
+      Ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
       }
 
     for (i = 0; i < forms.length; i++)
@@ -1575,7 +1575,7 @@ BoxingRequest = function()
 
     self.dispatchEvent('beforeload', caller);
 
-    ajax.get(url, self.parseResponse, self.parseResponse);
+    Ajax.get(url, self.parseResponse, self.parseResponse);
     };
 
   /**
@@ -1599,7 +1599,7 @@ BoxingRequest = function()
     // If the response contains JSON: look for error and info messages
     if (response.content_type === 'application/json')
       {
-      info = kwf.infoHandler(response.page);
+      info = Kwf.infoHandler(response.page);
       if (response.page.content)
         {
         // Get the HTML from content property
@@ -1620,11 +1620,11 @@ BoxingRequest = function()
         elem('content').insertBefore(toDOMnode(info), elem('content').firstChild);
         }
 
-      boxing.hide();
+      Boxing.hide();
       }
     else
       {
-      boxing.show(content, self.width, self.height);
+      Boxing.show(content, self.width, self.height);
       self.findForms();
       }
 
@@ -1647,7 +1647,7 @@ BoxingRequest = function()
 	 */
   self.findForms = function()
     {
-    var forms = boxing.getWindow().getElementsByTagName('form'), 
+    var forms = Boxing.getWindow().getElementsByTagName('form'), 
       i, form;
 
     // The Submit event listener
@@ -1667,7 +1667,7 @@ BoxingRequest = function()
         self.form_btn = targ;
         self.dispatchEvent('beforeload', caller);
 
-        ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
+        Ajax.post(action, self.parseResponse, self.parseResponse, caller, targ);
         }
       }
 
@@ -1692,5 +1692,5 @@ content_request = new ContentRequest();
 boxing_request = new BoxingRequest();
 
 // Add listeners for click and load events
-addEvent(document, 'click', kwf.clicking);
-addEvent(window, 'load', kwf.loading);
+addEvent(document, 'click', Kwf.clicking);
+addEvent(window, 'load', Kwf.loading);
