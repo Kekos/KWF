@@ -3,56 +3,68 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-04-05
+ * @date 2012-06-12
  * @version 3.1
  */
 
-kwf.onclick = function(e, targ)
-  {
-  if (targ.id == 'load_contactform')
-    site.loadContactform(e, targ);
-  else if (targ.name == 'upload')
-    site.upload(e, targ);
-  };
+/* JSLint: First asume we have the KWF Framework */
+/*global elem, getTarget, returnFalse, addEvent, removeEvent, addSubmitEvent, 
+   previousNode, nextNode, firstChildElement, lastChildElement, hasClass, 
+   addClass, removeClass, giveOpacity, parseJSON, var_dump, toDOMnode, Ajax, 
+   Boxing, Kwf, KWFEventTarget, content_request, boxing_request */
 
-kwf.onload = function(e)
+var site = (function(window, document, elem, content_request, boxing_request, Boxing)
   {
-  ajax.setBeforeCallback(site.beforeAjax);
-  ajax.setAfterCallback(site.afterAjax);
-  };
-
-var site = {
-  beforeAjax: function()
+  function beforeAjax()
     {
-    var ajax_loader = elem('ajax_loader'),
-      doc = document;
+    var ajax_loader = elem('ajax_loader');
 
     if (!ajax_loader)
       {
-      ajax_loader = doc.createElement('div');
+      ajax_loader = document.createElement('div');
       ajax_loader.id = 'ajax_loader';
-      ajax_loader.appendChild(doc.createTextNode('Laddar...'));
+      ajax_loader.appendChild(document.createTextNode('Laddar...'));
       elem('header').appendChild(ajax_loader);
       }
 
     ajax_loader.style.display = 'block';
-    },
+    }
 
-  afterAjax: function()
+  function afterAjax()
     {
     elem('ajax_loader').style.display = 'none';
-    },
+    }
 
-  loadContactform: function(e, targ)
+  function loadContactform(e, targ)
     {
     boxing_request.load(e, targ.href, 300, 400);
     //content_request.load(e, targ.href);
-    },
+    }
 
-  upload: function(e, targ)
+  function upload(e, targ)
     {
     returnFalse(e);
-    ajax.upload(document.location.href, content_request.parseResponse, 
-      content_request.parseResponse, elem('file'), targ)
+    Ajax.upload(document.location.href, content_request.parseResponse, 
+      content_request.parseResponse, elem('file'), targ);
     }
-  };
+
+  /* Add listeners to the KWF click event */
+  Kwf.onclick = function(e, targ)
+    {
+    if (targ.id === 'load_contactform')
+      {
+      loadContactform(e, targ);
+      }
+    else if (targ.name === 'upload')
+      {
+      upload(e, targ);
+      }
+    };
+
+  /* Add listeners to the KWF load event */
+  Kwf.onload = function(e)
+    {
+    Ajax.setBeforeCallback(beforeAjax);
+    Ajax.setAfterCallback(afterAjax);
+    };
+  }(window, document, elem, content_request, boxing_request, Boxing));
