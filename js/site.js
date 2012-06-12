@@ -1,4 +1,4 @@
-/**
+/*!
  * KWF Script: site.js
  * Based on DOMcraft
  * 
