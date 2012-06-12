@@ -1,17 +1,17 @@
-/**
+/*!
  * KWF Script: kwf.js
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-05-25
+ * @date 2012-06-12
  * @version 4.0
  */
 
-/*
+/**
  * Returns an element with specified ID
- *
- * @param string id ID of element to get
- * @return HTMLElement/boolean False if element was not found
+ * @method elem
+ * @param {String} id ID of element to get
+ * @return {HTMLElement/boolean} False if element was not found
  */
 function elem(id)
   {
@@ -25,11 +25,11 @@ function elem(id)
     }
   }
 
-/*
+/**
  * Returns source/target of event
- *
- * @param e Event object
- * @return HTMLElement
+ * @method getTarget
+ * @param {Event} e The event object
+ * @return {HTMLElement} The event target element
  */
 function getTarget(e)
   {
@@ -37,11 +37,10 @@ function getTarget(e)
   return e.target || e.srcElement;
   }
 
-/*
+/**
  * Prevents the browsers default behavior on event
- *
- * @param e Event object
- * @return void
+ * @method returnFalse
+ * @param {Event} e The event object
  */
 function returnFalse(e)
   {
@@ -55,16 +54,15 @@ function returnFalse(e)
     }
   }
 
-/*
+/**
  * Adds an event listener to an element
- *
- * @param HTMLElement element Element to listen on
- * @param string state Name of event to listen for
- * @param function func Callback function
- * @param object context Object to call callback function on
- * @return void
+ * @method addEvent
+ * @param {HTMLElement} element Element to listen on
+ * @param {String} state Name of event to listen for
+ * @param {Function} func Callback function
+ * @param {Object} [context] Object to call callback function on
  */
-function addEvent(elem, state, func, context)
+function addEvent(element, state, func, context)
   {
   var new_func = func;
 
@@ -76,79 +74,77 @@ function addEvent(elem, state, func, context)
       };
     }
 
-  if (elem.addEventListener)
+  if (element.addEventListener)
     {
-    elem.addEventListener(state, new_func, 0);
+    element.addEventListener(state, new_func, 0);
     }
-  else if (elem.attachEvent)
+  else if (element.attachEvent)
     {
-    elem.attachEvent('on' + state, new_func);
+    element.attachEvent('on' + state, new_func);
     }
   }
 
-/*
+/**
  * Removes an event listener from an element
- *
- * @param HTMLElement element Element to remove from
- * @param string state Name of event to remove on
- * @param function func Callback function to remove
- * @return void
+ * @method removeEvent
+ * @param {HTMLElement} element Element to remove from
+ * @param {String} state Name of event to remove on
+ * @param {Function} func Callback function to remove
  */
-function removeEvent(elem, state, func)
+function removeEvent(element, state, func)
   {
-  if (elem.removeEventListener)
+  if (element.removeEventListener)
     {
-    elem.removeEventListener(state, func, 0);
+    element.removeEventListener(state, func, 0);
     }
-  else if (elem.attachEvent)
+  else if (element.attachEvent)
     {
-    elem.detachEvent('on' + state, func);
+    element.detachEvent('on' + state, func);
     }
   }
 
-/*
+/**
  * Adds an 'submit' event listener to an element
- *
- * @param HTMLFormElement element Form element to listen on
- * @param function func Callback function
- * @return void
+ * @method addSubmitEvent
+ * @param {HTMLFormElement} element Form element to listen on
+ * @param {Function} func Callback function
  */
-function addSubmitEvent(elem, func)
+function addSubmitEvent(element, func)
   {
-  addEvent(elem, 'click', function(e)
+  addEvent(element, 'click', function(e)
     {
     window.submit_target = getTarget(e);
     });
-  addEvent(elem, 'submit', func);
+  addEvent(element, 'submit', func);
   }
 
-/*
- * Tests if node is whitespace node, returns true if so
- *
- * @param Node node The node to test
- * @return boolean
+/**
+ * Tests if node is whitespace node
+ * @method isWs
+ * @param {Node} node The node to test
+ * @return {Boolean} True if whitespace node
  */
 function isWs(node)
   {
   return !(/[^\t\n\r ]/.test(node.data));
   }
 
-/*
- * Tests if node is ignoreable (is comment or whitespace text node)
- *
- * @param Node node The node to test
- * @return boolean
+/**
+ * Tests if node is ignoreable
+ * @method isIgnorable
+ * @param {Node} node The node to test
+ * @return {Boolean} True if node is comment or whitespace text node
  */
 function isIgnorable(node)
   {
   return (node.nodeType === 8) ||  ((node.nodeType === 3) && isWs(node));
   }
 
-/*
+/**
  * Returns the previous sibling to a node
- *
- * @param Node sib The node to find sibiling for
- * @return Node
+ * @method previousNode
+ * @param {Node} sib The node to find sibiling for
+ * @return {Node}
  */
 function previousNode(sib)
   {
@@ -165,11 +161,11 @@ function previousNode(sib)
   return null;
   }
 
-/*
+/**
  * Returns the next sibling to a node
- *
- * @param Node sib The node to find sibiling for
- * @return Node
+ * @method nextNode
+ * @param {Node} sib The node to find sibiling for
+ * @return {Node}
  */
 function nextNode(sib)
   {
@@ -186,11 +182,11 @@ function nextNode(sib)
   return null;
   }
 
-/*
+/**
  * Returns the first child for a element
- *
- * @param HTMLElement parent The element to find first child of
- * @return HTMLElement
+ * @method firstChildElement
+ * @param {HTMLElement} parent The element to find first child of
+ * @return {HTMLElement}
  */
 function firstChildElement(parent)
   {
@@ -208,11 +204,11 @@ function firstChildElement(parent)
   return null;
   }
 
-/*
+/**
  * Returns the last child for a element
- *
- * @param HTMLElement parent The element to find last child of
- * @return HTMLElement
+ * @method lastChildElement
+ * @param {HTMLElement} parent The element to find last child of
+ * @return {HTMLElement}
  */
 function lastChildElement(parent)
   {
@@ -230,79 +226,75 @@ function lastChildElement(parent)
   return null;
   }
 
-/*
+/**
  * Returns true if element has specified CSS class
- *
- * @param HTMLElement elem Element to test
- * @param string classname Name of class to test for
- * @return boolean
+ * @method hasClass
+ * @param {HTMLElement} element Element to test
+ * @param {String} classname Name of class to test for
+ * @return {Boolean}
  */
-function hasClass(elem, classname)
+function hasClass(element, classname)
   {
-  return (elem.className ? elem.className.match(new RegExp('(\\s|^)' + classname + '(\\s|$)')) : 0);
+  return (element.className ? element.className.match(new RegExp('(\\s|^)' + classname + '(\\s|$)')) : 0);
   }
 
-/*
+/**
  * Adds specified CSS class to element
- *
- * @param HTMLElement elem Element to add to
- * @param string classname Name of class to add
- * @return void
+ * @method addClass
+ * @param {HTMLElement} element Element to add to
+ * @param {String} classname Name of class to add
  */
-function addClass(elem, classname)
+function addClass(element, classname)
   {
-  if (!hasClass(elem, classname))
+  if (!hasClass(element, classname))
     {
-    elem.className += ' ' + classname;
+    element.className += ' ' + classname;
     }
   }
 
-/*
+/**
  * Removed specified CSS class from element
- *
- * @param HTMLElement elem Element to remove from
- * @param string classname Name of class to remove
- * @return void
+ * @method removeClass
+ * @param {HTMLElement} element Element to remove from
+ * @param {String} classname Name of class to remove
  */
-function removeClass(elem, classname)
+function removeClass(element, classname)
   {
-  elem.className = elem.className.replace(new RegExp('(\\s|^)' + classname + '(\\s|$)'), ' ').replace(/\s+/g,' ').replace(/^\s|\s$/,'');
+  element.className = element.className.replace(new RegExp('(\\s|^)' + classname + '(\\s|$)'), ' ').replace(/\s+/g,' ').replace(/^\s|\s$/,'');
   }
 
-/*
+/**
  * Replaces specified CSS class with new class from element
- *
- * @param HTMLElement elem Element to replace on
- * @param string old_classname Name of class to remove
- * @param string new_classname Name of class to add
- * @return void
+ * @method replaceClass
+ * @param {HTMLElement} element Element to replace on
+ * @param {String} old_classname Name of class to remove
+ * @param {String} new_classname Name of class to add
  */
-function replaceClass(elem, old_classname, new_classname)
+function replaceClass(element, old_classname, new_classname)
   {
-  removeClass(elem, old_classname);
-  addClass(elem, new_classname);
+  removeClass(element, old_classname);
+  addClass(element, new_classname);
   }
 
-/*
+/**
  * Gives opacity for an element in Internet Explorer (using Alpha filter)
- *
- * @param HTMLElement elm Element to give opacity
- * @param integer value Opacity value
- * @return void
+ * @method giveOpacity
+ * @param {HTMLElement} element Element to give opacity
+ * @param {Number} value Opacity value
  */
-function giveOpacity(elm, value)
+function giveOpacity(element, value)
   {
-  if (typeof elm.filters === 'object')
+  if (typeof element.filters === 'object')
     {
-    elm.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + value + ')';
+    element.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + value + ')';
     }
   }
 
-/*
+/**
  * Parses JSON using browser's built-in method or using eval()
- *
- * @param string j JSON object as string
- * @return object
+ * @method parseJSON
+ * @param {String} j JSON object as string
+ * @return {Object}
  */
 function parseJSON(j)
   {
@@ -324,12 +316,12 @@ function parseJSON(j)
   return j;
   }
 
-/*
+/**
  * Exposes all properties to an object and alerts them in human readable format
- *
- * @param object variable The variable to dump
- * @param integer depth Depth of variable (only for internal use)
- * @return void/string
+ * @method var_dump
+ * @param {Object} variable The variable to dump
+ * @param {Number} [depth=0] Depth of variable (only for internal use)
+ * @return {Void/String}
  */
 function var_dump(variable, depth)
   {
@@ -382,12 +374,12 @@ function var_dump(variable, depth)
     }
   }
 
-/*
+/**
  * Converts a string with HTML to a DOM Node
- * Returns only the first node in the string (eg. returns only tag1 but not tag3 in "<tag1><tag2>some text</tag2></tag1><tag3>other text</tag3>")
- *
- * @param string html HTML string to convert
- * @return Node
+ * @example Returns only the first node in the string (eg. returns only tag1 but not tag3 in "<tag1><tag2>some text</tag2></tag1><tag3>other text</tag3>")
+ * @method toDOMnode
+ * @param {String} html HTML string to convert
+ * @return {Node}
  */
 function toDOMnode(html)
   {
@@ -396,30 +388,43 @@ function toDOMnode(html)
   return div.firstChild;
   }
 
-/*
- *
- * AJAX Module
- *
+/**
+ * AJAX class provides an easy interface for requesting data asynchronous
+ * @class ajax
+ * @static
  */
 var ajax = (function()
   {
-  // Private variables
-  var onbeforeajax = null, // Callback called when AJAX request is started
-    onafterajax = null; // Callback called after AJAX response has been recieved
-
-  /*
+  /**
+   * Callback called when AJAX request is started
+   * @property onbeforeajax
+   * @type Function
    * @private
+   * @default null
+   */
+  var onbeforeajax = null, 
+  /**
+   * Callback called after AJAX response has been recieved
+   * @property onafterajax
+   * @type Function
+   * @private
+   * @default null
+   */
+  onafterajax = null;
+
+  /**
 	 * Creates the actual AJAX object and opens the connection
 	 * Helper function for get() and send()
-	 *
-	 * @param string url URL to load
-	 * @param string method GET or POST
-	 * @param function success Callback to call if request succeeded
-   * @param function fail Callback to call if request failed
-	 * @param string data Data to send
-   * @param object headers Extra HTTP headers
-   * @param boolean ignore_content_type True if Content-Type header should be set by browser
-	 * @return XMLHttpRequest
+	 * @method send
+   * @private
+	 * @param {String} url URL to load
+	 * @param {String} method GET or POST
+	 * @param {Function} success Callback to call if request succeeded
+   * @param {Function} fail Callback to call if request failed
+	 * @param {String} data Data to send
+   * @param {Object} headers Extra HTTP headers
+   * @param {Boolean} ignore_content_type True if Content-Type header should be set by browser
+	 * @return {XMLHttpRequest}
 	 */
   function send(url, method, success, fail, data, headers, ignore_content_type)
     {
@@ -514,13 +519,13 @@ var ajax = (function()
     return ajax_req;
     }
 
-  /*
-   * @private
+  /**
 	 * Translates an object on form {var1: "val1", var2: "val2"} to query string var1=val1&var2=val2
 	 * Helper function for get() and send()
-	 *
-	 * @param object data Object to translate
-	 * @return string The object as query string
+	 * @method array2query
+   * @private
+	 * @param {Object} data Object to translate
+	 * @return {String} The object as query string
 	 */
   function array2query(data)
     {
@@ -534,15 +539,15 @@ var ajax = (function()
     return query.substring(1);
     }
 
-  /*
-   * @private
+  /**
 	 * Translates form element to query string eg. var1=val1&var2=val2
 	 * Helper function for get() and send()
-	 *
-	 * @param HTMLFormElement form The form to translate
-   * @param HTMLElement sender The button that fired the request
-   * @param string boundary A boundary that delimits parts
-	 * @return string The form as query string
+	 * @method form2query
+   * @private
+	 * @param {HTMLFormElement} form The form to translate
+   * @param {HTMLElement} sender The button that fired the request
+   * @param {String} boundary A boundary that delimits parts
+	 * @return {String} The form as query string
 	 */
   function form2query(form, sender, boundary)
     {
@@ -601,15 +606,15 @@ var ajax = (function()
     return data.substring(1);
     }
 
-  /*
-   * @public
+  /**
 	 * Starts a HTTP GET request
-	 *
-	 * @param string url URL to load
-	 * @param function success Callback to call if request succeeded
-   * @param function fail Callback to call if request failed
-	 * @param string/object data Data to append to query string, as string or object: {var1: "val1", var2: "val2"}
-	 * @return XMLHttpRequest
+	 * @method get
+   * @public
+	 * @param {String} url URL to load
+	 * @param {Function} success Callback to call if request succeeded
+   * @param {Function} fail Callback to call if request failed
+	 * @param {String/Object} data Data to append to query string, as string or object: {var1: "val1", var2: "val2"}
+	 * @return {XMLHttpRequest}
 	 */
   function get(url, success, fail, data)
     {
@@ -630,15 +635,15 @@ var ajax = (function()
     return send(url + data, 'GET', success, fail, null);
     }
 
-  /*
-   * @public
+  /**
 	 * Starts a HTTP POST request
-	 *
-	 * @param string url URL to load
-	 * @param function success Callback to call if request succeeded
-   * @param function fail Callback to call if request failed
-	 * @param string/HTMLFormElement data Data to send, as HTML form or object: {var1: "val1", var2: "val2"}
-	 * @return XMLHttpRequest
+	 * @method post
+   * @public
+	 * @param {String} url URL to load
+	 * @param {Function} success Callback to call if request succeeded
+   * @param {Function} fail Callback to call if request failed
+	 * @param {String/HTMLFormElement} data Data to send, as HTML form or object: {var1: "val1", var2: "val2"}
+	 * @return {XMLHttpRequest}
 	 */
   function post(url, success, fail, data, sender)
     {
@@ -647,15 +652,15 @@ var ajax = (function()
     return send(url, 'POST', success, fail, data);
     }
 
-  /*
-   * @public
+  /**
 	 * Starts a HTTP POST request with a file element as attachment
-	 *
-	 * @param string url URL to load
-	 * @param function success Callback to call if request succeeded
-   * @param function fail Callback to call if request failed
-	 * @param HTMLInputElement file_elem The <input type="file"> element to send
-	 * @return XMLHttpRequest
+	 * @method upload
+   * @public
+	 * @param {String} url URL to load
+	 * @param {Function} success Callback to call if request succeeded
+   * @param {Function} fail Callback to call if request failed
+	 * @param {HTMLInputElement} file_elem The <input type="file"> element to send
+	 * @return {XMLHttpRequest}
 	 */
   function upload(url, success, fail, file_elem)
     {
@@ -725,24 +730,22 @@ var ajax = (function()
       }
     }
 
-  /*
-   * @public
+  /**
 	 * Sets the "before" callback
-	 *
-	 * @param function callback
-	 * @return void
+	 * @method setBeforeCallback
+   * @public
+	 * @param {Function} callback
 	 */
   function setBeforeCallback(callback)
     {
     onbeforeajax = callback;
     }
 
-  /*
-   * @public
+  /**
 	 * Sets the "after" callback
-	 *
-	 * @param function callback
-	 * @return void
+	 * @method setAfterCallback
+   * @public
+	 * @param {Function} callback
 	 */
   function setAfterCallback(callback)
     {
@@ -752,39 +755,94 @@ var ajax = (function()
   return {'get': get, 'post': post, 'upload': upload, 'setBeforeCallback': setBeforeCallback, 'setAfterCallback': setAfterCallback};
   }()),
 
-/*
- *
- * Boxing Module
- *
+/**
+ * Boxing class provides functions for showing a popup dialog on the center of the screen with an overlay behind
+ * @class boxing
+ * @static
  */
 boxing = (function()
   {
-  // Private variables
-  var initiated = 0, // 1 if the Boxing window is created
-    state = 0, // 1 if the Boxing window is shown, 0 if hidden
-    html_tag = null, // A reference to the <html> tag
-    overlayer = null, // A reference to the Boxing overlayer
-    close = null, // A reference to the Boxing close button
-    window = null, // A reference to the Boxing window
-    elements = null, // A NodeList of all elements in the Boxing window
-    onhide_callback = null; // A callback called when the Boxing window is hidden
+  /**
+   * 1 if the Boxing window is created
+   * @property initiated
+   * @type Number
+   * @private
+   * @default 0
+   */
+  var initiated = 0, 
+  /**
+   * 1 if the Boxing window is shown, 0 if hidden
+   * @property state
+   * @type Number
+   * @private
+   * @default 0
+   */
+  state = 0, 
+  /**
+   * A reference to the <html> tag
+   * @property html_tag
+   * @type HTMLHtmlElement
+   * @private
+   * @default null
+   */
+  html_tag = null, 
+  /**
+   * A reference to the Boxing overlayer
+   * @property overlayer
+   * @type HTMLDivElement
+   * @private
+   * @default null
+   */
+  overlayer = null, 
+  /**
+   * A reference to the Boxing close button
+   * @property close
+   * @type HTMLDivElement
+   * @private
+   * @default null
+   */
+  close = null, 
+  /**
+   * A reference to the Boxing window
+   * @property window
+   * @type HTMLDivElement
+   * @private
+   * @default null
+   */
+  window = null, 
+  /**
+   * A NodeList of all elements in the Boxing window
+   * @property elements
+   * @type NodeList
+   * @private
+   * @default null
+   */
+  elements = null, 
+  /**
+   * A callback called when the Boxing window is hidden
+   * @property onhide_callback
+   * @type Function
+   * @private
+   * @default null
+   */
+  onhide_callback = null;
 
-  /*
-   * @public
+  /**
 	 * Returns a reference to the Boxing window
-	 *
-	 * @return HTMLDivElement
+	 * @method getWindow
+   * @public
+	 * @return {HTMLDivElement}
 	 */
   function getWindow()
     {
     return window;
     }
 
-  /*
-   * @private
+  /**
 	 * Returns all focusable elements in the Boxing window
-	 *
-	 * @return Array
+	 * @method getFocusableElements
+   * @private
+	 * @return {Array}
 	 */
   function getFocusableElements()
     {
@@ -809,12 +867,12 @@ boxing = (function()
     return focus_elements;
     }
 
-  /*
-   * @private
+  /**
 	 * Returns the focusable element at specified index
-	 *
-   * @param integer idx The index
-	 * @return Array
+	 * @method
+   * @private
+   * @param {Number} idx The index
+	 * @return {Array}
 	 */
   function getElement(idx)
     {
@@ -822,13 +880,12 @@ boxing = (function()
     return (focus_elements.length > 0 ? focus_elements[idx] : null);
     }
 
-  /*
-   * @private
+  /**
 	 * Called when a new element has got the focus
-	 *
-   * @param HTMLElement new_focus_elem The element that got the focus
-   * @param boolean is_reverse True if the focus order is reverse (eg. Shift key is pressed)
-	 * @return void
+	 * @method focusChanged
+   * @private
+   * @param {HTMLElement} new_focus_elem The element that got the focus
+   * @param {Boolean} is_reverse True if the focus order is reverse (eg. Shift key is pressed)
 	 */
   function focusChanged(new_focus_elem, is_reverse)
     {
@@ -862,11 +919,10 @@ boxing = (function()
       }
     }
 
-  /*
-   * @public
+  /**
 	 * Hides the Boxing window
-	 *
-	 * @return void
+	 * @method hide
+   * @public
 	 */
   function hide()
     {
@@ -890,13 +946,11 @@ boxing = (function()
       }
     }
 
-  /*
-   * @private
+  /**
 	 * Listener for the keyup event
-	 *
-   * @param HTMLElement new_focus_elem The element that got the focus
-   * @param boolean is_reverse True if the focus order is reverse (eg. Shift key is pressed)
-	 * @return void
+	 * @method keys
+   * @private
+   * @param {Event} e The event object
 	 */
   function keys(e)
     {
@@ -910,11 +964,10 @@ boxing = (function()
       }
     }
 
-  /*
-   * @private
+  /**
 	 * Initiates the Boxing window
-	 *
-	 * @return void
+	 * @method init
+   * @private
 	 */
   function init()
     {
@@ -944,15 +997,14 @@ boxing = (function()
     initiated = 1;
     }
 
-  /*
-   * @public
+  /**
 	 * Shows the Boxing window
-	 *
-   * @param string text The HTML to show in the window
-   * @param integer width The width of the window (for widths > 100 results in pixels, otherwise percents)
-   * @param integer height The height of the window (for heights > 100 results in pixels, otherwise percents)
-   * @param function callback An optional callback function to call when the window is hidden
-	 * @return void
+	 * @method show
+   * @public
+   * @param {String} text The HTML to show in the window
+   * @param {Number} width The width of the window (for widths > 100 results in pixels, otherwise percents)
+   * @param {Number} height The height of the window (for heights > 100 results in pixels, otherwise percents)
+   * @param {Function} callback An optional callback function to call when the window is hidden
 	 */
   function show(text, width, height, callback)
     {
@@ -1010,34 +1062,61 @@ boxing = (function()
   return {'show': show, 'hide': hide, 'getWindow': getWindow};
   }()),
 
-// Reference to the global ContentRequest
+/**
+ * Reference to the global ContentRequest
+ * @property content_request
+ * @type ContentRequest
+ * @public
+ */
 content_request, 
-// Reference to the global BoxingRequest
+/**
+ * Reference to the global BoxingRequest
+ * @property boxing_request
+ * @type BoxingRequest
+ * @public
+ */
 boxing_request, 
 
-/*
- *
- * KWF Module
- *
+/**
+ * KWF object handles load and click events, messages and starts the JavaScript framework
+ * @class kwf
+ * @static
  */
 kwf = {
   FULLPATH: '',
 
-  // (@public) Reference to a function called when user clicks the document
+  /**
+   * Reference to a function called when user clicks the document
+   * @property onclick
+   * @type Function
+   * @public
+   * @default null
+   */
   onclick: null,
 
-  // (@public) Reference to a function called on the "load" event
+  /**
+   * Reference to a function called on the "load" event
+   * @property onload
+   * @type Function
+   * @public
+   * @default null
+   */
   onload: null,
 
-  // (@public) Reference to the timer that hides error and info messages
+  /**
+   * Reference to the timer that hides error and info messages
+   * @property info_timer
+   * @type Number
+   * @public
+   * @default null
+   */
   info_timer: null,
 
-  /*
-   * @public
+  /**
 	 * Called on the "click" event on the document
-	 *
-   * @param Event e The event object
-	 * @return void
+	 * @method clicking
+   * @public
+   * @param {Event} e The event object
 	 */
   clicking: function(e)
     {
@@ -1063,12 +1142,11 @@ kwf = {
       }
     },
 
-  /*
-   * @public
+  /**
 	 * Called on the "load" event
-	 *
-   * @param Event e The event object
-	 * @return void
+	 * @method loading
+   * @public
+   * @param {Event} e The event object
 	 */
   loading: function(e)
     {
@@ -1084,11 +1162,10 @@ kwf = {
       }
     },
 
-  /*
-   * @public
+  /**
 	 * Removes all error and info messages
-	 *
-	 * @return void
+	 * @method hideInfo
+   * @public
 	 */
   hideInfo: function()
     {
@@ -1107,13 +1184,13 @@ kwf = {
       }
     },
 
-  /*
-   * @public
+  /**
 	 * Creates HTML for showing error and info messages.
    * Sets the timer for hiding the messages after 10 seconds.
-	 *
-   * @param object obj The event object
-	 * @return string
+	 * @method infoHandler
+   * @public
+   * @param {Object} obj The event object
+	 * @return {String} The HTML for message lists
 	 */
   infoHandler: function(obj)
     {
@@ -1150,25 +1227,36 @@ kwf = {
     }
   },
 
-/*
- * Class KWFEventTarget
- *
+/**
  * Prototype this to add event listening functionality to your class
  * With help from http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/
+ * @class KWFEventTarget
+ * @constructor
  */
 KWFEventTarget = function()
   {
-  // Private variables
+  /**
+   * Reference to this object
+   * @property self
+   * @type Object
+   * @private
+   */
   var self = this, 
-    listeners = {}; // Stores all listeners
+  /**
+   * Stores all listeners
+   * @property listeners
+   * @type Object
+   * @private
+   * @default {}
+   */
+  listeners = {};
 
-  /*
-   * @public
+  /**
 	 * Adds a listener for specified event type
-	 *
-   * @param string type The event type
-   * @param function listener A function that will be called when the event are fired
-	 * @return void
+	 * @method addEventListener
+   * @public
+   * @param {String} type The event type
+   * @param {Function} listener A function that will be called when the event are fired
 	 */
   self.addEventListener = function(type, listener)
     {
@@ -1180,13 +1268,12 @@ KWFEventTarget = function()
     listeners[type].push(listener);
     };
 
-  /*
-   * @public
+  /**
 	 * Removes a listener for specified event type
-	 *
-   * @param string type The event type
-   * @param function listener The listener function to remove
-	 * @return void
+	 * @method removeEventListener
+   * @public
+   * @param {String} type The event type
+   * @param {Function} listener The listener function to remove
 	 */
   self.removeEventListener = function(type, listener)
     {
@@ -1206,14 +1293,13 @@ KWFEventTarget = function()
       }
     };
 
-  /*
-   * @public
+  /**
 	 * Fires all listeners of specified event type.
    * Should only be called from the class itself
-	 *
-   * @param string/object event The event type as string or an event object (must contain the "type" property!)
-   * @param object target An optional target of the event
-	 * @return void
+	 * @method dispatchEvent
+   * @public
+   * @param {String/Object} event The event type as string or an event object (must contain the "type" property!)
+   * @param {Object} target An optional target of the event
 	 */
   self.dispatchEvent = function(event, target)
     {
@@ -1256,28 +1342,54 @@ KWFEventTarget = function()
     };
   },
 
-/*
- * Class ContentRequest
- *
+/**
  * Handles AJAX requests of the content <div>
+ * @class ContentRequest
+ * @extends KWFEventTarget
+ * @constructor
  */
 ContentRequest = function()
   {
-  // Private variables
+  /**
+   * Reference to this object
+   * @property self
+   * @type Object
+   * @private
+   */
   var self = this, 
-    caller = null; // The button or link that fired the request
+  /**
+   * The button or link that fired the request
+   * @property caller
+   * @type HTMLElement
+   * @private
+   * @default null
+   */
+  caller = null;
 
-  // Public variables
-  self.response = null; // The response object returned from Ajax module
-  self.form_btn = null; // The button that fired a form request
-
-  /*
+  /**
+   * The response object returned from AJAX class
+   * @property response
+   * @type Object
    * @public
+   * @default null
+   */
+  self.response = null;
+
+  /**
+   * The button that fired a form request
+   * @property form_btn
+   * @type HTMLButtonElement
+   * @public
+   * @default null
+   */
+  self.form_btn = null;
+
+  /**
 	 * Start loading a new page into the content <div>
-	 *
-   * @param Event e The event object
-   * @param string url The URL to load
-	 * @return void
+	 * @method load
+   * @public
+   * @param {Event} e The event object
+   * @param {String} url The URL to load
 	 */
   self.load = function(e, url)
     {
@@ -1287,12 +1399,11 @@ ContentRequest = function()
     ajax.get(url, self.parseResponse, self.parseResponse);
     };
 
-  /*
-   * @public
+  /**
 	 * Parse a response (insert the HTML to content <div> and show error and info messages)
-	 *
-   * @param object response The response object
-	 * @return void
+	 * @method parseResponse
+   * @public
+   * @param {Object} response The response object
 	 */
   self.parseResponse = function(response)
     {
@@ -1346,11 +1457,10 @@ ContentRequest = function()
       }
     };
 
-  /*
-   * @public
+  /**
 	 * Add submit event listeners to all "ajax-forms" in the content <div>
-	 *
-	 * @return void
+	 * @method findForms
+   * @public
 	 */
   self.findForms = function()
     {
@@ -1386,32 +1496,74 @@ ContentRequest = function()
     };
   },
 
-/*
- * Class BoxingRequest
- *
+/**
  * Handles AJAX requests of the Boxing window
+ * @class BoxingRequest
+ * @extends KWFEventTarget
+ * @constructor
  */
 BoxingRequest = function()
   {
-  // Private variables
+  /**
+   * Reference to this object
+   * @property self
+   * @type Object
+   * @private
+   */
   var self = this, 
-    caller = null; // The button or link that fired the request
+  /**
+   * The button or link that fired the request
+   * @property caller
+   * @type HTMLElement
+   * @private
+   * @default null
+   */
+  caller = null;
 
-  // Public variables
-  self.response = null; // The response object returned from Ajax module
-  self.width = 0; // The width of current Boxing window
-  self.height = 0; // The height of current Boxing window
-  self.form_btn = null; // The button that fired a form request
-
-  /*
+  /**
+   * The response object returned from AJAX class
+   * @property response
+   * @type Object
    * @public
+   * @default null
+   */
+  self.response = null;
+
+  /**
+   * The width of current Boxing window
+   * @property width
+   * @type Number
+   * @public
+   * @default 0
+   */
+  self.width = 0;
+
+  /**
+   * The height of current Boxing window
+   * @property height
+   * @type Number
+   * @public
+   * @default 0
+   */
+  self.height = 0;
+
+  /**
+   * The button that fired a form request
+   * @property form_btn
+   * @type HTMLButtonElement
+   * @public
+   * @default null
+   */
+  self.form_btn = null;
+
+  /**
 	 * Start loading a page into a new Boxing window
-	 *
-   * @param Event e The event object
-   * @param string url The URL to load
-   * @param integer width The width of new Boxing window (optional)
-   * @param integer height The height of new Boxing window (optional)
-	 * @return void
+	 * @method load
+   * @public
+   * @param {Event} e The event object
+   * @param {string} url The URL to load
+   * @param {Number} width The width of new Boxing window (optional)
+   * @param {Number} height The height of new Boxing window (optional)
 	 */
   self.load = function(e, url, width, height)
     {
@@ -1426,12 +1578,11 @@ BoxingRequest = function()
     ajax.get(url, self.parseResponse, self.parseResponse);
     };
 
-  /*
-   * @public
+  /**
 	 * Parse a response (insert the HTML to Boxing window, show window and show error and info messages)
-	 *
-   * @param object response The response object
-	 * @return void
+	 * @method parseResponse
+   * @public
+   * @param {Object} response The response object
 	 */
   self.parseResponse = function(response)
     {
@@ -1489,11 +1640,10 @@ BoxingRequest = function()
       }
     };
 
-  /*
-   * @public
+  /**
 	 * Add submit event listeners to all "ajax-forms" in the Boxing window
-	 *
-	 * @return void
+	 * @method findForms
+   * @public
 	 */
   self.findForms = function()
     {
