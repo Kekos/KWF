@@ -1,12 +1,13 @@
 <?php
 /**
- * KWF Class: router, finds out which page that should be used according to the given URL route
+ * KWF Class: Router, finds out which page that should be used according to the given URL route
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @version 2.0
+ * @date 2012-06-12
+ * @version 2.1
  */
 
-class router
+class Router
   {
   private $route;
   private $request;

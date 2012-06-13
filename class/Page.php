@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Class: page, runs all controllers that is defined to be run in the page
+ * KWF Class: Page, runs all controllers that is defined to be run in the page
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-03-27
+ * @date 2012-06-12
  * @version 4.0
  */
 
-class page
+class Page
   {
   private $model;
   private $request;
@@ -27,7 +27,7 @@ class page
     {
     $this->model = $model;
     $this->request = $request;
-    $this->response = new response($this->request);
+    $this->response = new Response($this->request);
     }
 
   /*
@@ -140,7 +140,7 @@ class page
     $this->request->redirect_params = $this->request->params;
 
     // Create a new router that can process this "request"
-    $router = new router($route, $this->request, $this->model);
+    $router = new Router($route, $this->request, $this->model);
     $this->stop_rendering = true;
     $this->page = false;
 

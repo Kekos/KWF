@@ -1,12 +1,13 @@
 <?php
 /**
- * KWF Class: db (database), establish connection, makes queries to the database and returns data
+ * KWF Class: Db (database), establish connection, makes queries to the database and returns data
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @version 2.2
+ * @date 2012-06-12
+ * @version 2.3
  */
 
-class db
+class Db
   {
   private $query = null;
 
@@ -35,7 +36,7 @@ class db
     {
     if (self::$instance == null)
       {
-      self::$instance = new db;
+      self::$instance = new Db;
       }
 
     return self::$instance;

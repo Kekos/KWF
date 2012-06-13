@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Class: db_object, the generalized database object class. Must be extended
+ * KWF Class: DbObject, the generalized database object class. Must be extended
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-06-08
- * @version 2.2
+ * @date 2012-06-12
+ * @version 2.3
  */
 
-abstract class db_object
+abstract class DbObject
   {
   protected $_model = null;
 

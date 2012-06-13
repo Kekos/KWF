@@ -1,12 +1,13 @@
 <?php
 /**
- * KWF Class: cookie, keeps track of all cookies
+ * KWF Class: Cookie, keeps track of all cookies
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
+ * @date 2012-06-12
  * @version 2.0
  */
 
-class cookie
+class Cookie
   {
   /*
    * Sets a cookie

@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Class: controller, the generalized controller class. Must be extended
+ * KWF Class: Controller, the generalized controller class. Must be extended
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-03-26
+ * @date 2012-06-12
  * @version 4.0
  */
 
-abstract class controller
+abstract class Controller
   {
   protected $request;
   protected $response;

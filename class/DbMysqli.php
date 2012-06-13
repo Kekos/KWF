@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Class: db_mysqli (MySQL Improved), establish connection, makes queries to the database and returns data
+ * KWF Class: DbMysqli (MySQL Improved), establish connection, makes queries to the database and returns data
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-01-19
- * @version 1.2
+ * @date 2012-06-12
+ * @version 1.3
  */
 
-class db_mysqli extends mysqli
+class DbMysqli extends Mysqli
   {
   private $connected = false;
 
@@ -44,7 +44,7 @@ class db_mysqli extends mysqli
     {
     if (self::$instance == null)
       {
-      self::$instance = new db_mysqli;
+      self::$instance = new DbMysqli;
       }
 
     return self::$instance;
@@ -99,7 +99,7 @@ class db_mysqli extends mysqli
       }
     else
       {
-      $this->statement = new db_mysqli_statement($this, $query);
+      $this->statement = new DbMysqliStatement($this, $query);
       $new_args = &$args;
       array_unshift($new_args, $types);
       }

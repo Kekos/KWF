@@ -1,12 +1,13 @@
 <?php
 /**
- * KWF Class: session, keeps track of all sessions and adds a little more security to sessions
+ * KWF Class: Session, keeps track of all sessions and adds a little more security to sessions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @version 2.0
+ * @date 2012-06-12
+ * @version 2.1
  */
 
-class session
+class Session
   {
   private $ip;
   private $proxy;

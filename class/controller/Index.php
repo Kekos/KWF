@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Controller: index
+ * KWF Controller: Index
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-05-19
- * @version 2.2
+ * @date 2012-06-12
+ * @version 2.3
  */
 
-class index extends controller
+class Index extends Controller
   {
   #private $db = null;
 

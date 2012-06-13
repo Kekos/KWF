@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Controller: upload
+ * KWF Controller: Upload
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-04-24
- * @version 1.1
+ * @date 2012-06-12
+ * @version 1.2
  */
 
-class upload extends controller
+class Upload extends Controller
   {
   public function _default()
     {

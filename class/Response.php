@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Class: response, handles everything that is outputted
+ * KWF Class: Response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-05-03
+ * @date 2012-06-12
  * @version 4.0
  */
 
-class response
+class Response
   {
   static $form_messages = array();
 

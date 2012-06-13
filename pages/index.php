@@ -1,4 +1,4 @@
 <?php
 $this->page['title'] = 'Hem';
-$this->addController('index', '');
+$this->addController('Index', '');
 ?>

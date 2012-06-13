@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Class: request, handles the request of the document, like POST, AJAX, cookies and sessions
+ * KWF Class: Request, handles the request of the document, like POST, AJAX, cookies and sessions
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-03-27
- * @version 3.0
+ * @date 2012-06-12
+ * @version 3.1
  */
 
-class request
+class Request
   {
   public $params = array();
   public $redirect_params = array();

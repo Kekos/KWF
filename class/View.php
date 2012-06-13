@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Class: view, loads and compiles the template set by a controller
+ * KWF Class: View, loads and compiles the template set by a controller
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-04-24
- * @version 3.0
+ * @date 2012-06-12
+ * @version 3.1
  */
 
-class view
+class View
   {
   private $template;
   private $data = array();

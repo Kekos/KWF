@@ -5,10 +5,10 @@ require(BASE . 'include/init.php');
 
 $route = (isset($_GET['r']) ? $_GET['r'] : '');
 
-$request = new request(new session(), new cookie());
-$page_model = new page_model();
+$request = new Request(new Session(), new Cookie());
+$page_model = new PageModel();
 
-$router = new router($route, $request, $page_model);
+$router = new Router($route, $request, $page_model);
 $page = $router->getPage();
 $page->runControllers();
 

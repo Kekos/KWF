@@ -1,15 +1,15 @@
 <?php
 /**
- * KWF Class: db_mysqli_statement (MySQL Improved Statement)
+ * KWF Class: DbMysqliStatement (MySQL Improved Statement)
  * Internal class for "preparing" (only binding) and executing SQL statements. 
  * Only used when MySQL Native Driver is not present
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-05-19
- * @version 1.0
+ * @date 2012-06-12
+ * @version 1.1
  */
 
-class db_mysqli_statement
+class DbMysqliStatement
   {
   private $caller;
   private $query;

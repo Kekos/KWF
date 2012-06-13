@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Controller: internal_redirect
+ * KWF Controller: InternalRedirect
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-03-27
+ * @date 2012-06-12
  * @version 1.0
  */
 
-class internal_redirect extends controller
+class InternalRedirect extends Controller
   {
   public function _default()
     {

@@ -1,4 +1,4 @@
 <?php
 $this->page['title'] = 'Kontakt';
-$this->addController('contact', '');
+$this->addController('Contact', '');
 ?>

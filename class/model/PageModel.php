@@ -1,13 +1,13 @@
 <?php
 /**
- * KWF Model: page_model
+ * KWF Model: PageModel
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-03-27
+ * @date 2012-06-12
  * @version 2.0
  */
 
-class page_model
+class PageModel
   {
   private $page = array();
   private $controllers = array();
