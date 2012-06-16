@@ -353,7 +353,11 @@ function var_dump(variable, depth)
 
     for (i in variable)
       {
-      str += spaces(depth) + i + ': ' + var_dump(variable[i], depth + 1);
+      try
+        {
+        str += spaces(depth) + i + ': ' + var_dump(variable[i], depth + 1);
+        }
+      catch (ex) {}
       }
 
     str += spaces(depth) + '}';
