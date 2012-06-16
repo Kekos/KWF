@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2012-06-15
  * @version 4.0
  */
 
@@ -1157,6 +1157,11 @@ Kwf = {
 
     if (elem('content'))
       {
+      addEvent(window, 'popstate', function(pe)
+        {
+        content_request.load(e, (pe.state === null ? document.location.pathname : pe.state.url), 1);
+        });
+
       content_request.findForms();
       content_request.dispatchEvent('ready');
       }
@@ -1357,6 +1362,7 @@ ContentRequest = function()
    * @private
    */
   var self = this, 
+
   /**
    * The button or link that fired the request
    * @property caller
@@ -1364,7 +1370,25 @@ ContentRequest = function()
    * @private
    * @default null
    */
-  caller = null;
+  caller = null, 
+
+  /**
+   * The current requested URL
+   * @property url
+   * @type String
+   * @private
+   * @default null
+   */
+  url = null,
+
+  /**
+   * Tells whether the next response should NOT be pushed to history state
+   * @property ignore_pushstate
+   * @type Boolean
+   * @private
+   * @default true
+   */
+  ignore_pushstate = 1;
 
   /**
    * The response object returned from AJAX class
@@ -1389,12 +1413,17 @@ ContentRequest = function()
 	 * @method load
    * @public
    * @param {Event} e The event object
-   * @param {String} url The URL to load
+   * @param {String} url_arg The URL to load
+   * @param {Boolean} ignore_pushstate_arg True if this request should NOT push this response to a new history state
 	 */
-  self.load = function(e, url)
+  self.load = function(e, url_arg, ignore_pushstate_arg)
     {
     returnFalse(e);
+
     caller = getTarget(e);
+    url = url_arg;
+    ignore_pushstate = ignore_pushstate_arg;
+
     self.dispatchEvent('beforeload', caller);
     Ajax.get(url, self.parseResponse, self.parseResponse);
     };
@@ -1448,6 +1477,18 @@ ContentRequest = function()
     self.dispatchEvent('ready', caller);
     caller = null;
     self.response = null;
+
+    if (!ignore_pushstate)
+      {
+      if (history.pushState)
+        {
+        history.pushState({url: url}, null, url);
+        }
+      else
+        {
+        location.hash = '#' + url;
+        }
+      }
 
     // Restore the form_btn
     if (btn)
@@ -1511,6 +1552,7 @@ BoxingRequest = function()
    * @private
    */
   var self = this, 
+
   /**
    * The button or link that fired the request
    * @property caller
