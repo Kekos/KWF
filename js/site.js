@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2012-06-15
  * @version 3.1
  */
 
@@ -58,6 +58,11 @@ var site = (function(window, document, elem, content_request, boxing_request, Bo
     else if (targ.name === 'upload')
       {
       upload(e, targ);
+      }
+    else if (hasClass(targ, 'clink'))
+      {
+      returnFalse(e);
+      content_request.load(e, targ.getAttribute('href'));
       }
     };
 
