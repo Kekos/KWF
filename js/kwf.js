@@ -1243,29 +1243,29 @@ Kwf = {
    * Sets the timer for hiding the messages after 10 seconds.
 	 * @method infoHandler
    * @public
-   * @param {Object} obj The event object
+   * @param {Object} page The response.page object
 	 * @return {String} The HTML for message lists
 	 */
-  infoHandler: function(obj)
+  infoHandler: function(page)
     {
     var html = '', row, k = Kwf;
 
-    if (obj.errors)
+    if (page.errors)
       {
       html += '<ul id="errorlist">';
-      for (row in obj.errors)
+      for (row in page.errors)
         {
-        html += '<li>' + obj.errors[row] + '</li>';
+        html += '<li>' + page.errors[row] + '</li>';
         }
       html += '</ul>';
       }
 
-    if (obj.info)
+    if (page.info)
       {
       html += '<ul id="infolist">';
-      for (row in obj.info)
+      for (row in page.info)
         {
-        html += '<li>' + obj.info[row] + '</li>';
+        html += '<li>' + page.info[row] + '</li>';
         }
       html += '</ul>';
       }
@@ -1278,6 +1278,18 @@ Kwf = {
       }
 
     return html;
+    },
+
+  /**
+	 * Inserts info messages HTML from the infoHandler into content <div>
+	 * @method insertInfo
+   * @public
+   * @param {Object} page The response.page pageect
+	 */
+  insertInfo: function(page)
+    {
+    var context = elem('content');
+    context.insertBefore(toDOMnode(Kwf.infoHandler(page)), context.firstChild);
     }
   },
 
