@@ -393,6 +393,20 @@ function toDOMnode(html)
   }
 
 /**
+ * Replaces old_node with new_node
+ * @method replaceNode
+ * @param {Node} old_node The old node to replace
+ * @param {Node} new_node The new node to insert
+ */
+function replaceNode(old_node, new_node)
+  {
+  var parent = old_node.parentNode;
+
+  parent.insertBefore(new_node, old_node);
+  parent.removeChild(old_node);
+  }
+
+/**
  * AJAX class provides an easy interface for requesting data asynchronous
  * @class Ajax
  * @static
