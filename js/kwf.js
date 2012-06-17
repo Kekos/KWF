@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-15
+ * @date 2012-06-17
  * @version 4.0
  */
 
@@ -1117,6 +1117,15 @@ Kwf = {
   info_timer: null,
 
   /**
+   * True if event listener should ignore next hashchange event
+   * @property ignore_hash_change
+   * @type Boolean
+   * @public
+   * @default false
+   */
+  ignore_hash_change: 0,
+
+  /**
 	 * Called on the "click" event on the document
 	 * @method clicking
    * @public
@@ -1161,10 +1170,46 @@ Kwf = {
 
     if (elem('content'))
       {
+      var location = document.location;
+
+      function changeContent(url)
+        {
+        content_request.load({preventDefault: function() {}}, url, 1);
+        }
+
+      // Listen for back/forward events
       addEvent(window, 'popstate', function(pe)
         {
-        content_request.load(e, (pe.state === null ? document.location.pathname : pe.state.url), 1);
+        changeContent(pe.state === null ? location.pathname : pe.state.url);
         });
+
+      // Change content from the hash if pushState is not supported
+      if (!history.pushState)
+        {
+        if (location.hash !== '')
+          {
+          changeContent(location.hash.slice(1));
+          }
+
+        // Listen for hashchange if supported
+        if ('onhashchange' in window)
+          {
+          addEvent(window, 'hashchange', function(pe)
+            {
+            if (!Kwf.ignore_hash_change)
+              {
+              changeContent(location.hash.slice(1) || location.pathname);
+              }
+
+            Kwf.ignore_hash_change = 0;
+            });
+          }
+        }
+      // Read the initial state
+      else if (history.state && history.state !== null)
+        {
+        changeContent(history.state.url);
+        }
 
       content_request.findForms();
       content_request.dispatchEvent('ready');
@@ -1490,6 +1535,7 @@ ContentRequest = function()
         }
       else
         {
+        Kwf.ignore_hash_change = 1;
         location.hash = '#' + url;
         }
       }
