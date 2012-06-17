@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-15
+ * @date 2012-06-17
  * @version 3.1
  */
 
@@ -44,8 +44,13 @@ var site = (function(window, document, elem, content_request, boxing_request, Bo
   function upload(e, targ)
     {
     returnFalse(e);
-    Ajax.upload(document.location.href, content_request.parseResponse, 
-      content_request.parseResponse, elem('file'), targ);
+    Ajax.upload(targ.form.action, MultiView.parse, MultiView.parse, elem('file'), targ);
+    }
+
+  function removeUpload(e, targ)
+    {
+    returnFalse(e);
+    Ajax.get(targ.href, MultiView.parse, MultiView.parse);
     }
 
   /* Add listeners to the KWF click event */
@@ -58,6 +63,10 @@ var site = (function(window, document, elem, content_request, boxing_request, Bo
     else if (targ.name === 'upload')
       {
       upload(e, targ);
+      }
+    else if (hasClass(targ, 'remove-upload'))
+      {
+      removeUpload(e, targ);
       }
     else if (hasClass(targ, 'clink'))
       {

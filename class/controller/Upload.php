@@ -3,19 +3,40 @@
  * KWF Controller: Upload
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2012-06-17
  * @version 1.2
  */
 
 class Upload extends Controller
   {
+  private $data = array('form' => true, 'list' => true, 'footer' => true);
+
   public function _default()
     {
-    $this->view = new view('upload');
     if ($this->request->file('file'))
       {
       $this->doUpload();
+      $this->showListOnly();
       }
+
+    $this->data['uploads'] = scandir('uploads/');
+    $this->setUploadView();
+    }
+
+  public function remove($file)
+    {
+    if (file_exists('uploads/' . $file))
+      {
+      unlink('uploads/' . $file);
+      $this->response->addInfo('Tog bort filen ' . $file);
+      }
+    else
+      {
+      $this->response->addError('Hittade inte filen ' . $file);
+      }
+
+    $this->showListOnly();
+    $this->_default();
     }
 
   private function doUpload()
@@ -27,7 +48,20 @@ class Upload extends Controller
       move_uploaded_file($file['tmp_name'], 'uploads/' . $file['name']);
 
     $this->response->addInfo('Du laddade upp filen ' . $file['name']);
-    $this->view = null;
+    }
+
+  private function setUploadView()
+    {
+    $this->view = new View('upload', $this->data);
+    }
+
+  private function showListOnly()
+    {
+    if ($this->request->ajax_request)
+      {
+      $this->data['form'] = false;
+      $this->data['footer'] = false;
+      }
     }
 
   public function run()

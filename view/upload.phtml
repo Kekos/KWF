@@ -1,10 +1,40 @@
-  <h1>Ladda upp fil</h1>
+<?php if ($form): ?>
+  <section class="left pquarter">
+    <h1>Ladda upp fil</h1>
 
-  <form action="<?php echo urlModr('ladda-upp'); ?>" method="post" enctype="multipart/form-data">
-    <fieldset>
-      <ol>
-        <li><label for="file">Fil</label> <input type="file" name="file" id="file" /></li>
-        <li><button type="submit" name="upload" value="yes">Ladda upp</button></li>
-      </ol>
-    </fieldset>
-  </form>
+    <form action="<?php echo urlModr('ladda-upp'); ?>" method="post" enctype="multipart/form-data">
+      <fieldset>
+        <ol>
+          <li><label for="file">Fil</label> <input type="file" name="file" id="file" /></li>
+          <li><button type="submit" name="upload" value="yes">Ladda upp</button></li>
+        </ol>
+      </fieldset>
+    </form>
+  </section>
+
+<?php endif; if ($list): ?>
+  <section class="left pquarter" id="upload_list_view">
+    <h1>Uppladdade filer</h1>
+
+    <ul>
+<?php foreach ($uploads as $file):
+if ($file != '..' && $file != '.'):
+
+$file = htmlspecialchars($file);
+?>
+      <li>
+        <a href="<?php echo FULLPATH . '/uploads/' . $file; ?>"><?php echo $file; ?></a>
+        <a href="<?php echo urlModr($route, 'remove', $file); ?>" class="remove-upload">(Ta bort)</a>
+      </li>
+<?php endif;
+endforeach; ?>
+    </ul>
+  </section>
+
+<?php endif; if ($footer): ?>
+  <section class="left pquarter">
+    <p>Senaste fullständiga sidladdning: <?php echo date('Y-m-d H:i:s'); ?></p>
+  </section>
+
+  <div class="clear"></div>
+<?php endif; ?>
