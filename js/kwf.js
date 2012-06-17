@@ -1308,6 +1308,44 @@ Kwf = {
   },
 
 /**
+ * Contains methods for MultiViews parsing
+ * @class MultiView
+ * @static
+ */
+MultiView = {
+  parse: function(response)
+    {
+    // Create dummy <div> to create a new namespace to perform ID search on
+    var div = document.createElement('div'), 
+      content, 
+      id_elements, 
+      d;
+
+    if (response.content_type === 'application/json')
+      {
+      // Insert any info/error messages into content <div>
+      Kwf.insertInfo(response.page);
+
+      content = response.page.content;
+      }
+    else
+      {
+      content = response.page;
+      }
+
+    div.innerHTML = content;
+
+    // Find all elements with an id attribute and replace the old ones
+    id_elements = div.querySelectorAll('*[id]');
+
+    for (d = 0; d < id_elements.length; d++)
+      {
+      replaceNode(elem(id_elements[d].id), id_elements[d]);
+      }
+    }
+  },
+
+/**
  * Prototype this to add event listening functionality to your class
  * With help from http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/
  * @class KWFEventTarget
