@@ -35,11 +35,15 @@ class Contact extends Controller
     if (!count($errors))
       {
       $this->response->addInfo('Meddelandet har skickats!');
-      $this->view = null;
       }
     else
       {
       $this->response->addFormError($errors);
+      }
+
+    if ($this->request->ajax_request)
+      {
+      $this->view = null;
       }
     }
 
