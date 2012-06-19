@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-17
+ * @date 2012-06-19
  * @version 4.0
  */
 
@@ -1298,12 +1298,51 @@ Kwf = {
 	 * Inserts info messages HTML from the infoHandler into content <div>
 	 * @method insertInfo
    * @public
-   * @param {Object} page The response.page pageect
+   * @param {Object} page The response.page object
 	 */
   insertInfo: function(page)
     {
     var context = elem('content');
     context.insertBefore(toDOMnode(Kwf.infoHandler(page)), context.firstChild);
+    },
+
+  /**
+	 * Inserts form error messages AJAX response into current page
+	 * @method handleFormErrors
+   * @public
+   * @param {Object} page The response.page object
+	 */
+  handleFormErrors: function(page)
+    {
+    if (page.form_errors)
+      {
+      var errors = page.form_errors, 
+        name, span, input;
+
+      for (name in errors)
+        {
+        input = elem(name);
+        span = document.createElement('span');
+        addClass(span, 'form-error');
+        span.innerHTML = errors[name];
+        input.parentNode.insertBefore(span, input);
+        }
+      }
+    },
+
+  /**
+	 * Removes all form error messages from current page
+	 * @method removeFormErrors
+   * @public
+	 */
+  removeFormErrors: function()
+    {
+    var errors = document.getElementsByClassName('form-error');
+
+    while (errors[0])
+      {
+      errors[0].parentNode.removeChild(errors[0]);
+      }
     }
   },
 
@@ -1553,6 +1592,9 @@ ContentRequest = function()
       context = elem('content'), 
       btn = self.form_btn;
 
+    // Remove any form errors
+    Kwf.removeFormErrors();
+
     // Store the response object in this object so any event listeners can access it
     self.response = response;
     // Fire the afterload event
@@ -1577,9 +1619,13 @@ ContentRequest = function()
       }
 
     // If no HTML was sent, keep the old HTML and just add error and info messages
-    if (content === '' && info !== '')
+    if (content === '' && (info !== '' || response.page.form_errors))
       {
-      context.insertBefore(toDOMnode(info), context.firstChild);
+      Kwf.handleFormErrors(response.page);
+      if (info !== '')
+        {
+        context.insertBefore(toDOMnode(info), context.firstChild);
+        }
       }
     else
       {
@@ -1745,6 +1791,9 @@ BoxingRequest = function()
     var info = '', content = '', 
       btn = self.form_btn;
 
+    // Remove any form errors
+    Kwf.removeFormErrors();
+
     // Store the response object in this object so any event listeners can access it
     self.response = response;
     // Fire the afterload event
@@ -1768,15 +1817,25 @@ BoxingRequest = function()
       content = response.page;
       }
 
-    // If no HTML was sent, hide the Boxing window and add error and info messages to content <div>
+    // If no HTML was sent, check if there are any messages
     if (content === '')
       {
+      // Add error and info messages to content <div>
       if (info !== '')
         {
         elem('content').insertBefore(toDOMnode(info), elem('content').firstChild);
         }
 
-      Boxing.hide();
+      // If there are form messages, add them to page and do NOT hide Boxing
+      if (response.page.form_errors)
+        {
+        Kwf.handleFormErrors(response.page);
+        }
+      // If no content or messages were sent, hide the Boxing window
+      else
+        {
+        Boxing.hide();
+        }
       }
     else
       {

@@ -3,7 +3,7 @@
  * KWF Class: Response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2012-06-19
  * @version 4.0
  */
 
@@ -72,11 +72,11 @@ class Response
     {
     if (is_array($msg))
       {
-      response::$form_messages = array_merge(response::$form_messages, $msg);
+      Response::$form_messages = array_merge(Response::$form_messages, $msg);
       }
     else
       {
-      response::$form_messages[] = $msg;
+      Response::$form_messages[] = $msg;
       }
     }
 
@@ -88,9 +88,9 @@ class Response
    */
   static function getFormError($element)
     {
-    if (isset(response::$form_messages[$element]))
+    if (isset(Response::$form_messages[$element]))
       {
-      echo '<span class="form-error">' . response::$form_messages[$element] . '</span>';
+      echo '<span class="form-error">' . Response::$form_messages[$element] . '</span>';
       }
 
     echo "\n";
@@ -175,7 +175,7 @@ class Response
 
     if ($this->request->ajax_request)
       {
-      if (count($this->error_messages) || count($this->info_messages))
+      if (count($this->error_messages) || count($this->info_messages) || count(Response::$form_messages))
         {
         $resp = array('title' => $this->title, 'content' => $this->content_data);
 
@@ -188,6 +188,11 @@ class Response
         if (count($this->info_messages))
           {
           $resp['info'] = $this->info_messages;
+          }
+
+        if (count(Response::$form_messages))
+          {
+          $resp['form_errors'] = Response::$form_messages;
           }
 
         if ($this->request->post('X-frame-upload'))
