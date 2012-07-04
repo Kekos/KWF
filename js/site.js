@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-17
+ * @date 2012-07-04
  * @version 3.1
  */
 
@@ -44,7 +44,7 @@ var site = (function(window, document, elem, content_request, boxing_request, Bo
   function upload(e, targ)
     {
     returnFalse(e);
-    Ajax.upload(targ.form.action, MultiView.parse, MultiView.parse, elem('file'), targ);
+    Ajax.upload(targ.form.action, MultiView.parse, MultiView.parse, elem('file'));
     }
 
   function removeUpload(e, targ)
