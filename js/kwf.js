@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-19
+ * @date 2012-07-04
  * @version 4.0
  */
 
@@ -1337,11 +1337,14 @@ Kwf = {
 	 */
   removeFormErrors: function()
     {
-    var errors = document.getElementsByClassName('form-error');
-
-    while (errors[0])
+    if (document.getElementsByClassName)
       {
-      errors[0].parentNode.removeChild(errors[0]);
+      var errors = document.getElementsByClassName('form-error');
+
+      while (errors[0])
+        {
+        errors[0].parentNode.removeChild(errors[0]);
+        }
       }
     }
   },
