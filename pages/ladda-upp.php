@@ -1,4 +1,4 @@
 <?php
-$this->page['title'] = 'Ladda upp fil';
+$this->page['title'] = _('HEADER_UPLOAD');
 $this->addController('Upload', '');
 ?>

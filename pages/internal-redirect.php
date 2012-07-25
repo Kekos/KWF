@@ -1,4 +1,4 @@
 <?php
-$this->page['title'] = 'Internal redirect test';
+$this->page['title'] = _('HEADER_REDIRECT');
 $this->addController('InternalRedirect', '');
 ?>

@@ -1,4 +1,4 @@
 <?php
-$this->page['title'] = 'Kontakt';
+$this->page['title'] = _('HEADER_CONTACT');
 $this->addController('Contact', '');
 ?>
