@@ -10,6 +10,8 @@ define('DB_PREFIX', '');
 define('MINIFIED', 0);  // True if the RESPONSE_LAYOUT should use the minified versions of CSS and JS
 define('RESPONSE_LAYOUT', 'view/layout.phtml');  // The main template file in which other templates will be included in
 define('ERROR_LAYOUT', 'view/error_layout.phtml');  // The error template file in which other error templates will be included in
+define('LANGUAGE_SESSION', 1);  // True if the language selection should be auto-saved in session
+define('LANGUAGE_DEFAULT', 'en');  // The language code of default language to use
 
 define('BASE', '');  // Base server path (root), should end with / if not empty
 define('FULLPATH', '');  // Full server path to root, should not end with /

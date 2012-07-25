@@ -3,7 +3,7 @@
  * KWF Functions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-06-17
+ * @date 2012-07-24
  * @version 3.1
  */
 
@@ -30,9 +30,12 @@ function easyDate($time_pattern, $timestamp, $lowercase = 0)
   {
   $date = date('Y-m-d', $timestamp);
   if ($date == date('Y-m-d'))
-    $date = ($lowercase) ? 'idag' : 'Idag';
+    $date = ($lowercase) ? _('DATE_TODAY_LOW') : _('DATE_TODAY');
   else if ($date == date('Y-m-d', strtotime('today -1 day')))
-    $date = ($lowercase) ? 'igår' : 'Igår';
+    $date = ($lowercase) ? _('DATE_YESTERDAY_LOW') : _('DATE_YESTERDAY');
+  else
+    $date = date(_('DATE_FORMAT'), $timestamp);
+
   $date .= ' ' . date($time_pattern, $timestamp);
 
   if ($timestamp == 0)
@@ -142,16 +145,15 @@ function generatePassword($length)
 
 function getWeekday($id)
   {
-  $weekdays = array('Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag');
-  return $weekdays[$id];
+  return _('DATE_WEEKDAYS')[$id];
   }
 
 function getMonth($id)
   {
   if ($id[0] == '0')
     $id = $id[1];
-  $months = array(1 => 'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December');
-  return $months[$id];
+
+  return _('DATE_MONTHS')[$id];
   }
 
 function logMsg($class, $what)
@@ -186,5 +188,13 @@ function stringIndex($array, $index)
     }
 
   return $element;
+  }
+
+function _($lang_key)
+  {
+  global $lang;
+  $args = func_get_args();
+  array_shift($args);
+  return vsprintf($lang[$lang_key], $args);
   }
 ?>
