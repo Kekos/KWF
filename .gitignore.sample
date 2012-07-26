@@ -5,6 +5,7 @@ class/Db.php
 class/DbMysqli.php
 class/DbMysqliStatement.php
 class/DbObject.php
+class/Language.php
 class/Page.php
 class/Request.php
 class/Response.php
