@@ -3,8 +3,8 @@
  * KWF Functions: error handling
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-04-27
- * @version 3.0
+ * @date 2012-07-30
+ * @version 3.1
  */
 
 if (!defined('BASE'))
@@ -115,7 +115,7 @@ class error_response
 
     header('Content-Type: ' . $content_type . '; charset=utf-8');
 
-    $view = new view($view, $data);
+    $view = new View($view, $data);
     $this->content_data = $view->compile();
 
     if (!$ajax_request)

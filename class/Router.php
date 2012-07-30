@@ -3,7 +3,7 @@
  * KWF Class: Router, finds out which page that should be used according to the given URL route
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2012-07-30
  * @version 2.1
  */
 
@@ -46,7 +46,7 @@ class Router
    */
   public function getPage()
     {
-    return new page($this->page_model, $this->request);
+    return new Page($this->page_model, $this->request);
     }
   }
 ?>
