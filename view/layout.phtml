@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sv" dir="<?php echo _('READ_DIRECTION'); ?>">
+<html lang="sv" dir="<?php echo __('READ_DIRECTION'); ?>">
 
 <head>
   <title>KWF &gt; <?php echo $this->title; ?></title>
@@ -24,10 +24,10 @@
 
 <nav id="menu">
   <ul>
-    <li><a href="<?php echo urlModr(); ?>" class="clink"><?php echo _('HEADER_HOME'); ?></a></li>
-    <li><a href="<?php echo urlModr('kontakt'); ?>" class="clink"><?php echo _('HEADER_CONTACT'); ?></a></li>
-    <li><a href="<?php echo urlModr('ladda-upp'); ?>" class="clink"><?php echo _('HEADER_UPLOAD'); ?></a></li>
-    <li><a href="<?php echo urlModr('internal-redirect'); ?>" class="clink"><?php echo _('HEADER_REDIRECT'); ?></a></li>
+    <li><a href="<?php echo urlModr(); ?>" class="clink"><?php echo __('HEADER_HOME'); ?></a></li>
+    <li><a href="<?php echo urlModr('kontakt'); ?>" class="clink"><?php echo __('HEADER_CONTACT'); ?></a></li>
+    <li><a href="<?php echo urlModr('ladda-upp'); ?>" class="clink"><?php echo __('HEADER_UPLOAD'); ?></a></li>
+    <li><a href="<?php echo urlModr('internal-redirect'); ?>" class="clink"><?php echo __('HEADER_REDIRECT'); ?></a></li>
   </ul>
 </nav>
 
@@ -53,7 +53,7 @@ if (count($this->info_messages)): ?>
 </div>
 
 <footer id="footer">
-  <p><?php echo _('FOOTER_COPYRIGHT', '<a href="http://kekos.se/">Christoffer Lindahl</a>', '2009-2012'); ?></p>
+  <p><?php echo __('FOOTER_COPYRIGHT', '<a href="http://kekos.se/">Christoffer Lindahl</a>', '2009-2012'); ?></p>
 </footer>
 
 </body>

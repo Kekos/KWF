@@ -1,24 +1,24 @@
-  <h1><?php echo _('HEADER_HOME'); ?></h1>
+  <h1><?php echo __('HEADER_HOME'); ?></h1>
 
-  <p><?php echo _('CONTACT_EXPLAIN'); ?></p>
+  <p><?php echo __('CONTACT_EXPLAIN'); ?></p>
 
   <form action="<?php echo htmlspecialchars(urlModr($route)); ?>" method="post" class="ajax-form">
     <fieldset>
-      <legend><?php echo _('CONTACT_HEADER'); ?></legend>
+      <legend><?php echo __('CONTACT_HEADER'); ?></legend>
       <ol>
         <li>
-          <label for="from"><?php echo _('CONTACT_NAME'); ?></label>
+          <label for="from"><?php echo __('CONTACT_NAME'); ?></label>
           <input type="text" name="from" id="from" maxlength="50"<?php request::formStatePost('from', 'text'); ?> /><?php response::getFormError('from'); ?>
         </li>
         <li>
-          <label for="email"><?php echo _('CONTACT_EMAIL'); ?></label>
+          <label for="email"><?php echo __('CONTACT_EMAIL'); ?></label>
           <input type="text" name="email" id="email" maxlength="256"<?php request::formStatePost('email', 'text'); ?> /><?php response::getFormError('email'); ?>
         </li>
         <li>
-          <label for="message"><?php echo _('CONTACT_MESSAGE'); ?></label>
+          <label for="message"><?php echo __('CONTACT_MESSAGE'); ?></label>
           <textarea name="message" id="message" cols="20" rows="5"><?php request::formStatePost('message', 'textarea'); ?></textarea><?php response::getFormError('message'); ?>
         </li>
-        <li><button type="submit" name="send" value="yes"><?php echo _('CONTACT_SEND'); ?></button><input type="hidden" id="nothing" value="null" /></li>
+        <li><button type="submit" name="send" value="yes"><?php echo __('CONTACT_SEND'); ?></button><input type="hidden" id="nothing" value="null" /></li>
       </ol>
     </fieldset>
   </form>

@@ -28,15 +28,15 @@ class Contact extends Controller
     $message = $this->request->post('message');
 
     if (empty($from))
-      $errors['from'] = _('CONTACT_ERROR_NAME');
+      $errors['from'] = __('CONTACT_ERROR_NAME');
     if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$/', $email))
-      $errors['email'] = _('CONTACT_ERROR_MAIL');
+      $errors['email'] = __('CONTACT_ERROR_MAIL');
     if (strlen($message) < 30)
-      $errors['message'] = _('CONTACT_ERROR_MESSAGE');
+      $errors['message'] = __('CONTACT_ERROR_MESSAGE');
 
     if (!count($errors))
       {
-      $this->response->addInfo(_('CONTACT_INFO_SENT'));
+      $this->response->addInfo(__('CONTACT_INFO_SENT'));
       }
     else
       {

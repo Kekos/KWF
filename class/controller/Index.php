@@ -19,7 +19,7 @@ class Index extends Controller
   public function _default()
     {
     $this->view = new view('index');
-    #$this->response->addInfo(_('HOME_INFO_COOKIE_IS', $this->request->cookie->get('kwf_cookie')));
+    #$this->response->addInfo(__('HOME_INFO_COOKIE_IS', $this->request->cookie->get('kwf_cookie')));
 
     #$this->db = db_mysqli::getInstance();
     }
@@ -31,7 +31,7 @@ class Index extends Controller
     if (strlen($value) > 0)
       {
       $this->request->cookie->set('kwf_cookie', $value, 0, '/');
-      $this->response->addInfo(_('HOME_INFO_COOKIE_SET', $value));
+      $this->response->addInfo(__('HOME_INFO_COOKIE_SET', $value));
       }
     }
 
@@ -40,7 +40,7 @@ class Index extends Controller
     $this->view = new view('index');
 
     $this->request->cookie->delete('kwf_cookie', '/');
-    $this->response->addInfo(_('HOME_INFO_COOKIE_DELETE'));
+    $this->response->addInfo(__('HOME_INFO_COOKIE_DELETE'));
     }
 
   public function redirect()
@@ -59,7 +59,7 @@ class Index extends Controller
         }
       catch (Exception $ex)
         {
-        $this->response->addError(_('HOME_ERROR_NO_LANG'));
+        $this->response->addError(__('HOME_ERROR_NO_LANG'));
         }
       }
 

@@ -33,11 +33,11 @@ class Upload extends Controller
     if (file_exists('uploads/' . $file))
       {
       unlink('uploads/' . $file);
-      $this->response->addInfo(_('UPLOAD_INFO_DELETED', $file));
+      $this->response->addInfo(__('UPLOAD_INFO_DELETED', $file));
       }
     else
       {
-      $this->response->addError(_('UPLOAD_ERROR_DELETE', $file));
+      $this->response->addError(__('UPLOAD_ERROR_DELETE', $file));
       }
 
     $this->showListOnly();
@@ -52,7 +52,7 @@ class Upload extends Controller
     else
       move_uploaded_file($file['tmp_name'], 'uploads/' . $file['name']);
 
-    $this->response->addInfo(_('UPLOAD_INFO_UPLOADED', $file['name']));
+    $this->response->addInfo(__('UPLOAD_INFO_UPLOADED', $file['name']));
     }
 
   private function setUploadView()

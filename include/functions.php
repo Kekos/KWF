@@ -30,11 +30,11 @@ function easyDate($time_pattern, $timestamp, $lowercase = 0)
   {
   $date = date('Y-m-d', $timestamp);
   if ($date == date('Y-m-d'))
-    $date = ($lowercase) ? _('DATE_TODAY_LOW') : _('DATE_TODAY');
+    $date = ($lowercase) ? __('DATE_TODAY_LOW') : __('DATE_TODAY');
   else if ($date == date('Y-m-d', strtotime('today -1 day')))
-    $date = ($lowercase) ? _('DATE_YESTERDAY_LOW') : _('DATE_YESTERDAY');
+    $date = ($lowercase) ? __('DATE_YESTERDAY_LOW') : __('DATE_YESTERDAY');
   else
-    $date = date(_('DATE_FORMAT'), $timestamp);
+    $date = date(__('DATE_FORMAT'), $timestamp);
 
   $date .= ' ' . date($time_pattern, $timestamp);
 
@@ -145,7 +145,8 @@ function generatePassword($length)
 
 function getWeekday($id)
   {
-  return _('DATE_WEEKDAYS')[$id];
+  $w = __('DATE_WEEKDAYS');
+  return $w[$id];
   }
 
 function getMonth($id)
@@ -153,7 +154,8 @@ function getMonth($id)
   if ($id[0] == '0')
     $id = $id[1];
 
-  return _('DATE_MONTHS')[$id];
+  $m = __('DATE_MONTHS');
+  return $m[$id];
   }
 
 function logMsg($class, $what)
@@ -190,7 +192,7 @@ function stringIndex($array, $index)
   return $element;
   }
 
-function _($lang_key)
+function __($lang_key)
   {
   global $lang;
   $args = func_get_args();

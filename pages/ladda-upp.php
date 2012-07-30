@@ -1,4 +1,4 @@
 <?php
-$this->page['title'] = _('HEADER_UPLOAD');
+$this->page['title'] = __('HEADER_UPLOAD');
 $this->addController('Upload', '');
 ?>

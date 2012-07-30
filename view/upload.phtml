@@ -1,12 +1,12 @@
 <?php if ($form): ?>
   <section class="left pquarter">
-    <h1><?php echo _('UPLOAD_HEADER_UPLOAD'); ?></h1>
+    <h1><?php echo __('UPLOAD_HEADER_UPLOAD'); ?></h1>
 
     <form action="<?php echo urlModr('ladda-upp'); ?>" method="post" enctype="multipart/form-data">
       <fieldset>
         <ol>
-          <li><label for="file"><?php echo _('UPLOAD_FILE'); ?></label> <input type="file" name="file" id="file" /></li>
-          <li><button type="submit" name="upload" value="yes"><?php echo _('UPLOAD_SEND'); ?></button></li>
+          <li><label for="file"><?php echo __('UPLOAD_FILE'); ?></label> <input type="file" name="file" id="file" /></li>
+          <li><button type="submit" name="upload" value="yes"><?php echo __('UPLOAD_SEND'); ?></button></li>
         </ol>
       </fieldset>
     </form>
@@ -14,7 +14,7 @@
 
 <?php endif; if ($list): ?>
   <section class="left pquarter" id="upload_list_view">
-    <h1><?php echo _('UPLOAD_HEADER_UPLOADED'); ?></h1>
+    <h1><?php echo __('UPLOAD_HEADER_UPLOADED'); ?></h1>
 
     <ul>
 <?php foreach ($uploads as $file):
@@ -24,7 +24,7 @@ $file = htmlspecialchars($file);
 ?>
       <li>
         <a href="<?php echo FULLPATH . '/uploads/' . $file; ?>"><?php echo $file; ?></a>
-        <a href="<?php echo urlModr($route, 'remove', $file); ?>" class="remove-upload">(<?php echo _('UPLOAD_DELETE'); ?>)</a>
+        <a href="<?php echo urlModr($route, 'remove', $file); ?>" class="remove-upload">(<?php echo __('UPLOAD_DELETE'); ?>)</a>
       </li>
 <?php endif;
 endforeach; ?>
@@ -33,7 +33,7 @@ endforeach; ?>
 
 <?php endif; if ($footer): ?>
   <section class="left pquarter">
-    <p><?php echo _('UPLOAD_LAST_UPDATE', date(_('DATETIME_FORMAT') . ':s')); ?></p>
+    <p><?php echo __('UPLOAD_LAST_UPDATE', date(__('DATETIME_FORMAT') . ':s')); ?></p>
   </section>
 
   <div class="clear"></div>
