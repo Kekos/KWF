@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-04
+ * @date 2012-07-31
  * @version 4.0
  */
 
@@ -1184,7 +1184,9 @@ Kwf = {
 
     if (elem('content'))
       {
-      var location = document.location;
+      var location = document.location, 
+        popped = ('state' in history && history.state !== null), 
+        initial_url = location.href;
 
       function changeContent(url)
         {
@@ -1194,7 +1196,12 @@ Kwf = {
       // Listen for back/forward events
       addEvent(window, 'popstate', function(pe)
         {
-        changeContent(pe.state === null ? location.pathname : pe.state.url);
+        if (!(!popped && location.href === initial_url))
+          {
+          changeContent(pe.state === null ? location.pathname : pe.state.url);
+          }
+
+        popped = 1;
         });
 
       // Change content from the hash if pushState is not supported
