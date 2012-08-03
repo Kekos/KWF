@@ -3,7 +3,7 @@
  * KWF Class: Language, handles language loading
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-25
+ * @date 2012-08-02
  * @version 1.0
  */
 
@@ -92,11 +92,12 @@ class Language
    * Loads new language domain
    *
    * @param string $domain The language domain to load
+   * @param string $override_language Optional. Specifies an other language code than is set in Language
    * @return void
    */
-  static function load($domain)
+  static function load($domain, $override_language = null)
     {
-    $path = BASE . 'language/' . self::$language . '/' . $domain . '.lang.php';
+    $path = BASE . 'language/' . ($override_language === null ? self::$language : $override_language) . '/' . $domain . '.lang.php';
     if (is_file($path))
       {
       global $lang;
