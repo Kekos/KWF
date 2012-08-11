@@ -57,8 +57,26 @@ class Language
 
       if (!$language)
         {
-        $language = $default_lang;
+        $language = self::$default_lang;
         }
+      }
+
+    self::set($language);
+    }
+
+  /*
+   * Sets current language variable from session variables
+   * You must call configue() first!
+   *
+   * @return void
+   */
+  static function fromSession()
+    {
+    $language = self::$request->session->get('language');
+
+    if (!$language)
+      {
+      $language = self::$default_lang;
       }
 
     self::set($language);
