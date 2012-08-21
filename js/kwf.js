@@ -1333,7 +1333,14 @@ Kwf = {
         span = document.createElement('span');
         addClass(span, 'form-error');
         span.innerHTML = errors[name];
-        input.parentNode.insertBefore(span, input);
+        try
+          {
+          input.parentNode.insertBefore(span, input);
+          }
+        catch (e)
+          {
+          alert('Element ' + name + ' not found in page');
+          }
         }
       }
     },
