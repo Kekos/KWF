@@ -3,7 +3,7 @@
  * KWF Class: DbObject, the generalized database object class. Must be extended
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2012-08-21
  * @version 2.3
  */
 
@@ -12,6 +12,11 @@ abstract class DbObject
   protected $_model = null;
 
   private $_edited = array();
+
+  public function __sleep()
+    {
+    return array("\0DbObject\0_edited");
+    }
 
   /*
    * Setter for object's properties. For internal use by db_objects.
