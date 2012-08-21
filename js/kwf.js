@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-31
+ * @date 2012-08-21
  * @version 4.0
  */
 
@@ -955,6 +955,7 @@ Boxing = (function()
         }
 
       overlayer.style.display = 'none';
+      close.style.display = 'none';
       window.style.display = 'none';
 
       window.innerHTML = '';
@@ -1006,7 +1007,7 @@ Boxing = (function()
     close.className = 'hide-boxing';
     close.href = 'javascript: void(0);';
     close.appendChild(doc.createTextNode('Stäng'));
-    overlayer.appendChild(close);
+    doc.body.appendChild(close);
 
     window.id = 'boxing-window';
     doc.body.appendChild(window);
@@ -1041,27 +1042,27 @@ Boxing = (function()
       first_elem;
 
     overlayer.style.display = 'block';
+    close.style.display = 'block';
     window.style.display = 'block';
 
-    close.style.width = window.style.width = width + w_unit;
+    window.style.width = width + w_unit;
     window.style.height = height + h_unit;
 
     if (h_unit === '%')
       {
       window.style.margin = '0 0 0 -' + (width / 2) + w_unit;
       window.style.top = (100 - height) / 2 + '%';
-      close.style.margin = '0 0 0 -' + (width / 2) + w_unit;
-      close.style.top = (100 - height) / 2 - 3 + '%';
       }
     else
       {
       window.style.margin = '-' + (height / 2) + h_unit + ' 0 0 -' + (width / 2) + w_unit;
       window.style.top = '50%';
-      close.style.margin = '-' + (height / 2) - 20 + h_unit + ' 0 0 -' + (width / 2) + w_unit;
-      close.style.top = '50%';
       }
 
     window.innerHTML = text;
+
+    close.style.top = window.offsetTop - 10 + 'px';
+    close.style.left = window.offsetLeft + window.offsetWidth - 10 + 'px';
 
     // Create a reference to the window's child elements for future
     elements = window.getElementsByTagName('*');
