@@ -1651,6 +1651,8 @@ ContentRequest = function()
       self.findForms();
       }
 
+    window.scrollTo(0, 0);
+
     self.dispatchEvent('ready', caller);
     caller = null;
     self.response = null;
