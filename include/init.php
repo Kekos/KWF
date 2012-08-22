@@ -3,7 +3,7 @@
  * KWF System: Initiation
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-08-21
+ * @date 2012-08-22
  * @version 4.0
  */
 
@@ -11,6 +11,29 @@ if (!defined('BASE'))
   die('Access denied.');
 
 define('KWF_VERSION', '4.0');
+
+if (get_magic_quotes_gpc())
+  {
+  $process = array(&$_GET, &$_POST, &$_COOKIE);
+  while (list($key, $val) = each($process))
+    {
+    foreach ($val as $k => $v)
+      {
+      unset($process[$key][$k]);
+      if (is_array($v))
+        {
+        $process[$key][stripslashes($k)] = $v;
+        $process[] = &$process[$key][stripslashes($k)];
+        }
+      else
+        {
+        $process[$key][stripslashes($k)] = stripslashes($v);
+        }
+      }
+    }
+
+  unset($process);
+  }
 
 require(BASE . 'include/errors.php');
 require(BASE . 'include/functions.php');
