@@ -3,7 +3,7 @@
  * KWF Functions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-24
+ * @date 2012-08-30
  * @version 3.1
  */
 
@@ -197,6 +197,12 @@ function __($lang_key)
   global $lang;
   $args = func_get_args();
   array_shift($args);
+
+  if (is_array($lang[$lang_key]))
+    {
+    return $lang[$lang_key];
+    }
+
   return vsprintf($lang[$lang_key], $args);
   }
 ?>
