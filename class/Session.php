@@ -3,39 +3,15 @@
  * KWF Class: Session, keeps track of all sessions and adds a little more security to sessions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2012-09-11
  * @version 2.1
  */
 
 class Session
   {
-  private $ip;
-  private $proxy;
-
   public function __construct()
     {
     session_start();
-
-    if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-      {
-      $this->ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-      $this->proxy = (isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : $_SERVER['REMOTE_ADDR']);
-      }
-    else
-      {
-      $this->ip = (isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : $_SERVER['REMOTE_ADDR']);
-      $this->proxy = '';
-      }
-
-    if (!$this->get('ip') && !$this->get('proxy'))
-      {
-      $this->set('ip', $this->ip);
-      $this->set('proxy', $this->proxy);
-      }
-    else if ($this->get('ip') != $this->ip || $this->get('proxy') != $this->proxy)
-      {
-      throw new Exception('A possible XSS attempt was encountered');
-      }
     }
 
   /*
