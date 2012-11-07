@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-08-21
+ * @date 2012-11-02
  * @version 4.0
  */
 
@@ -314,6 +314,22 @@ function parseJSON(j)
     }
 
   return j;
+  }
+
+/**
+ * Returns a language string
+ * @method __
+ * @param {String} key The language string's key
+ * @return {String}
+ */
+function __(key)
+  {
+  if (Kwf.languages[key])
+    {
+    return Kwf.languages[key];
+    }
+
+  return key;
   }
 
 /**

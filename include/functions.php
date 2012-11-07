@@ -3,7 +3,7 @@
  * KWF Functions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-08-30
+ * @date 2012-11-01
  * @version 3.1
  */
 
@@ -204,5 +204,20 @@ function __($lang_key)
     }
 
   return vsprintf($lang[$lang_key], $args);
+  }
+
+function langExport($key)
+  {
+  global $lang_export;
+
+  if ($lang_export == null)
+    {
+    $lang_export = array();
+    }
+
+  if (!in_array($key, $lang_export))
+    {
+    $lang_export[] = $key;
+    }
   }
 ?>
