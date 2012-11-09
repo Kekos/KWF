@@ -3,7 +3,7 @@
  * KWF Class: Response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-19
+ * @date 2012-11-09
  * @version 4.0
  */
 
@@ -136,6 +136,10 @@ class Response
 
       case 'rss':
         $content_type = 'application/rss+xml';
+      break;
+
+      case 'json':
+        $content_type = 'application/json';
       break;
       }
 
