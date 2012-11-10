@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-11-02
+ * @date 2012-11-09
  * @version 4.0
  */
 
@@ -1629,6 +1629,12 @@ ContentRequest = function()
     // Remove any form errors
     Kwf.removeFormErrors();
 
+    // If the inner content is JSON, then auto-parse it
+    if (response.page.content_type === 'application/json')
+      {
+      response.page.content = parseJSON(response.page.content);
+      }
+
     // Store the response object in this object so any event listeners can access it
     self.response = response;
     // Fire the afterload event
@@ -1829,6 +1835,12 @@ BoxingRequest = function()
 
     // Remove any form errors
     Kwf.removeFormErrors();
+
+    // If the inner content is JSON, then auto-parse it
+    if (response.page.content_type === 'application/json')
+      {
+      response.page.content = parseJSON(response.page.content);
+      }
 
     // Store the response object in this object so any event listeners can access it
     self.response = response;

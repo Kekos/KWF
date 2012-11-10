@@ -206,7 +206,9 @@ class Response
           }
         else
           {
+          $inner_content_type = $this->content_type;
           $this->content_type = 'application/json';
+          $resp['content_type'] = $inner_content_type;
           $this->content_data = json_encode($resp);
           }
         }
