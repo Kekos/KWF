@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-11-09
+ * @date 2012-12-27
  * @version 4.0
  */
 
@@ -1194,16 +1194,24 @@ Kwf = {
 	 */
   loading: function(e)
     {
-    if (Kwf.onload)
+    var k = Kwf, 
+      location, 
+      popped, 
+      initial_url;
+
+    // Start timer that closes any messages sent with page
+    k.timer = setTimeout(k.hideInfo, 10000);
+
+    if (k.onload)
       {
-      Kwf.onload(e);
+      k.onload(e);
       }
 
     if (elem('content'))
       {
-      var location = document.location, 
-        popped = ('state' in history && history.state !== null), 
-        initial_url = location.href;
+      location = document.location;
+      popped = ('state' in history && history.state !== null);
+      initial_url = location.href;
 
       function changeContent(url)
         {
