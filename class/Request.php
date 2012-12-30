@@ -3,7 +3,7 @@
  * KWF Class: Request, handles the request of the document, like POST, AJAX, cookies and sessions
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2012-12-30
  * @version 3.1
  */
 
@@ -111,7 +111,24 @@ class Request
       }
     else if (isset($_FILES[$key]))
       {
-      return $_FILES[$key];
+      if (is_array($_FILES[$key]['name']))
+        {
+        $new_files = array();
+
+        foreach ($_FILES[$key] as $fieldname => $fieldval)
+          {
+          foreach ($fieldval as $i => $value)
+            {
+            $new_files[$i][$fieldname] = $value;
+            }
+          }
+
+        return $new_files;
+        }
+      else
+        {
+        return $_FILES[$key];
+        }
       }
     else
       {
