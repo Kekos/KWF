@@ -15,8 +15,6 @@ class Request
   public $cookie;
   public $ajax_request = false;
 
-  private $ajax_file = false;
-
   /*
    * Constructor: request
    *
@@ -28,7 +26,6 @@ class Request
     {
     $this->session = $session;
     $this->cookie = $cookie;
-    $this->ajax_file = $this->server('HTTP_X_AJAX_UPLOAD');
 
     if ($this->server('HTTP_X_AJAX_REQUEST') || $this->post('X-ajax-request'))
       {
@@ -95,21 +92,7 @@ class Request
    */
   public function file($key)
     {
-    if ($this->ajax_file !== false)
-      {
-      $form_input = fopen('php://input', 'r');
-      $temp_file = tmpfile();
-      $real_size = stream_copy_to_stream($form_input, $temp_file);
-      fclose($form_input);
-      fseek($temp_file, 0, SEEK_SET);
-
-      if ($real_size != $this->server('CONTENT_LENGTH'))
-        return false;
-
-      return array('name' => urldecode($this->ajax_file), 'size' => $real_size, 
-          'ajax' => 1, 'stream' => $temp_file);
-      }
-    else if (isset($_FILES[$key]))
+    if (isset($_FILES[$key]))
       {
       if (is_array($_FILES[$key]['name']))
         {
