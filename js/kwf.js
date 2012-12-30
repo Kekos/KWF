@@ -681,7 +681,7 @@ var Ajax = (function()
 	 * @param {String} url URL to load
 	 * @param {Function} success Callback to call if request succeeded
    * @param {Function} fail Callback to call if request failed
-	 * @param {HTMLInputElement} file_elem The <input type="file"> element to send
+	 * @param {HTMLInputElement|FormData} file_elem The <input type="file"> element to send OR a FormData object
 	 * @return {XMLHttpRequest}
 	 */
   function upload(url, success, fail, file_elem)
@@ -689,8 +689,25 @@ var Ajax = (function()
     // Check for File and FormData support
     if (typeof FormData !== 'undefined' && typeof File !== 'undefined')
       {
-      var form_data = new FormData();
-      form_data.append(file_elem.name, file_elem.files[0]);
+      var form_data, 
+        i, 
+        key_name;
+
+      if (file_elem instanceof FormData)
+        {
+        form_data = file_elem;
+        }
+      else
+        {
+        form_data = new FormData();
+        key_name = file_elem.name + (file_elem.files.length > 0 ? '[]' : '');
+
+        for (i = 0; i < file_elem.files.length; i++)
+          {
+          form_data.append(key_name, file_elem.files[i]);
+          }
+        }
+
       return send(url, 'POST', success, fail, form_data, [], 1);
       }
     // No FormData support: Resort to <iframe> solution
