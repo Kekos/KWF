@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-12-27
+ * @date 2012-12-30
  * @version 4.0
  */
 
@@ -580,10 +580,9 @@ var Ajax = (function()
    * @private
 	 * @param {HTMLFormElement} form The form to translate
    * @param {HTMLElement} sender The button that fired the request
-   * @param {String} boundary A boundary that delimits parts
 	 * @return {String} The form as query string
 	 */
-  function form2query(form, sender, boundary)
+  function form2query(form, sender)
     {
     var data = '', 
       inputs = form.getElementsByTagName('input'), 
@@ -593,18 +592,7 @@ var Ajax = (function()
 
     function encode(elm)
       {
-      var ret;
-
-      if (boundary)
-        {
-        ret = (elm.name === '' ? '' : '\r\nContent-Disposition: form-data; name="' + elm.name + '"\r\n\r\n' + encodeURIComponent(elm.value) + '\r\n--' + boundary);
-        }
-      else
-        {
-        ret = (elm.name === '' ? '' : '&' + elm.name + '=' + encodeURIComponent(elm.value));
-        }
-
-      return ret;
+      return (elm.name === '' ? '' : '&' + elm.name + '=' + encodeURIComponent(elm.value));
       }
 
     if (form)
