@@ -5,7 +5,7 @@
     <form action="<?php echo urlModr('ladda-upp'); ?>" method="post" enctype="multipart/form-data">
       <fieldset>
         <ol>
-          <li><label for="file"><?php echo __('UPLOAD_FILE'); ?></label> <input type="file" name="file" id="file" /></li>
+          <li><label for="file"><?php echo __('UPLOAD_FILE'); ?></label> <input type="file" name="file" id="file" multiple="multiple" /></li>
           <li><button type="submit" name="upload" value="yes"><?php echo __('UPLOAD_SEND'); ?></button></li>
         </ol>
       </fieldset>

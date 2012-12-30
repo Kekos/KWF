@@ -3,7 +3,7 @@
  * KWF Controller: Upload
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-25
+ * @date 2012-12-30
  * @version 1.2
  */
 
@@ -46,13 +46,21 @@ class Upload extends Controller
 
   private function doUpload()
     {
-    $file = $this->request->file('file');
-    if (isset($file['ajax']))
-      move_ajax_uploaded_file($file['stream'], 'uploads/' . $file['name']);
-    else
-      move_uploaded_file($file['tmp_name'], 'uploads/' . $file['name']);
+    $files = $this->request->file('file');
+    $file_names = array();
 
-    $this->response->addInfo(__('UPLOAD_INFO_UPLOADED', $file['name']));
+    if (!is_array($files))
+      {
+      $files = array($files);
+      }
+
+    foreach ($files as $file)
+      {
+      move_uploaded_file($file['tmp_name'], 'uploads/' . $file['name']);
+      $file_names[] = $file['name'];
+      }
+
+    $this->response->addInfo(__('UPLOAD_INFO_UPLOADED', implode(', ', $file_names)));
     }
 
   private function setUploadView()
