@@ -3,10 +3,19 @@
  * KWF Functions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-12-05
+ * @date 2013-01-18
  * @version 3.1
  */
 
+/**
+ * Includes a class definition file
+ *
+ * Magic PHP function, called when a class is going to be constructed but is
+ * not yet included. This function includes that class definition file.
+ * Looks in three different folders (1. class/ 2. class/model/ 3. class/controller/)
+ *
+ * @param string $class_name Name of the class to include
+ */
 function __autoload($class_name)
   {
   $path = BASE . 'class/' . $class_name . '.php';
@@ -26,6 +35,14 @@ function __autoload($class_name)
   require($path);
   }
 
+/**
+ * Formats a time stamp with preferred format and "today/yesterday" notations
+ *
+ * @param string $time_pattern The format pattern to use for time part
+ * @param int $timestamp An UNIX timestamp
+ * @param bool $lowercase]Set to true for lowercase "today/yesterday". Default is false (uppercase)
+ * @return string The formatted time stamp
+ */
 function easyDate($time_pattern, $timestamp, $lowercase = 0)
   {
   $date = date('Y-m-d', $timestamp);
@@ -44,17 +61,38 @@ function easyDate($time_pattern, $timestamp, $lowercase = 0)
   return $date;
   }
 
+/**
+ * Translates all line breaks (UNIX type, Windows type and Mac type ones) to 
+ * HTML <br /> break tag
+ *
+ * @param string $str The string to translate
+ * @return string The translated string
+ */
 function nl2brSafe($str)
   {
   $str = preg_replace("/(\r\n|\r|\n)/", '<br />', $str);
   return $str;
   }
 
+/**
+ * (Internal) Filter for urlCreate()
+ *
+ * @ignore
+ * @param string $param A URL parameter to test
+ * @return bool True if $param is non-empty
+ */
 function urlFilter($param)
   {
   return ($param !== '');
   }
 
+/**
+ * (Internal) Creates a new slash-separated URL, with no empty parameters
+ *
+ * @ignore
+ * @param string[] $params The parameter parts
+ * @return string The finished URL
+ */
 function urlCreate($params)
   {
   $params = array_filter($params, 'urlFilter');
@@ -65,6 +103,12 @@ function urlCreate($params)
     return '';
   }
 
+/**
+ * Creates a new slash-separated URL relative to the application's root
+ *
+ * @param string $param,... A parameter part (optional to have any parts at all)
+ * @return string The finished URL
+ */
 function urlModr()
   {
   $url = (MOD_REWRITE ? FULLPATH . '/' : BASE . 'index.php?r=');
@@ -76,6 +120,13 @@ function urlModr()
   return $url . urlCreate($params);
   }
 
+/**
+ * Creates a new slash-separated URL relative to the application's full URL 
+ * (including domain name etc.)
+ *
+ * @param string $param,... A parameter part (optional to have any parts at all)
+ * @return string The finished URL
+ */
 function urlModrOuter()
   {
   $url = FULLURL . (MOD_REWRITE ? '/' : '/index.php?r=');
@@ -87,6 +138,14 @@ function urlModrOuter()
   return $url . urlCreate($params);
   }
 
+/**
+ * Adds one or several new parameters to an URL array and then creates a new
+ * slash-separated URL relative to the application's root
+ *
+ * @param string[] $params The URL array
+ * @param string|string[] $new_param The new parameter part or array with new parameters
+ * @return string The finished URL
+ */
 function urlModrAdd($params, $new_param)
   {
   if (!is_array($new_param))
@@ -97,6 +156,16 @@ function urlModrAdd($params, $new_param)
   return urlModr($params);
   }
 
+/**
+ * Removes one or several parameters from an URL array and then creates a new
+ * slash-separated URL relative to the application's root
+ *
+ * @param string[] $params The URL array
+ * @param int $start Offset to start removing parameters FROM
+ * @param int $end The number of parameters to remove (if positive) OR the end
+ *                 offset to stop removing parameters
+ * @return string The finished URL
+ */
 function urlModrRange($params, $start, $end)
   {
   if ($end < 0)
@@ -109,6 +178,18 @@ function urlModrRange($params, $start, $end)
   return urlModr(array_splice($params, $start, $end));
   }
 
+/**
+ * Escapes a string to be suitable for using in an URL
+ *
+ * Replaces NOT alphanumeric characters with dash. Removes double dashes (--)
+ * with a single dash. Replaces the Swedish special characters å, ä, ö with 
+ * a, a, o.
+ *
+ * @param string $str The string to escape
+ * @param string $allow_extra Characters to NOT escape (you might need to 
+ *                            escape these to confirm with Regex standard)
+ * @return string Escaped string
+ */
 function urlSafe($str, $allow_extra = '')
   {
   $str = utf8_encode(strtolower(utf8_decode($str)));
@@ -121,6 +202,17 @@ function urlSafe($str, $allow_extra = '')
   return $str;
   }
 
+/**
+ * Generates a secure, randomized, password
+ *
+ * Returns password with letters, numbers and the following characters:
+ * < @ # $ % & >
+ *
+ * @param string $str The string to escape
+ * @param string $allow_extra Characters to NOT escape (you might need to 
+ *                            escape these to confirm with Regex standard)
+ * @return string Escaped string
+ */
 function generatePassword($length)
   {
   $password = '';
@@ -143,12 +235,29 @@ function generatePassword($length)
   return $password;
   }
 
+/**
+ * Returns the name of a week day from it's number, with 0 being Monday
+ *
+ * This function is aware of the current selected language.
+ *
+ * @param string|int $id The numeric representation of a week day (0 = Monday)
+ * @return string Name of week day
+ */
 function getWeekday($id)
   {
   $w = __('DATE_WEEKDAYS');
   return $w[$id];
   }
 
+/**
+ * Returns the name of a month from it's number, with 1 being January
+ *
+ * This function is aware of the current selected language.
+ *
+ * @param string|int $id The numeric representation of a month (1 = January). 
+ *                       Ignores leading zero if value is a string.
+ * @return string Name of month
+ */
 function getMonth($id)
   {
   if ($id[0] == '0')
@@ -158,12 +267,26 @@ function getMonth($id)
   return $m[$id];
   }
 
+/**
+ * Logs a message with current time stamp in a log file
+ *
+ * @param string $class A name to group this message with
+ * @param string $what The log message
+ */
 function logMsg($class, $what)
   {
   $text = '[' . date('Y-m-d H:i') . '] ' . $class . ' logs: ' . $what . "\r\n";
   file_put_contents(BASE . $class . '.log', $text, FILE_APPEND);
   }
 
+/**
+ * Saves an file uploaded with the old AJAX uploader. Do not use!
+ *
+ * @depracted
+ * @param resource $source_stream The file stream
+ * @param string $destination_name Destination file name
+ * @return int The number of bytes written
+ */
 function move_ajax_uploaded_file($source_stream, $destination_name)
   {
   if (!$new_file = fopen($destination_name, 'w'))
@@ -174,6 +297,16 @@ function move_ajax_uploaded_file($source_stream, $destination_name)
   return $bytes;
   }
 
+/**
+ * Finds an array element using a string
+ *
+ * Example: string "arr[el1][el11]" returns element with key el11 in element
+ * with key el1 in array arr
+ *
+ * @param mixed[] $array The array to search in
+ * @param string $index Search string
+ * @return mixed The value of the found element
+ */
 function stringIndex($array, $index)
   {
   $index = explode('[', $index);
@@ -192,6 +325,14 @@ function stringIndex($array, $index)
   return $element;
   }
 
+/**
+ * Returns a phrase in the current selected language
+ *
+ * @param string $lang_key The phrase key
+ * @param mixed $var,... Variables to format in to the phrase. Optional for 
+ *                       some phrases
+ * @return string The phrase
+ */
 function __($lang_key)
   {
   global $lang;
@@ -206,6 +347,11 @@ function __($lang_key)
   return vsprintf($lang[$lang_key], $args);
   }
 
+/**
+ * Exports a language phrase to be available in JavaScript
+ *
+ * @param string $lang_key The phrase key
+ */
 function langExport($key)
   {
   global $lang_export;
@@ -221,6 +367,10 @@ function langExport($key)
     }
   }
 
+/**
+ * Echoes all exported language phrases in a <script> tag
+ * Makes phrases available to JavaScript via the __() function.
+ */
 function scriptLanguageExport()
   {
   global $lang_export;
