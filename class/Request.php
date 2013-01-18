@@ -3,7 +3,7 @@
  * KWF Class: Request, handles the request of the document, like POST, AJAX, cookies and sessions
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-12-30
+ * @date 2013-01-18
  * @version 3.1
  */
 
@@ -15,12 +15,11 @@ class Request
   public $cookie;
   public $ajax_request = false;
 
-  /*
+  /**
    * Constructor: request
    *
-   * @param object $session The session object that will be used through the whole request
-   * @param object $cookie The cookie object that will be used through the whole request
-   * @return void
+   * @param Session $session The session object that will be used through the whole request
+   * @param Cookie $cookie The cookie object that will be used through the whole request
    */
   public function __construct($session, $cookie)
     {
@@ -41,12 +40,12 @@ class Request
     unset($_GET);
     }
 
-  /*
+  /**
    * Get a SERVER variable
    *
    * @param string $key The array key that identificates the variable
-   * @param boolean/numeric $return_empty_undefined If true it returns an empty string if the variable doesn't exist
-   * @return string/boolean Returns the SERVER variable or false/empty string
+   * @param bool|int $return_empty_undefined If true it returns an empty string if the variable doesn't exist
+   * @return string|bool Returns the SERVER variable or false/empty string
    */
   public function server($key, $return_empty_undefined = 0)
     {
@@ -60,12 +59,12 @@ class Request
       }
     }
 
-  /*
+  /**
    * Get a POST variable
    *
    * @param string $key The array key that identificates the variable
-   * @param boolean/numeric $return_empty_undefined If true it returns an empty string if the variable doesn't exist
-   * @return string/boolean Returns the POST variable or false/empty string
+   * @param bool|int $return_empty_undefined If true it returns an empty string if the variable doesn't exist
+   * @return string|bool Returns the POST variable or false/empty string
    */
   public function post($key, $return_empty_undefined = 0)
     {
@@ -81,14 +80,14 @@ class Request
       }
     }
 
-  /*
+  /**
    * Get a FILE file, uploaded through a classic form or with the KWF AJAX functions.
    * If it is uploaded through AJAX, the array returned from this function will 
    * have an "ajax" key set together with a "stream" key containing the stream 
    * to the uploaded temporary file.
    *
    * @param string $key The array key that identificates the file
-   * @return boolean/array(string) Returns the FILE file info or false
+   * @return bool|string[] Returns the FILE file info or false
    */
   public function file($key)
     {
@@ -119,14 +118,13 @@ class Request
       }
     }
 
-  /*
+  /**
    * Outputs HTML for use in forms to preserve the state of POST forms. Escapes inappropriate chars
    *
    * @param string $key The array key that identificates the variable that holds the value
    * @param string $type The type of HTML form element to output (text|radio|checkbox|textarea|select)
    * @param string $compare A value to compare with the POST value, used with radio, checkbox or select
    * @param string $default If the POST value doesn't exist, then this is the default value to print
-   * @return void
    */
   static function formStatePost($key, $type, $compare = '', $default = '')
     {

@@ -3,7 +3,7 @@
  * KWF Class: Page, runs all controllers that is defined to be run in the page
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2013-01-18
  * @version 4.0
  */
 
@@ -16,12 +16,11 @@ class Page
   public $response;
   public $page = false;
 
-  /*
+  /**
    * Constructor: page
    *
    * @param object $model The page model object to get page data from
-   * @param object $request The request object that created the instance
-   * @return void
+   * @param Request $request The request object that created the instance
    */
   public function __construct($model, $request)
     {
@@ -30,10 +29,8 @@ class Page
     $this->response = new Response($this->request);
     }
 
-  /*
+  /**
    * Runs all controllers within the page
-   *
-   * @return void
    */
   public function runControllers()
     {
@@ -114,20 +111,19 @@ class Page
       }
     }
 
-  /*
+  /**
    * Calls a method on a controller with the URI segments as arguments
    *
    * @param object $controller The controller which have the $function
    * @param string $function The method that should be called
-   * @param array(string) $args The URI segments that should be passed as arguments
-   * @return void
+   * @param string[] $args The URI segments that should be passed as arguments
    */
   private function callControllerFunction($controller, $function, $args)
     {
     call_user_func_array(array($controller, $function), $args);
     }
 
-  /*
+  /**
    * Makes an internal redirect to another route in this application.
    * Kills current page rendering
    *
@@ -147,7 +143,7 @@ class Page
     return false;
     }
 
-  /*
+  /**
    * Restarts a rendering after a route redirect occured
    *
    * @return bool Always false
@@ -158,7 +154,7 @@ class Page
     return false;
     }
 
-  /*
+  /**
    * Get the content from response object
    *
    * @return string The response content

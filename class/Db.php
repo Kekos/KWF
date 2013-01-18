@@ -3,7 +3,7 @@
  * KWF Class: Db (database), establish connection, makes queries to the database and returns data
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2013-01-18
  * @version 2.3
  */
 
@@ -27,10 +27,10 @@ class Db
     mysql_set_charset('utf8');
     }
 
-  /*
+  /**
    * Returns the only instance of this class (singleton)
    *
-   * @return object(db) Instance of class db
+   * @return Db Instance of class Db
    */
   static function getInstance()
     {
@@ -42,11 +42,11 @@ class Db
     return self::$instance;
     }
 
-  /*
+  /**
    * Asks queries to database
    *
    * @param string $query The query to ask, in SQL-format
-   * @param array(string) $args An array of arguments that should be merged into the query. Every ?x? is replaced by a arg
+   * @param string[] $args An array of arguments that should be merged into the query. Every ?x? is replaced by a arg
    * @param bool $debug If set to true, then the interpreted query (query after argument merge) will be outputted
    * @return resource The resource to the query
    */
@@ -85,10 +85,10 @@ class Db
       }
     }
 
-  /*
+  /**
    * Fetches all rows in the result set and returns them in an array
    *
-   * @return array(array(string)) An array contaning the resulting data of the asked question
+   * @return string[][] An array contaning the resulting data of the asked question
    */
   public function fetchAll()
     {
@@ -101,17 +101,17 @@ class Db
     return $arr_result;
     }
 
-  /*
+  /**
    * Fetches only ONE row in the result set and returns it
    *
-   * @return array(string) The resulting data of the asked question
+   * @return string[] The resulting data of the asked question
    */
   public function fetch()
     {
     return mysql_fetch_assoc($this->query);
     }
 
-  /*
+  /**
    * Returnes the generated ID for the last inserted post
    *
    * @return int The generated ID

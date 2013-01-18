@@ -3,13 +3,13 @@
  * KWF Class: Cookie, keeps track of all cookies
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2013-01-18
  * @version 2.0
  */
 
 class Cookie
   {
-  /*
+  /**
    * Sets a cookie
    *
    * @param string $key The array key that identificates the cookie
@@ -19,7 +19,6 @@ class Cookie
    * @param string $domain The domain that the cookie is available to
    * @param bool $secure Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client
    * @param bool $http_only When TRUE the cookie will be made accessible only through the HTTP protocol
-   * @return void
    */
   public function set($key, $value, $expires = 0, $path = '', $domain = '', $secure = false, $http_only = false)
     {
@@ -29,7 +28,7 @@ class Cookie
     setcookie($key, $value, $expires, $path, $domain, $secure, $http_only);
     }
 
-  /*
+  /**
    * Deletes a cookie
    *
    * @param string $key The array key that identificates the variable
@@ -38,7 +37,6 @@ class Cookie
    * @param string $domain The domain that the cookie is available to
    * @param bool $secure Indicates that the cookie should only be transmitted over a secure HTTPS connection from the client
    * @param bool $http_only When TRUE the cookie will be made accessible only through the HTTP protocol
-   * @return void
    */
   public function delete($key, $path = '', $domain = '', $secure = false, $http_only = false)
     {
@@ -49,12 +47,12 @@ class Cookie
     unset($_COOKIE[$key]);
     }
 
-  /*
+  /**
    * Gets a cookie
    *
    * @param string $key The array key that identificates the variable
-   * @param boolean/numeric $return_empty_undefined If true it returns an empty string if the variable doesn't exist
-   * @return string/boolean Returns the cookie or false/empty string
+   * @param bool|int $return_empty_undefined If true it returns an empty string if the variable doesn't exist
+   * @return string|bool Returns the cookie or false/empty string
    */
   public function get($key, $return_empty_undefined = 0)
     {

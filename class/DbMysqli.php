@@ -3,7 +3,7 @@
  * KWF Class: DbMysqli (MySQL Improved), establish connection, makes queries to the database and returns data
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2013-01-18
  * @version 1.3
  */
 
@@ -35,10 +35,10 @@ class DbMysqli extends Mysqli
       }
     }
 
-  /*
+  /**
    * Returns the only instance of this class (singleton)
    *
-   * @return object(db_mysqli) Instance of class db_mysqli
+   * @return DbMysqli Instance of this class
    */
   static function getInstance()
     {
@@ -50,7 +50,7 @@ class DbMysqli extends Mysqli
     return self::$instance;
     }
 
-  /*
+  /**
    * Performs a query on the database
    *
    * @param string $query The query to ask, in SQL
@@ -62,12 +62,12 @@ class DbMysqli extends Mysqli
     return parent::query($query);
     }
 
-  /*
+  /**
    * Prepares and executes queries to database
    *
    * @param string $query The query to ask, in SQL
    * @param string $types The types of the corresponding arguments in $args
-   * @param array(string) $args An array of arguments that should be merged into the query. Every ? is replaced by a arg
+   * @param string[] $args An array of arguments that should be merged into the query. Every ? is replaced by a arg
    * @return bool True on success, false on failure
    */
   public function exec($query, $types = '', $args = array())
@@ -114,12 +114,12 @@ class DbMysqli extends Mysqli
     return ($this->statement->execute() ? true : false);
     }
 
-  /*
+  /**
    * Fetches all rows in the result set and returns them in an array as objects
    *
    * @param string $class_name A string specifing a class to instantiate (stdClass if empty)
-   * @param array $params An optional array of parameters to pass to $class_name class
-   * @return array(object) An array contaning the resulting data of the asked question
+   * @param mixed[] $params An optional array of parameters to pass to $class_name class
+   * @return object[] An array contaning the resulting data of the asked question
    */
   public function fetchAll($class_name = null, $params = null)
     {
@@ -138,12 +138,12 @@ class DbMysqli extends Mysqli
     return $arr_result;
     }
 
-  /*
+  /**
    * Fetches only ONE row in the result set and returns it as an object
    *
    * @param string $class_name A string specifing a class to instantiate (stdClass if empty)
-   * @param array $params An optional array of parameters to pass to $class_name class
-   * @return array(object) The resulting data of the asked question
+   * @param mixed[] $params An optional array of parameters to pass to $class_name class
+   * @return object[] The resulting data of the asked question
    */
   public function fetch($class_name = null, $params = null)
     {

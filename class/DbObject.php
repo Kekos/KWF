@@ -3,7 +3,7 @@
  * KWF Class: DbObject, the generalized database object class. Must be extended
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-08-21
+ * @date 2013-01-18
  * @version 2.3
  */
 
@@ -18,7 +18,7 @@ abstract class DbObject
     return array("\0DbObject\0_edited");
     }
 
-  /*
+  /**
    * Setter for object's properties. For internal use by db_objects.
    * Makes sure that property changes gets saved into database
    *
@@ -34,7 +34,7 @@ abstract class DbObject
       }
     }
 
-  /*
+  /**
    * Getter for object's protected properties
    *
    * @param string $name Name of property
@@ -45,7 +45,7 @@ abstract class DbObject
     return $this->$name;
     }
 
-  /*
+  /**
    * Creates an UPDATE query (only the SET part)
    *
    * @return string The SET part of an UPDATE SQL query
@@ -62,7 +62,7 @@ abstract class DbObject
     return implode(', ', $query);
     }
 
-  /*
+  /**
    * Creates an INSERT query (only the fields and VALUES part)
    *
    * @return string The fields and VALUES part of an INSERT SQL query
@@ -81,10 +81,10 @@ abstract class DbObject
     return '(' . implode(', ', $query_fields) . ') VALUES (' . implode(', ', $query_values) . ')';
     }
 
-  /*
+  /**
    * Returns the values of changed properties
    *
-   * @return array(mixed) Array of changed properties
+   * @return mixed[] Array of changed properties
    */
   protected function _getEdited()
     {
@@ -98,7 +98,7 @@ abstract class DbObject
     return $values;
     }
 
-  /*
+  /**
    * Returns a string with type definitions of changed properties
    *
    * @return string String with a 's' for every changed property
@@ -108,21 +108,17 @@ abstract class DbObject
     return str_repeat('s', count($this->_edited));
     }
 
-  /*
+  /**
    * Restores the internal counter for changed properties
-   *
-   * @return void
    */
   protected function _restoreEdited()
     {
     $this->_edited = array();
     }
 
-  /*
+  /**
    * Populates the object's properties with values from array
    * Shouldn't be used with MySQLi (Improved) because it has this funtionality built-in
-   *
-   * @return void
    */
 	protected function _populate($array)
     {

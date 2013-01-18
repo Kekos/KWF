@@ -3,7 +3,7 @@
  * KWF Class: Router, finds out which page that should be used according to the given URL route
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-30
+ * @date 2013-01-18
  * @version 2.1
  */
 
@@ -13,13 +13,12 @@ class Router
   private $request;
   private $page_model;
 
-  /*
+  /**
    * Constructor: router
    *
    * @param string $route The unparsed complete route that produced the request
-   * @param object $request The request object that created the instance
+   * @param Request $request The request object that created the instance
    * @param object $page_model The page model object to get page data from
-   * @return void
    */
   public function __construct($route, $request, $page_model)
     {
@@ -39,10 +38,10 @@ class Router
       }
     }
 
-  /*
+  /**
    * Get the page
    *
-   * @return object The page object that will run the controllers
+   * @return Page The page object that will run the controllers
    */
   public function getPage()
     {

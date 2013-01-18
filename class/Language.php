@@ -3,7 +3,7 @@
  * KWF Class: Language, handles language loading
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-08-02
+ * @date 2013-01-18
  * @version 1.0
  */
 
@@ -14,13 +14,12 @@ class Language
   static $save_session = false;
   static $default_lang = 'en';
 
-  /*
+  /**
    * Configures the Language object for current context
    *
    * @param string $request The request object, to read Server variables from and getting the session model from
    * @param bool $save_session True if this class should save the language selection in a session
    * @param string $default_lang The default language
-   * @return void
    */
   static function configure($request, $save_session, $default_lang)
     {
@@ -29,11 +28,9 @@ class Language
     self::$default_lang = $default_lang;
     }
 
-  /*
+  /**
    * Sets current language variable by reading the HTTP Accept-Language header
    * You must call configue() first!
-   *
-   * @return void
    */
   static function acceptHeader()
     {
@@ -64,11 +61,9 @@ class Language
     self::set($language);
     }
 
-  /*
+  /**
    * Sets current language variable from session variables
    * You must call configue() first!
-   *
-   * @return void
    */
   static function fromSession()
     {
@@ -82,11 +77,10 @@ class Language
     self::set($language);
     }
 
-  /*
+  /**
    * Sets current language variable and loads the "common" language file
    *
    * @param string $language The name of language to load
-   * @return void
    */
   static function set($language)
     {
@@ -106,12 +100,11 @@ class Language
       }
     }
 
-  /*
+  /**
    * Loads new language domain
    *
    * @param string $domain The language domain to load
    * @param string $override_language Optional. Specifies an other language code than is set in Language
-   * @return void
    */
   static function load($domain, $override_language = null)
     {

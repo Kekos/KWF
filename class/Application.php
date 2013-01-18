@@ -3,7 +3,7 @@
  * KWF Class: Application, caches data common for the whole application
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-08-23
+ * @date 2013-01-18
  * @version 1.0
  */
 
@@ -48,10 +48,10 @@ class Application
       }
     }
 
-  /*
+  /**
    * Returns the only instance of this class (singleton)
    *
-   * @return Instance of class Application
+   * @return Application Instance of class Application
    */
   static function getInstance()
     {
@@ -63,12 +63,11 @@ class Application
     return self::$instance;
     }
 
-  /*
+  /**
    * Sets an application variable
    *
    * @param string $key The array key that identificates the variable
    * @param string $value Value to store in variable
-   * @return void
    */
   public function set($key, $value)
     {
@@ -76,11 +75,10 @@ class Application
     $this->is_changed = true;
     }
 
-  /*
+  /**
    * Deletes an application variable
    *
    * @param string $key The array key that identificates the variable
-   * @return void
    */
   public function delete($key)
     {
@@ -88,12 +86,12 @@ class Application
     $this->is_changed = true;
     }
 
-  /*
+  /**
    * Gets an application variable
    *
    * @param string $key The array key that identificates the variable
-   * @param boolean/numeric $return_empty_undefined If true it returns an empty string if the variable doesn't exist
-   * @return string/boolean Returns the application variable or false/empty string
+   * @param bool|int $return_empty_undefined If true it returns an empty string if the variable doesn't exist
+   * @return string|bool Returns the application variable or false/empty string
    */
   public function get($key, $return_empty_undefined = 0)
     {

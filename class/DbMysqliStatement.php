@@ -5,7 +5,7 @@
  * Only used when MySQL Native Driver is not present
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2013-01-18
  * @version 1.1
  */
 
@@ -21,12 +21,11 @@ class DbMysqliStatement
     $this->query = $query;
     }
 
-  /*
+  /**
    * Binds arguments to placeholders (NB: it doesn't support the b (blob) type)
    *
    * @param string $types The types of the corresponding arguments in $args
-   * @param string $arg ... $argN The arguments 
-   * @return void
+   * @param mixed $arg,... $argN The arguments 
    */
   public function bind_param()
     {
@@ -76,7 +75,7 @@ class DbMysqliStatement
       }
     }
 
-  /*
+  /**
    * Executes "prepared" queries to database
    *
    * @return bool True
@@ -93,7 +92,7 @@ class DbMysqliStatement
     return true;
     }
 
-  /*
+  /**
    * Returns the result object returned from last query
    *
    * @return MySQLi_Result The result object

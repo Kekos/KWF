@@ -3,7 +3,7 @@
  * KWF Class: View, loads and compiles the template set by a controller
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
+ * @date 2013-01-18
  * @version 3.1
  */
 
@@ -12,11 +12,10 @@ class View
   private $template;
   private $data = array();
 
-  /*
-   * Constructor: view
+  /**
+   * Constructor: View
    *
    * @param string $template The name of template, without paths and extensions. Error will be thrown if the template is missing
-   * @return void
    */
   public function __construct($template, $data = array())
     {
@@ -34,7 +33,7 @@ class View
     $this->data = $data;
     }
 
-  /*
+  /**
    * Starts output buffering, requires the template file and then returns the output made and cleans the buffer
    *
    * @param string $route Contains the route to page which started the calling controller

@@ -3,7 +3,7 @@
  * KWF Class: Response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-11-09
+ * @date 2013-01-18
  * @version 4.0
  */
 
@@ -26,11 +26,10 @@ class Response
     $this->request = $request;
     }
 
-  /*
+  /**
    * Adds a error message to error-array
    *
-   * @param array(string)/string $msg A string describing the error, or a array containing such strings
-   * @return void
+   * @param string[]|string $msg A string describing the error, or a array containing such strings
    */
   public function addError($msg)
     {
@@ -44,11 +43,10 @@ class Response
       }
     }
 
-  /*
+  /**
    * Adds a info message to info-array
    *
-   * @param array(string)/string $msg A string describing the info, or a array containing such strings
-   * @return void
+   * @param string[]|string $msg A string describing the info, or a array containing such strings
    */
   public function addInfo($msg)
     {
@@ -62,11 +60,10 @@ class Response
       }
     }
 
-  /*
+  /**
    * Adds a error message to form error-array
    *
-   * @param array(string)/string $msg A string describing the error, or a array containing such strings
-   * @return void
+   * @param string[]|string $msg A string describing the error, or a array containing such strings
    */
   public function addFormError($msg)
     {
@@ -80,11 +77,10 @@ class Response
       }
     }
 
-  /*
+  /**
    * Echoes a <span> containing a form error message
    *
    * @param string $element The name of form element to return error message for
-   * @return void
    */
   static function getFormError($element)
     {
@@ -96,12 +92,11 @@ class Response
     echo "\n";
     }
 
-  /*
+  /**
    * Defines the HTTP response content type of the output. Must be the same through the whole
    * request, else an error will be thrown
    *
    * @param string $content_type Can be one of the predefined short hand values, or a real content-type value
-   * @return void
    */
   public function setContentType($content_type)
     {
@@ -153,18 +148,17 @@ class Response
       }
     }
 
-  /*
+  /**
    * Adds content to the HTTP response output
    *
    * @param string $content The content to be appended to the output
-   * @return void
    */
   public function addContent($content)
     {
     $this->content_data .= $content;
     }
 
-  /*
+  /**
    * Get all of the content body that should be outputted. Sets the content type of response
    * If it is a AJAX request (or a non-layout response like RSS feed), the layout file is omitted
    *
@@ -237,11 +231,10 @@ class Response
       }
     }
 
-  /*
+  /**
    * Redirects the browser to a different URL, then ends all output
    *
    * @param string $url The URL to redirect the browser to
-   * @return void
    */
   public function redirect($url)
     {
