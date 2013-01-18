@@ -280,21 +280,17 @@ function logMsg($class, $what)
   }
 
 /**
- * Saves an file uploaded with the old AJAX uploader. Do not use!
+ * Saves an file uploaded with the old AJAX uploader. Will throw exception  
  *
  * @depracted
+ * @throws Exception to notify developers that it's depracted
  * @param resource $source_stream The file stream
  * @param string $destination_name Destination file name
  * @return int The number of bytes written
  */
 function move_ajax_uploaded_file($source_stream, $destination_name)
   {
-  if (!$new_file = fopen($destination_name, 'w'))
-    return false;
-
-  $bytes = stream_copy_to_stream($source_stream, $new_file);
-  fclose($new_file);
-  return $bytes;
+  throw new Exception('Use of depracted method move_ajax_uploaded_file!');
   }
 
 /**
