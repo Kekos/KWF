@@ -3,7 +3,7 @@
  * KWF Class: Request, handles the request of the document, like POST, AJAX, cookies and sessions
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
+ * @date 2013-01-19
  * @version 3.1
  */
 
@@ -82,9 +82,9 @@ class Request
 
   /**
    * Get a FILE file, uploaded through a classic form or with the KWF AJAX functions.
-   * If it is uploaded through AJAX, the array returned from this function will 
-   * have an "ajax" key set together with a "stream" key containing the stream 
-   * to the uploaded temporary file.
+   *
+   * If the file element is multidimensional this function changes place of the
+   * two dimensions, so it can be used the same way as POST arrays.
    *
    * @param string $key The array key that identificates the file
    * @return bool|string[] Returns the FILE file info or false
