@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-12-30
+ * @date 2013-01-19
  * @version 4.0
  */
 
@@ -1015,7 +1015,6 @@ Boxing = (function()
 
     overlayer.id = 'boxing-overlayer';
     doc.body.appendChild(overlayer);
-    giveOpacity(overlayer, 60);
 
     addEvent(overlayer, 'click', hide);
     addEvent(doc, 'keyup', keys);
