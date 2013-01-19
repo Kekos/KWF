@@ -279,15 +279,11 @@ function replaceClass(element, old_classname, new_classname)
 /**
  * Gives opacity for an element in Internet Explorer (using Alpha filter)
  * @method giveOpacity
- * @param {HTMLElement} element Element to give opacity
- * @param {Number} value Opacity value
+ * @depracted
  */
-function giveOpacity(element, value)
+function giveOpacity()
   {
-  if (typeof element.filters === 'object')
-    {
-    element.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(opacity=' + value + ')';
-    }
+  alert('Use of depracted method giveOpacity()');
   }
 
 /**
