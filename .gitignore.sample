@@ -1,4 +1,5 @@
 #Ignore KWF
+class/Application.php
 class/Controller.php
 class/Cookie.php
 class/Db.php
