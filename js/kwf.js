@@ -1327,14 +1327,20 @@ Kwf = {
     },
 
   /**
-	 * Inserts info messages HTML from the infoHandler into content <div>
+	 * Inserts info messages HTML from the infoHandler into content <div> or to
+   * another context given as argument
 	 * @method insertInfo
    * @public
    * @param {Object} page The response.page object
+   * @param {HTMLElement} [context] The context element to use instead of #content
 	 */
-  insertInfo: function(page)
+  insertInfo: function(page, context)
     {
-    var context = elem('content');
+    if (!context)
+      {
+      context = elem('content');
+      }
+
     context.insertBefore(toDOMnode(Kwf.infoHandler(page)), context.firstChild);
     },
 
