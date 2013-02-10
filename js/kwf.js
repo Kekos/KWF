@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-19
- * @version 4.0
+ * @date 2013-01-31
+ * @version 4.1
  */
 
 /**
@@ -696,7 +696,7 @@ var Ajax = (function()
       else
         {
         form_data = new FormData();
-        key_name = file_elem.name + (file_elem.files.length > 0 ? '[]' : '');
+        key_name = file_elem.name + (file_elem.files.length > 1 ? '[]' : '');
 
         for (i = 0; i < file_elem.files.length; i++)
           {
