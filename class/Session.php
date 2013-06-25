@@ -1,10 +1,10 @@
 <?php
 /**
- * KWF Class: Session, keeps track of all sessions and adds a little more security to sessions
+ * KWF Class: Session, just an object oriented interface for standard PHP session handling
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 2.1
+ * @date 2013-02-17
+ * @version 2.2
  */
 
 class Session
