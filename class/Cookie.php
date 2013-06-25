@@ -1,10 +1,10 @@
 <?php
 /**
- * KWF Class: Cookie, keeps track of all cookies
+ * KWF Class: Cookie, just an object oriented interface for standard PHP cookie handling
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 2.0
+ * @date 2013-02-17
+ * @version 2.1
  */
 
 class Cookie
