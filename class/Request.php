@@ -173,16 +173,24 @@ class Request
    * @param string $compare A value to compare with the posted value, used with radio, checkbox or select
    * @return string HTML for forms
    */
-  static function formState($type, $value, $compare)
+  private static function formState($type, $value, $compare)
     {
     if ($type == 'text')
+      {
       return ' value="' . $value . '"';
+      }
     else if (($type == 'radio' || $type == 'checkbox') && $value == $compare)
+      {
       return ' checked="checked"';
+      }
     else if ($type == 'textarea')
+      {
       return $value;
+      }
     else if ($type == 'select' && $value == $compare)
+      {
       return ' selected="selected"';
+      }
     }
   }
 ?>
