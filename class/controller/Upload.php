@@ -64,15 +64,17 @@ class Upload extends Controller
     $files = $this->request->file('file');
     $file_names = array();
 
-    if (!is_array($files))
+    if (isset($files['name']))
       {
       $files = array($files);
       }
 
     foreach ($files as $file)
       {
-      move_uploaded_file($file['tmp_name'], 'uploads/' . $file['name']);
-      $file_names[] = $file['name'];
+      if (@move_uploaded_file($file['tmp_name'], 'uploads/' . $file['name']))
+        {
+        $file_names[] = $file['name'];
+        }
       }
 
     if ($this->request->ajax_request)
@@ -87,6 +89,8 @@ class Upload extends Controller
           'action' => 'upload'), 
         $view_collection);
       }
+
+    $this->response->addInfo(__('UPLOAD_INFO_UPLOADED', implode(', ', $file_names)));
     }
 
   public function run()
