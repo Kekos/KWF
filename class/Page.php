@@ -3,15 +3,14 @@
  * KWF Class: Page, runs all controllers that is defined to be run in the page
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 4.0
+ * @date 2013-02-17
+ * @version 5.0
  */
 
 class Page
   {
   private $model;
   private $request;
-  private $stop_rendering = false;
 
   public $response;
   public $page = false;
@@ -66,9 +65,6 @@ class Page
       $function = '_default';
       }
 
-    // Reset flag to prevent infinite loop
-    $this->stop_rendering = false;
-
     foreach ($this->model->getControllers($use_route) as $controller)
       {
       $controller_name =  (is_object($controller) ? $controller->name : $controller['name']);
@@ -78,8 +74,6 @@ class Page
       if (method_exists($controller_obj, 'before'))
         {
         $this->callControllerFunction($controller_obj, 'before', $default_args);
-        if ($this->stop_rendering)
-          break;
         }
 
       if (method_exists($controller_obj, $function))
@@ -91,23 +85,13 @@ class Page
         $this->callControllerFunction($controller_obj, '_default', $default_args);
         }
 
-      if ($this->stop_rendering)
-        break;
-
       if (method_exists($controller_obj, 'after'))
         {
         $this->callControllerFunction($controller_obj, 'after', $default_args);
-        if ($this->stop_rendering)
-          break;
         }
 
       $controller_obj->run();
       }
-
-    // If stop_rendering flag is set: restart rendering since a route redirect occured
-    if ($this->stop_rendering)
-      {
-      $this->restartRendering();
       }
     }
 
@@ -121,37 +105,6 @@ class Page
   private function callControllerFunction($controller, $function, $args)
     {
     call_user_func_array(array($controller, $function), $args);
-    }
-
-  /**
-   * Makes an internal redirect to another route in this application.
-   * Kills current page rendering
-   *
-   * @param string $route The new route to redirect to
-   * @return bool Always false
-   */
-  public function routeRedirect($route)
-    {
-    // First, save the current route in request object
-    $this->request->redirect_params = $this->request->params;
-
-    // Create a new router that can process this "request"
-    $router = new Router($route, $this->request, $this->model);
-    $this->stop_rendering = true;
-    $this->page = false;
-
-    return false;
-    }
-
-  /**
-   * Restarts a rendering after a route redirect occured
-   *
-   * @return bool Always false
-   */
-  public function restartRendering()
-    {
-    $this->runControllers();
-    return false;
     }
 
   /**
