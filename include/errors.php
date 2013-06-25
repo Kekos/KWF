@@ -3,8 +3,8 @@
  * KWF Functions: error handling
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-30
- * @version 3.1
+ * @date 2013-06-08
+ * @version 5.0
  */
 
 if (!defined('BASE'))
@@ -46,12 +46,12 @@ function errorHandle($nr, $string, $file, $row, $context)
 
   if (DEBUG)
     {
-    new error_response(ERROR_LAYOUT, 'error_debug', $error_type, $data);
+    new ErrorResponse(ERROR_LAYOUT, 'error_debug', $error_type, $data);
     }
   else
     {
     errorLog($error_type, $string, $file, $row, $error_trace, $error_hash);
-    new error_response(RESPONSE_LAYOUT, 'error_user', 'Internt serverfel', $data);
+    new ErrorResponse(RESPONSE_LAYOUT, 'error_user', 'Internt serverfel', $data);
     }
   }
 
@@ -63,13 +63,13 @@ function exceptionHandle($exception_obj)
 
   if (DEBUG)
     {
-    new error_response(ERROR_LAYOUT, 'exception_debug', 'Exception', $data);
+    new ErrorResponse(ERROR_LAYOUT, 'exception_debug', 'Exception', $data);
     }
   else
     {
     errorLog('Exception', $exception_obj->getMessage(), $exception_obj->getFile(), 
       $exception_obj->getLine(), $exception_obj->getTrace(), $error_hash);
-    new error_response(RESPONSE_LAYOUT, 'error_user', 'Internt serverfel', $data);
+    new ErrorResponse(RESPONSE_LAYOUT, 'error_user', 'Internt serverfel', $data);
     }
   }
 
@@ -88,16 +88,10 @@ function errorLog($error_type, $string, $file, $row, $error_trace, $error_hash)
   file_put_contents(ERROR_LOG_PATH . BASE . 'error.log', $text . "---------------------------------------------------------------------------------\n", FILE_APPEND);
   }
 
-class error_response
+class ErrorResponse
   {
-  private $title = '';
-  private $error_messages = array();
-  private $info_messages = array();
-  private $content_data = '';
-
   public function __construct($layout, $view, $title, $data)
     {
-    $this->title = $title;
     ob_end_clean();
 
     $ajax_request = false;
@@ -115,17 +109,19 @@ class error_response
 
     header('Content-Type: ' . $content_type . '; charset=utf-8');
 
-    $view = new View($view, $data);
-    $this->content_data = $view->compile();
+    $view = new HTMLView($view, $data);
+    $content_data = $view->compile();
+    $error_messages = array();
+    $info_messages = array();
 
     if (!$ajax_request)
       {
       ob_start();
-      require(BASE . $layout);
+      require(BASE . 'view/' . $layout . '.phtml');
       }
     else
       {
-      echo $this->content_data;
+      echo $content_data;
       }
 
     die();
