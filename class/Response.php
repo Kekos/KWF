@@ -178,7 +178,6 @@ class Response
 
         if (count($this->error_messages))
           {
-          header('X-ajax-error: true');
           $resp['errors'] = $this->error_messages;
           }
 
