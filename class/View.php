@@ -1,36 +1,37 @@
 <?php
 /**
- * KWF Class: View, loads and compiles the template set by a controller
+ * KWF Class: View, parent class for views, this must be extended
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 3.1
+ * @date 2013-02-17
+ * @version 1.0
  */
 
-class View
+abstract class View
   {
-  private $template;
-  private $data = array();
+  protected $template;
+  protected $content_type;
+  protected $data = array();
 
   /**
-   * Constructor: View
+   * Returns the content type
    *
-   * @param string $template The name of template, without paths and extensions. Error will be thrown if the template is missing
+   * @return string The content type
    */
-  public function __construct($template, $data = array())
+  public function getContentType()
     {
-    $this->template = BASE . 'view/' . $template . '.phtml';
-    if (!file_exists($this->template))
-      {
-      throw new Exception('Template file "' . $this->template . '" is missing');
-      }
+    return $this->content_type;
+    }
 
-    if (!is_array($data))
-      {
-      throw new Exception('Incorrect data type passed to view. Must be an array.');
-      }
-
-    $this->data = $data;
+  /**
+   * Adds view data
+   *
+   * @param string $key Data variable name
+   * @param mixed $new_data Data to add
+   */
+  public function addData($key, $new_data)
+    {
+    $this->data[$key] = $new_data;
     }
 
   /**
@@ -40,16 +41,6 @@ class View
    * @param string $params Contains the params sent to page which started the calling controller
    * @return string The output data
    */
-  public function compile($route = '', $params = '')
-    {
-    /* Extract data variables array to this scope, it looks better in template files */
-    extract($this->data, EXTR_SKIP);
-    $this->data = null;
-
-    /* Start output buffer this template and return its output */
-    ob_start();
-    require($this->template);
-    return ob_get_clean();
-    }
+  abstract public function compile();
   }
 ?>
