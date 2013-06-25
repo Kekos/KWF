@@ -3,8 +3,8 @@
  * KWF Controller: Index
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-25
- * @version 2.3
+ * @date 2013-03-17
+ * @version 3.0
  */
 
 class Index extends Controller
@@ -18,15 +18,15 @@ class Index extends Controller
 
   public function _default()
     {
-    $this->view = new view('index');
+    $this->view = new HTMLView('index');
     #$this->response->addInfo(__('HOME_INFO_COOKIE_IS', $this->request->cookie->get('kwf_cookie')));
 
-    #$this->db = db_mysqli::getInstance();
+    #$this->db = DbMysqli::getInstance();
     }
 
   public function set($value)
     {
-    $this->view = new view('index');
+    $this->view = new HTMLView('index');
 
     if (strlen($value) > 0)
       {
@@ -37,7 +37,7 @@ class Index extends Controller
 
   public function delete()
     {
-    $this->view = new view('index');
+    $this->view = new HTMLView('index');
 
     $this->request->cookie->delete('kwf_cookie', '/');
     $this->response->addInfo(__('HOME_INFO_COOKIE_DELETE'));
@@ -70,7 +70,6 @@ class Index extends Controller
     {
     if ($this->view != null)
       {
-      $this->response->setContentType('html');
       $this->response->addContent($this->view->compile($this->route, $this->params));
       }
     }

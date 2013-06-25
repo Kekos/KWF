@@ -3,8 +3,8 @@
  * KWF Controller: Contact
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-07-24
- * @version 3.0
+ * @date 2013-03-01
+ * @version 3.1
  */
 
 class Contact extends Controller
@@ -13,7 +13,7 @@ class Contact extends Controller
     {
     Language::load('pages');
 
-    $this->view = new view('contact');
+    $this->view = new HTMLView('contact');
     if ($this->request->post('send'))
       {
       $this->sendMail();
@@ -36,16 +36,16 @@ class Contact extends Controller
 
     if (!count($errors))
       {
-      $this->response->addInfo(__('CONTACT_INFO_SENT'));
+      $this->view = new HTMLView('contact-sent');
       }
     else
       {
       $this->response->addFormError($errors);
-      }
 
-    if ($this->request->ajax_request)
-      {
-      $this->view = null;
+      if ($this->request->ajax_request)
+        {
+        $this->view = null;
+        }
       }
     }
 
@@ -53,7 +53,6 @@ class Contact extends Controller
     {
     if ($this->view != null)
       {
-      $this->response->setContentType('html'); // The controller MUST set the content type
       $this->response->addContent($this->view->compile($this->route, $this->params));
       }
     }

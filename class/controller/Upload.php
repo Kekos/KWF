@@ -3,13 +3,13 @@
  * KWF Controller: Upload
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-12-30
- * @version 1.2
+ * @date 2013-05-07
+ * @version 3.0
  */
 
 class Upload extends Controller
   {
-  private $data = array('form' => true, 'list' => true, 'footer' => true);
+  private $action = false;
 
   public function before()
     {
@@ -21,11 +21,14 @@ class Upload extends Controller
     if ($this->request->file('file'))
       {
       $this->doUpload();
-      $this->showListOnly();
+      $this->action = true;
       }
 
-    $this->data['uploads'] = scandir('uploads/');
-    $this->setUploadView();
+    if (!($this->action && $this->request->ajax_request))
+      {
+      $data['uploads'] = scandir('uploads/');
+      $this->view = new HTMLView('upload', $data);
+      }
     }
 
   public function remove($file)
@@ -33,15 +36,27 @@ class Upload extends Controller
     if (file_exists('uploads/' . $file))
       {
       unlink('uploads/' . $file);
+
       $this->response->addInfo(__('UPLOAD_INFO_DELETED', $file));
+      if ($this->request->ajax_request)
+        {
+        $this->view = new JsonView(array('controller' => 'UploadController', 
+          'action' => 'remove', 
+          'file' => $file));
+        }
       }
     else
       {
       $this->response->addError(__('UPLOAD_ERROR_DELETE', $file));
       }
 
-    $this->showListOnly();
+    $this->action = true;
     $this->_default();
+    }
+
+  public function datetime()
+    {
+    $this->view = new JsonView(array('datetime' => __('UPLOAD_LAST_UPDATE', date(__('DATETIME_FORMAT') . ':s'))));
     }
 
   private function doUpload()
@@ -60,20 +75,17 @@ class Upload extends Controller
       $file_names[] = $file['name'];
       }
 
-    $this->response->addInfo(__('UPLOAD_INFO_UPLOADED', implode(', ', $file_names)));
-    }
-
-  private function setUploadView()
-    {
-    $this->view = new View('upload', $this->data);
-    }
-
-  private function showListOnly()
-    {
     if ($this->request->ajax_request)
       {
-      $this->data['form'] = false;
-      $this->data['footer'] = false;
+      $view_collection = array();
+      foreach ($file_names as $file)
+        {
+        $view_collection[] = new HTMLView('uploaded-file', array('file' => $file));
+        }
+
+      $this->view = new JsonViewsCollection(array('controller' => 'UploadController', 
+          'action' => 'upload'), 
+        $view_collection);
       }
     }
 
@@ -81,7 +93,6 @@ class Upload extends Controller
     {
     if ($this->view != null)
       {
-      $this->response->setContentType('html'); // The controller MUST set the content type
       $this->response->addContent($this->view->compile($this->route, $this->params));
       }
     }
