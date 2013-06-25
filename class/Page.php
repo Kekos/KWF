@@ -9,71 +9,70 @@
 
 class Page
   {
-  private $model;
-  private $request;
+  public $title = '';
+  public $route = '';
+  public $controllers = array();
+  public $view = null;
 
-  public $response;
-  public $page = false;
+  private $response = null;
+  private $arguments = array();
 
   /**
-   * Constructor: page
+   * Sets the controller arguments
    *
-   * @param object $model The page model object to get page data from
-   * @param Request $request The request object that created the instance
+   * @param string[] $args The arguments
    */
-  public function __construct($model, $request)
+  public function setArguments($args)
     {
-    $this->model = $model;
-    $this->request = $request;
-    $this->response = new Response($this->request);
+    $this->arguments = $args;
     }
 
   /**
    * Runs all controllers within the page
+   * Creates the Response
+   *
+   * @param Request $request The request object that created the instance
    */
-  public function runControllers()
+  public function runControllers($request)
     {
-    $max_param = count($this->request->params);
-    while ($this->page == false && $max_param > 0)
+    // Get the page view (which controllers' view will go into)
+    // The page view can be specified with 'DEFAULT_VIEW', then we will create
+    // that object now
+    if ($this->view == 'DEFAULT_VIEW')
       {
-      $use_route = implode('/', array_slice($this->request->params, 0, $max_param));
-      $this->page = $this->model->getPage($use_route);
-      --$max_param;
+      $this->view = new HTMLView(RESPONSE_LAYOUT, array('title', $this->title));
       }
 
-    if (!$this->page)
-      {
-      $use_route = '404';
-      $this->page = $this->model->getPage($use_route);
-      if (!$this->page)
-        {
-        throw new Exception('The page "' . $use_route . '" could not be found. Additionally, the internal 404 page does not exist.');
-        }
-      }
+    $this->response = new Response($request, $this->view);
+    $this->response->title = $this->title;
 
-    $this->response->title = (is_object($this->page) ? $this->page->title : $this->page['title']);
+    $args = $this->arguments;
+    $params_str = implode('/', $args);
 
-    $args = array_slice($this->request->params, $max_param + 1);
-    $default_args = $args;
-    if (count($args))
+    // If there are arguments, let the first argument specify the function
+    if (count($args) > 0)
       {
-      $function = $args[0];
-      unset($args[0]);
+      $function = array_shift($args);
       }
+    // Or else, let it be the default function
     else
       {
       $function = '_default';
       }
 
-    foreach ($this->model->getControllers($use_route) as $controller)
+    // Iterate over the controller collection
+    foreach ($this->controllers as $controller)
       {
-      $controller_name =  (is_object($controller) ? $controller->name : $controller['name']);
-      $controller_obj = new $controller_name($this->request, $this->response, $this, 
-          $controller, $use_route, implode('/', $default_args));
+      // Get the controller name, but we can't assume $controller is an object
+      $controller_name = (is_object($controller) ? $controller->name : $controller['name']);
+
+      // Create Controller object
+      $controller_obj = new $controller_name($request, $this->response, $this, 
+          $controller, $this->route, $params_str);
 
       if (method_exists($controller_obj, 'before'))
         {
-        $this->callControllerFunction($controller_obj, 'before', $default_args);
+        $this->callControllerFunction($controller_obj, 'before', $this->arguments);
         }
 
       if (method_exists($controller_obj, $function))
@@ -82,16 +81,17 @@ class Page
         }
       else
         {
-        $this->callControllerFunction($controller_obj, '_default', $default_args);
+        $this->callControllerFunction($controller_obj, '_default', $this->arguments);
         }
 
       if (method_exists($controller_obj, 'after'))
         {
-        $this->callControllerFunction($controller_obj, 'after', $default_args);
+        $this->callControllerFunction($controller_obj, 'after', $this->arguments);
         }
 
+      // Run means compiling the controller's view or any other output
       $controller_obj->run();
-      }
+      $this->response->setContentType($controller_obj->getViewContentType());
       }
     }
 
