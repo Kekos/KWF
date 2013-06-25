@@ -394,4 +394,20 @@ function scriptLanguageExport()
     echo "};</script>\n";
     }
   }
+
+/**
+ * Echoes script tags for all scripts in js/app/ folder.
+ */
+function appScriptTags()
+  {
+  $js_directory = 'js/app';
+
+  foreach (scandir(BASE . $js_directory) as $file)
+    {
+    if ($file != '.' && $file != '..')
+      {
+      echo '  <script src="' . FULLPATH . '/' . $js_directory . '/' . $file . '"></script>' . "\n";
+      }
+    }
+  }
 ?>
