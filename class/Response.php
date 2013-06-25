@@ -254,13 +254,6 @@ class Response
    */
   public function redirect($url)
     {
-    if ($this->request->ajax_request)
-      {
-      /* This is a walk-around for a Firefox bug (when an AJAX request is 
-          redirected, the new request loses its previous sent headers) */
-      $this->request->session->set('was_ajax_request', true);
-      }
-
     header('Location: ' . $url);
     die();
     }
