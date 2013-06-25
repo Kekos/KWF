@@ -255,7 +255,7 @@ class Response
   public function redirect($url)
     {
     header('Location: ' . $url);
-    die();
+    die('Redirecting to <a href="' . $url . '">' . $url . '</a>');
     }
   }
 ?>
