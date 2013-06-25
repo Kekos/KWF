@@ -1,38 +1,30 @@
 <?php
 /**
- * KWF Model: PageModel
+ * KWF Model: PageModel, interface for retrieving Page objects and modifying them
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2012-06-12
- * @version 2.0
+ * @date 2013-02-17
+ * @version 3.0
  */
 
-class PageModel
+abstract class PageModel
   {
-  private $page = array();
-  private $controllers = array();
+  protected $page = null;
 
-  public function addController($controller, $content)
-    {
-    $this->controllers[] = array('name' => $controller, 'content' => $content);
-    }
+  /**
+   * Searches for a page with specified name and returns the it's Page object
+   *
+   * @param string $page_name Name of page to find
+   * @return Page The Page object (NULL if page not found)
+   */
+  abstract public function getPage($page_name);
 
-  public function getPage($page_name)
-    {
-    $this->page = array();
-    $this->controllers = array();
-
-    $page_file = BASE . 'pages/' . $page_name . '.php';
-    if (!file_exists($page_file))
-      {
-      return false;
-      }
-
-    require($page_file);
-
-    return $this->page;
-    }
-
+  /**
+   * Returns the $controllers collection
+   *
+   * @return string[][] Array of arrays of type 
+   *  {'name' => controller name, 'content' => controller content}
+   */
   public function getControllers()
     {
     return $this->controllers;
