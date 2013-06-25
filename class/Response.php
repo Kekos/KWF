@@ -3,8 +3,8 @@
  * KWF Class: Response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 4.0
+ * @date 2013-03-28
+ * @version 5.0
  */
 
 class Response
@@ -12,18 +12,20 @@ class Response
   static $form_messages = array();
 
   private $request;
+  private $view = null;
   private $content_type = null;
-  private $content_data;
+  private $content_data = '';
   private $error_messages = array();
   private $info_messages = array();
 
-  public $no_layout;
+  public $no_layout = false;
   public $title = '';
   public $data = array();
 
-  public function __construct($request)
+  public function __construct($request, $view)
     {
     $this->request = $request;
+    $this->view = $view;
     }
 
   /**
@@ -166,13 +168,10 @@ class Response
    */
   public function getContent()
     {
-    if (!file_exists(BASE . RESPONSE_LAYOUT))
-      {
-      throw new Exception('Layout file "' . RESPONSE_LAYOUT . '" is missing');
-      }
-
+    // First, handle AJAX requests specially
     if ($this->request->ajax_request)
       {
+      // ...but only if they have some kind of messages in response
       if (count($this->error_messages) || count($this->info_messages) || count(Response::$form_messages))
         {
         $resp = array('title' => $this->title, 'content' => $this->content_data);
@@ -212,22 +211,34 @@ class Response
         }
       }
 
-    if (empty($this->content_type))
-      $this->setContentType('html');
+    // If no content type has been set yet, let the Page view decide it
+    if ($this->view != null && empty($this->content_type))
+      {
+      $this->setContentType($this->view->getContentType());
+      }
 
+    // Send Content-Type header to client. Always assume we are using UTF-8
     header('Content-Type: ' . $this->content_type . '; charset=utf-8');
 
-    $data = &$this->data;
-
-    if ($this->request->ajax_request || $this->no_layout)
+    // AJAX responses OR if a controller requested the layout (page view) to 
+    // be omitted OR if no page view was set
+    if ($this->request->ajax_request || $this->no_layout || $this->view == null)
       {
+      // Send the content ONLY to client NOT the page view
       return $this->content_data;
       }
-    else
+    else if ($this->view != null)
       {
-      ob_start();
-      require(BASE . RESPONSE_LAYOUT);
-      return ob_get_clean();
+      // Add title and other data to view
+      $this->view->addData('title', $this->title);
+      $this->view->addData('params', $this->request->params);
+      $this->view->addData('error_messages', $this->error_messages);
+      $this->view->addData('info_messages', $this->info_messages);
+      $this->view->addData('content_data', $this->content_data);
+      $this->view->addData('data', $this->data);
+
+      // Compile the layout view
+      return $this->view->compile();
       }
     }
 
