@@ -3,41 +3,66 @@
  * KWF Class: Request, handles the request of the document, like POST, AJAX, cookies and sessions
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-19
- * @version 3.1
+ * @date 2013-02-16
+ * @version 4.0
  */
 
 class Request
   {
-  public $params = array();
-  public $redirect_params = array();
-  public $session;
-  public $cookie;
-  public $ajax_request = false;
+  private $params = array();
+  private $ajax_request = false;
+  private $session = null;
+  private $cookie = null;
 
   /**
    * Constructor: request
    *
+   * @param string $route The unparsed complete route that produced the request
    * @param Session $session The session object that will be used through the whole request
    * @param Cookie $cookie The cookie object that will be used through the whole request
    */
-  public function __construct($session, $cookie)
+  public function __construct($session, $cookie, $route)
     {
     $this->session = $session;
     $this->cookie = $cookie;
+    $this->params = explode('/', $route);
 
+    // Is this an AJAX request? Check in HTTP Header and in POST data (for 
+    // AJAX upload form <iframe>)
     if ($this->server('HTTP_X_AJAX_REQUEST') || $this->post('X-ajax-request'))
       {
       $this->ajax_request = true;
       }
 
-    if ($this->session->get('was_ajax_request'))
-      {
-      $this->ajax_request = true;
-      $this->session->delete('was_ajax_request');
-      }
-
     unset($_GET);
+    }
+
+  /**
+   * Getter for object's protected properties
+   *
+   * @param string $name Name of property
+   * @return mixed Value of requested property
+   */
+  public function __get($name)
+    {
+    return $this->$name;
+    }
+
+  /**
+   * Sets new route parameters array
+   *
+   * @param string[] $params The new parameters array
+   */
+  public function setParams($params)
+    {
+    if (is_array($params))
+      {
+      $this->params = $params;
+      }
+    else
+      {
+      throw new Exception('New parameters was not an array.');
+      }
     }
 
   /**
