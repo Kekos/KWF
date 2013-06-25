@@ -88,7 +88,7 @@ class Response
     {
     if (isset(Response::$form_messages[$element]))
       {
-      echo '<span class="form-error">' . Response::$form_messages[$element] . '</span>';
+      echo '<strong class="form-error">' . Response::$form_messages[$element] . '</strong>';
       }
 
     echo "\n";
