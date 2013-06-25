@@ -3,8 +3,8 @@
  * KWF Functions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 3.1
+ * @date 2013-06-14
+ * @version 4.0
  */
 
 /**
@@ -365,7 +365,7 @@ function langExport($key)
 
 /**
  * Echoes all exported language phrases in a <script> tag
- * Makes phrases available to JavaScript via the __() function.
+ * Makes phrases available to JavaScript via the K.__() function.
  */
 function scriptLanguageExport()
   {
@@ -379,13 +379,13 @@ function scriptLanguageExport()
     foreach ($lang_export as $lang)
       {
       echo ($i > 0 ? ', ' : '') . $lang . ": ";
-      if (is_array(__($lang)))
+      if (is_array(__($lang, '%s')))
         {
         echo "['" . implode("','", __($lang)) . "']";
         }
       else
         {
-        echo '"' . addslashes(__($lang)) . '"';
+        echo '"' . addslashes(__($lang, '%s')) . '"';
         }
 
       $i++;
