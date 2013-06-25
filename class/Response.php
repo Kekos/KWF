@@ -191,19 +191,25 @@ class Response
           $resp['form_errors'] = Response::$form_messages;
           }
 
+        // Let the inner content type be the one requested by the controllers
+        $resp['content_type'] = $this->content_type;
+
         if ($this->request->post('X-frame-upload'))
           {
-          $this->content_type = 'text/html'; // For iframe based AJAX file upload (IE tries to download this JSON otherwise)
-          $this->content_data = htmlspecialchars(json_encode($resp)); // Otherwise IE parses possible HTML in the response
+          // For iframe based AJAX file upload (IE tries to download this JSON otherwise)
+          $this->content_type = 'text/html';
+          // HTML encode, otherwise IE parses possible HTML in the response
+          $this->content_data = htmlspecialchars(json_encode($resp));
           }
         else
           {
-          $inner_content_type = $this->content_type;
+          // Let the comlete response content type be JSON, so it can be 
+          // parsed by the JavaScript library
           $this->content_type = 'application/json';
-          $resp['content_type'] = $inner_content_type;
           $this->content_data = json_encode($resp);
           }
         }
+      // Just a fallback if no content type has been set here
       else if (empty($this->content_type))
         {
         $this->content_type = 'text/plain';
