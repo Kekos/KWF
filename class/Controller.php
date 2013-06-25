@@ -3,7 +3,7 @@
  * KWF Class: Controller, the generalized controller class. Must be extended
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
+ * @date 2013-04-29
  * @version 4.0
  */
 
@@ -16,6 +16,7 @@ abstract class Controller
   protected $route;
   protected $params;
   protected $view;
+  protected $is_ajax_postback = false;
 
   /**
    * Constructor: controller
@@ -35,6 +36,28 @@ abstract class Controller
     $this->controller_data = $controller_data;
     $this->route = $route;
     $this->params = $params;
+
+    if ($request->ajax_request && count($_POST) > 0)
+      {
+      $this->is_ajax_postback = true;
+      }
+    }
+
+  /**
+   * Returns the View's content type
+   *
+   * @param string $params Contains the params sent to page which started this controller
+   */
+	public function getViewContentType()
+    {
+    if ($this->view != null)
+      {
+      return $this->view->getContentType();
+      }
+    else
+      {
+      return null;
+      }
     }
 
   /**
