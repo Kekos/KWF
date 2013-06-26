@@ -2,10 +2,170 @@
  * Your Site Style: site.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-05-30
- * @version 1.0
+ * @date 2013-03-31
+ * @version 2.0
  */
 
-@import 'kwf_global.min.css';
+@import 'kwf_global.css';
 
-/* Your style rules here */
+body
+  {
+  color: #555;
+  }
+
+#header, #content, #footer p
+  {
+  margin: 0 auto;
+  width: 900px;
+  }
+
+#ajax_loader
+  {
+  position: absolute;
+  margin-left: -50px;
+  padding: 10px;
+  width: 100px;
+  height: 20px;
+  top: 250px;
+  left: 50%;
+  z-index: 200;
+  background: #000 url('../images/loading.gif') no-repeat 10px 10px;
+  opacity: 0.7;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  font-size: 0.8em;
+  text-align: center;
+  color: #fff;
+  }
+
+/* Site Header */
+
+#header
+  {
+  height: 143px;
+  }
+
+#logo
+  {
+  float: left;
+  margin: 25px 20px;
+  width: 235px;
+  height: 93px;
+  background: url('../images/kwflogo.png') no-repeat;
+  text-indent: -9999px;
+  }
+
+/* Site Menu */
+
+#menu
+  {
+  float: left;
+  margin-top: 50px;
+  width: 625px;
+  text-align: right;
+  }
+
+#menu ul
+  {
+  margin: 0;
+  }
+
+#menu li
+  {
+  display: inline-block;
+  margin: 0;
+  padding-top: 12px;
+  line-height: 1;
+  }
+
+#menu a
+  {
+  padding: 5px 10px;
+  background: #fff;
+  border-bottom: 3px solid #eee;
+  font-size: 1.5em;
+  color: #696969;
+  text-decoration: none;
+  letter-spacing: -1px;
+  }
+
+#menu a:hover
+  {
+  border-bottom-color: #ffb900;
+  }
+
+/* Content */
+
+#content
+  {
+  font-size: 1.1em;
+  }
+
+html, body, td, th, input, button, select, textarea
+  {
+  font-family: Verdana, Arial, sans-serif;
+  }
+
+h1, h2, h3, legend
+  {
+  font-weight: normal;
+  letter-spacing: -1px;
+  }
+
+p, li
+  {
+  line-height: 1.5;
+  }
+
+.text-list
+  {
+  margin: 1%;
+  list-style-type: circle;
+  list-style-position: inside;
+  }
+
+ol.text-list
+  {
+  list-style-type: decimal;
+  }
+
+.text-list li { margin: 2px 1%; }
+.text-list li li { font-size: 1em; }
+
+a
+  {
+  color: #3969a6;
+  }
+
+/* Footer */
+
+#footer
+  {
+  padding: 20px 0;
+  margin-top: 45px;
+  background: #eee;
+  font-size: 1.1em;
+  }
+
+/* Forms */
+
+input, select, textarea
+  {
+  padding: 5px;
+  color: inherit;
+  max-width: 300px;
+  width: 55%;
+  }
+
+form label
+  {
+  line-height: 2.3;
+  }
+
+/* Boxing */
+
+#boxing-window
+  {
+  font-size: 1.1em;
+  }
