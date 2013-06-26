@@ -155,8 +155,15 @@ dt
 .right { float: right; }
 .clear { clear: both; }
 
-.phalf { width: 47%; }
-.pquarter { width: 22%; }
+.left-section, .half-section, .third-section, .two-thirds-section
+  {
+  float: left;
+  margin: 0 0.5%;
+  }
+
+.half-section { width: 48%; }
+.third-section { width: 32%; }
+.two-thirds-section { width: 65%; }
 
 /* Tables */
 
