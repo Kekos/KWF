@@ -2,13 +2,17 @@
  * KWF Style: kwf.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-04-13
- * @version 3.0
+ * @date 2013-03-31
+ * @version 4.0
  */
 
-@import 'kwf_global.css';
+@import 'kwf_global.min.css';
 
-html, body { background: #efefef; }
+html, body
+  {
+  background: #efefef;
+  font-family: Verdana, Arial, sans-serif;
+  }
 
 #error-wrapper
   {
