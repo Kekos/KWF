@@ -1,0 +1,4 @@
+      <li data-file="<?php echo $file; ?>">
+        <a href="<?php echo FULLPATH . '/uploads/' . $file; ?>"><?php echo $file; ?></a>
+        <a href="<?php echo urlModr($route, 'remove', $file); ?>" class="upload-remove">(<?php echo __('UPLOAD_DELETE'); ?>)</a>
+      </li>
