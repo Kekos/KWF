@@ -122,14 +122,29 @@ dt
   width: 20%;
   }
 
-#errorlist, #infolist
+#kwf_messages_view
   {
-  padding: 0 0.7em;
-  list-style-type: disc;
+  position: absolute;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 30%;
+  z-index: 999;
+  margin: 0;
+  opacity: 0.8;
   }
 
-#errorlist { background: #ffac8f; border: #b62f00 solid 1px; }
-#infolist { background: #ffeb8f; border: #b69500 solid 1px; }
+.kwf-error, .kwf-info
+  {
+  margin: 5px 0;
+  padding: 1em;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  }
+
+.kwf-error { background: #ffac8f; }
+.kwf-info { background: #ffeb8f; }
 
 .hide { display: none; }
 .show { display: block; }
