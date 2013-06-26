@@ -63,11 +63,6 @@ blockquote:before, blockquote:after, q:before, q:after
 
 /* Fonts */
 
-html, body, h1, h2, h3, h4, p, legend, td, th, input, button, select, textarea
-  {
-  font-family: Verdana, Arial, sans-serif;
-  }
-
 td, th, dt, dd, li
   {
   font-size: 0.7em;
@@ -78,7 +73,6 @@ td, th, dt, dd, li
 h1, h2, h3, legend
   {
   margin: 1%;
-  font-family: Verdana, sans-serif;
   font-weight: bold;
   }
 
