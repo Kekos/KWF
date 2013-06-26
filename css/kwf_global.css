@@ -2,7 +2,7 @@
  * KWF Style: kwf_global.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-19
+ * @date 2013-03-31
  * @version 4.0
  */
 
@@ -30,8 +30,6 @@ body
   background: white;
   }
 
-ol, ul { list-style: none; }
-
 table
   {
   border-collapse: collapse;
@@ -49,6 +47,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   {
   display: block;
   }
+
+ul, ol { list-style: none; }
 
 blockquote, q
   {
