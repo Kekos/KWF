@@ -23,8 +23,12 @@ $lang['UPLOAD_FILE'] = 'Fil';
 $lang['UPLOAD_SEND'] = 'Ladda upp';
 $lang['UPLOAD_HEADER_UPLOADED'] = 'Uppladdade filer';
 $lang['UPLOAD_DELETE'] = 'Ta bort';
+$lang['UPLOAD_DELETE_CONFIRM'] = 'Är du säker på att du vill ta bort filen %s?';
 $lang['UPLOAD_LAST_UPDATE'] = 'Senaste fullständiga sidladdning: %s';
 $lang['UPLOAD_INFO_DELETED'] = 'Tog bort filen %s';
 $lang['UPLOAD_ERROR_DELETE'] = 'Hittade inte filen %s';
 $lang['UPLOAD_INFO_UPLOADED'] = 'Du laddade upp filen %s';
+
+langExport('UPLOAD_DELETE');
+langExport('UPLOAD_DELETE_CONFIRM');
 ?>

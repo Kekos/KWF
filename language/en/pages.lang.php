@@ -23,8 +23,12 @@ $lang['UPLOAD_FILE'] = 'File';
 $lang['UPLOAD_SEND'] = 'Upload';
 $lang['UPLOAD_HEADER_UPLOADED'] = 'Uploaded files';
 $lang['UPLOAD_DELETE'] = 'Delete';
+$lang['UPLOAD_DELETE_CONFIRM'] = 'You are about to remove the file %s, are you sure?';
 $lang['UPLOAD_LAST_UPDATE'] = 'Last complete page reload: %s';
 $lang['UPLOAD_INFO_DELETED'] = 'Deleted the file %s';
 $lang['UPLOAD_ERROR_DELETE'] = 'Could not find the file %s';
 $lang['UPLOAD_INFO_UPLOADED'] = 'You uploaded the file %s';
+
+langExport('UPLOAD_DELETE');
+langExport('UPLOAD_DELETE_CONFIRM');
 ?>
