@@ -17,7 +17,6 @@ $lang['THOUSAND_POINT'] = ' ';
 $lang['HEADER_HOME'] = 'Hem';
 $lang['HEADER_CONTACT'] = 'Kontakt';
 $lang['HEADER_UPLOAD'] = 'Ladda upp fil';
-$lang['HEADER_REDIRECT'] = 'Testa intern omdirigering';
 $lang['HEADER_404'] = '404 - Sidan hittades inte';
 
 $lang['FOOTER_COPYRIGHT'] = 'Av %s, %s';
