@@ -1,13 +1,10 @@
   <h1><?php echo __('HEADER_HOME'); ?></h1>
 
-  <p><?php echo __('HOME_WELCOME'); ?> <a href="<?php echo urlModr('index', 'redirect'); ?>" id="load_contactform"><?php echo __('HOME_LOAD_CONTACT'); ?></a></p>
-  <!--<p><img src="<?php echo FULLPATH; ?>/images/ajax-loader.gif" />
-    <img src="<?php echo FULLPATH; ?>/images/address.png" />
-    <img src="<?php echo FULLPATH; ?>/images/favicon.ico" /></p>-->
+  <p><?php echo __('HOME_WELCOME'); ?> <a href="<?php echo urlModr('index', 'redirect'); ?>" class="boxing-context dim400x350"><?php echo __('HOME_LOAD_CONTACT'); ?></a></p>
 
   <h2><?php echo __('HOME_HEADER_LANGUAGE'); ?></h2>
 
-  <ul>
+  <ul class="text-list">
     <li><a href="<?php echo urlModr($route, 'language', 'sv'); ?>">Svenska</a></li>
     <li><a href="<?php echo urlModr($route, 'language', 'en'); ?>">English</a></li>
   </ul>
