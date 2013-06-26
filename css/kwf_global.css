@@ -234,7 +234,14 @@ form .description
   width: 30%;
   }
 
-.form-error { background: #ffac8f; }
+.form-error
+  {
+  display: block;
+  padding: 5px;
+  background: #ffac8f;
+  line-height: 1;
+  font-weight: normal;
+  }
 
 /* Boxing */
 
