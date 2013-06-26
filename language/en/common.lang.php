@@ -23,4 +23,17 @@ $lang['HEADER_404'] = '404 - The page could not be found';
 $lang['FOOTER_COPYRIGHT'] = 'By %s, %s';
 
 $lang['PAGE_404'] = 'The page you were looking for could not be found.';
+
+$lang['CLOSE'] = 'Close';
+$lang['OK'] = 'OK';
+$lang['YES'] = 'Yes';
+$lang['NO'] = 'No';
+$lang['AJAX_FAILURE_TITLE'] = 'Connection error';
+$lang['AJAX_FAILURE_DESC'] = 'The connection was lost. Try again!';
+langExport('CLOSE');
+langExport('OK');
+langExport('YES');
+langExport('NO');
+langExport('AJAX_FAILURE_TITLE');
+langExport('AJAX_FAILURE_DESC');
 ?>

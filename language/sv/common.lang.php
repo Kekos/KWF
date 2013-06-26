@@ -23,4 +23,17 @@ $lang['HEADER_404'] = '404 - Sidan hittades inte';
 $lang['FOOTER_COPYRIGHT'] = 'Av %s, %s';
 
 $lang['PAGE_404'] = 'Sidan du sökte efter hittades inte.';
+
+$lang['CLOSE'] = 'Stäng';
+$lang['OK'] = 'OK';
+$lang['YES'] = 'Ja';
+$lang['NO'] = 'Nej';
+$lang['AJAX_FAILURE_TITLE'] = 'Anslutningsfel';
+$lang['AJAX_FAILURE_DESC'] = 'Det gick inte att ansluta. Försök igen!';
+langExport('CLOSE');
+langExport('OK');
+langExport('YES');
+langExport('NO');
+langExport('AJAX_FAILURE_TITLE');
+langExport('AJAX_FAILURE_DESC');
 ?>
