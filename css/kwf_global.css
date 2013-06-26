@@ -115,16 +115,6 @@ dt
   font-weight: bold;
   }
 
-ul, ol
-  {
-  margin: 1%;
-  list-style-type: circle;
-  }
-
-ol { list-style-type: decimal; }
-li { margin: 2px 1%; }
-li li { font-size: 1em; }
-
 .inline-list li
   {
   display: block;
@@ -198,7 +188,6 @@ select { padding: 0; }
 form ol
   {
   margin: 1%;
-  list-style-type: none;
   }
 
 form ol li
