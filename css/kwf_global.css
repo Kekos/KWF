@@ -279,7 +279,65 @@ form .description
   left: 50%;
   background: #fff;
   border: 1px solid #93aebc;
-  z-index: 101;
   overflow: auto;
   text-align: left;
+  }
+
+/* KWF Dialog */
+
+.kwf-dialog
+  {
+  position: fixed;
+  margin: auto;
+  left: 50%;
+  top: 50%;
+  z-index: 9999;
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  }
+
+.kwf-dialog-bar
+  {
+  position: relative;
+  margin: 2px;
+  height: 30px;
+  overflow: hidden;
+  background: #eaa852;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  }
+
+.kwf-dialog-title
+  {
+  display: block;
+  margin: 8px;
+  font-size: 0.9em;
+  font-weight: bold;
+  }
+
+.kwf-dialog-close
+  {
+  display: block;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background: url('../images/close-boxing.png') no-repeat;
+  text-indent: -9999px;
+  }
+
+.kwf-dialog-content
+  {
+  position: absolute;
+  top: 32px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  overflow: auto;
   }
