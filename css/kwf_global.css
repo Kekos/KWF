@@ -266,7 +266,7 @@ form .description
   margin: 0;
   width: 16px;
   height: 16px;
-  z-index: 102;
+  z-index: 999;
   background: url('../images/close-boxing.png') no-repeat;
   text-indent: -9999px;
   }
