@@ -1,20 +1,19 @@
-  <section class="third-section" id="UploadController">
-    <h1><?php echo __('UPLOAD_HEADER_UPLOAD'); ?></h1>
+  <div class="pure-g-r">
+    <section class="pure-u-1-3" id="UploadController">
+      <h1><?php echo __('UPLOAD_HEADER_UPLOAD'); ?></h1>
 
-    <form action="<?php echo urlModr($route); ?>" method="post" enctype="multipart/form-data" id="upload_form">
-      <fieldset>
-        <ol>
-          <li><label for="file"><?php echo __('UPLOAD_FILE'); ?></label> <input type="file" name="file" id="file" multiple="multiple" /></li>
-          <li><button type="submit" name="upload" value="yes"><?php echo __('UPLOAD_SEND'); ?></button></li>
-        </ol>
-      </fieldset>
-    </form>
-  </section>
+      <form action="<?php echo urlModr($route); ?>" method="post" enctype="multipart/form-data" id="upload_form" class="pure-form">
+        <label for="file"><?php echo __('UPLOAD_FILE'); ?></label>
+        <input type="file" name="file" id="file" multiple="multiple" />
 
-  <section class="third-section">
-    <h1><?php echo __('UPLOAD_HEADER_UPLOADED'); ?></h1>
+        <button type="submit" name="upload" value="yes" class="pure-button"><?php echo __('UPLOAD_SEND'); ?></button>
+      </form>
+    </section>
 
-    <ul id="upload_list_view">
+    <section class="pure-u-1-3">
+      <h1><?php echo __('UPLOAD_HEADER_UPLOADED'); ?></h1>
+
+      <ul id="upload_list_view">
 <?php foreach ($uploads as $file):
 if ($file != '..' && $file != '.'):
 
@@ -24,11 +23,11 @@ require('uploaded-file.phtml');
 
 endif;
 endforeach; ?>
-    </ul>
-  </section>
+      </ul>
+    </section>
 
-  <section class="third-section">
-    <p id="upload_datetime" data-url="<?php echo urlModr($route, 'datetime'); ?>"><?php echo __('UPLOAD_LAST_UPDATE', date(__('DATETIME_FORMAT') . ':s')); ?></p>
-  </section>
+    <section class="pure-u-1-3">
+      <p id="upload_datetime" data-url="<?php echo urlModr($route, 'datetime'); ?>"><?php echo __('UPLOAD_LAST_UPDATE', date(__('DATETIME_FORMAT') . ':s')); ?></p>
+    </section>
 
-  <div class="clear"></div>
+  </div>
