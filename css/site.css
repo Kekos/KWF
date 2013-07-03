@@ -2,11 +2,9 @@
  * Your Site Style: site.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-03-31
- * @version 2.0
+ * @date 2013-07-02
+ * @version 3.0
  */
-
-@import 'kwf_global.css';
 
 body
   {
@@ -39,17 +37,17 @@ body
   color: #fff;
   }
 
+.hide { display: none; }
+
 /* Site Header */
 
 #header
   {
-  height: 143px;
+  margin-top: 20px;
   }
 
 #logo
   {
-  float: left;
-  margin: 25px 20px;
   width: 235px;
   height: 93px;
   background: url('../images/kwflogo.png') no-repeat;
@@ -60,15 +58,12 @@ body
 
 #menu
   {
-  float: left;
-  margin-top: 50px;
-  width: 625px;
   text-align: right;
   }
 
 #menu ul
   {
-  margin: 0;
+  margin: 25px 0 0 0;
   }
 
 #menu li
@@ -84,7 +79,7 @@ body
   padding: 5px 10px;
   background: #fff;
   border-bottom: 3px solid #eee;
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: #696969;
   text-decoration: none;
   letter-spacing: -1px;
@@ -96,11 +91,6 @@ body
   }
 
 /* Content */
-
-#content
-  {
-  font-size: 1.1em;
-  }
 
 html, body, td, th, input, button, select, textarea
   {
@@ -145,27 +135,5 @@ a
   padding: 20px 0;
   margin-top: 45px;
   background: #eee;
-  font-size: 1.1em;
-  }
-
-/* Forms */
-
-input, select, textarea
-  {
-  padding: 5px;
-  color: inherit;
-  max-width: 300px;
-  width: 55%;
-  }
-
-form label
-  {
-  line-height: 2.3;
-  }
-
-/* Boxing */
-
-#boxing-window
-  {
   font-size: 1.1em;
   }

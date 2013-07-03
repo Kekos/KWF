@@ -1,41 +1,177 @@
 /**
  * KWF Style: kwf.css
+ * This stylesheet contains style rules for KWF framework specific site 
+ * elements, mostly things added by JavaScript or by framework.
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-03-31
- * @version 4.0
+ * @date 2013-07-02
+ * @version 1.0
  */
 
-@import 'kwf_global.min.css';
+/* Info and error messages sent from application */
 
-html, body
+#kwf_messages_view
   {
-  background: #efefef;
-  font-family: Verdana, Arial, sans-serif;
-  }
-
-#error-wrapper
-  {
-  margin: 5%;
-  background: #fff;
-  border: 1px solid #ffb900;
-  -moz-border-radius: 20px;
-  -webkit-border-radius: 20px;
-  border-radius: 20px;
-  overflow: hidden;
-  }
-
-h1
-  { 
+  position: absolute;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 30%;
+  z-index: 999;
   margin: 0;
-  padding: 2%;
-  background: #ffe4a3;
+  opacity: 0.8;
   }
 
-h1, h2, h3 { font-weight: normal; }
-h2, h3, p, ul, ol { margin: 2%; }
-p, th, td { font-size: 0.8em; color: #3d3d3d; }
+.kwf-error, .kwf-info
+  {
+  margin: 5px 0;
+  padding: 1em;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  }
 
-th, td { padding: 0.5em; }
-th { background: #ffb900; font-weight: bold; }
-td { border-bottom: 1px solid #afafaf; }
+.kwf-error
+  {
+  background: #ffac8f;
+  }
+
+.kwf-info
+  {
+  background: #ffeb8f;
+  }
+
+/* Form errors */
+
+.kwf-form-error
+  {
+  display: block;
+  padding: 5px;
+  background: #ffac8f;
+  line-height: 1;
+  font-weight: normal;
+  }
+
+/* Framework/PHP runtime error messages */
+
+.kwf-runerror-title, .kwf-runerror-description, .kwf-runerror-stacktrace
+  {
+  margin: 2%;
+  }
+
+.kwf-runerror-description
+  {
+  padding-left: 60px;
+  background: url('../images/kwf-runerror.png') no-repeat;
+  }
+
+/* Generic classes for hiding content */
+
+.hide
+  {
+  display: none;
+  }
+
+.show
+  {
+  display: block;
+  }
+
+/* Boxing */
+
+#boxing-overlayer
+  {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #93aebc;
+  filter: alpha(opacity=60);
+  opacity: 0.6;
+  z-index: 100;
+  text-align: center;
+  }
+
+#close_boxing
+  {
+  position: fixed;
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  z-index: 999;
+  background: url('../images/close-boxing.png') no-repeat;
+  text-indent: -9999px;
+  }
+
+#boxing-window
+  {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  border: 1px solid #93aebc;
+  overflow: auto;
+  text-align: left;
+  }
+
+/* KWF Dialog */
+
+.kwf-dialog
+  {
+  position: fixed;
+  margin: auto;
+  left: 50%;
+  top: 50%;
+  z-index: 9999;
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  }
+
+.kwf-dialog-bar
+  {
+  position: relative;
+  margin: 2px;
+  height: 30px;
+  overflow: hidden;
+  background: #eaa852;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  }
+
+.kwf-dialog-title
+  {
+  display: block;
+  margin: 8px;
+  font-size: 0.9em;
+  font-weight: bold;
+  }
+
+.kwf-dialog-close
+  {
+  display: block;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background: url('../images/close-boxing.png') no-repeat;
+  text-indent: -9999px;
+  }
+
+.kwf-dialog-content
+  {
+  position: absolute;
+  top: 32px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  overflow: auto;
+  }
