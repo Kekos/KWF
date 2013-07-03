@@ -4,16 +4,15 @@
 <head>
   <meta charset="utf-8" />
   <title>KWF &gt; <?php echo $title; ?></title>
-  <link title="KWF" href="<?php echo FULLPATH; ?>/css/kwf.min.css" rel="stylesheet" />
+  <link href="http://yui.yahooapis.com/pure/0.2.0/pure-min.css" rel="stylesheet" />
+  <link title="KWF" href="<?php echo FULLPATH; ?>/css/kwf<?php if (MINIFIED) echo '.min'; ?>.css" rel="stylesheet" />
 </head>
 
 <body>
 
-<div id="error-wrapper">
-  <h1><?php echo $title; ?></h1>
+<h1 class="kwf-runerror-title"><?php echo $title; ?></h1>
 
 <?php echo $content_data; ?>
-</div>
 
 </body>
 

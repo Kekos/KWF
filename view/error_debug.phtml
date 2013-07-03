@@ -1,22 +1,26 @@
-  <p>
-    <strong>Meddelande: </strong> <?php echo $string; ?><br />
-    <strong>Fil: </strong> <?php echo $file; ?><br />
-    <strong>Rad: </strong> <?php echo $row; ?>
-  </p>
+  <div class="kwf-runerror-container">
+    <p class="kwf-runerror-description">
+      <strong>Meddelande: </strong> <?php echo $string; ?><br />
+      <strong>Fil: </strong> <?php echo $file; ?><br />
+      <strong>Rad: </strong> <?php echo $row; ?>
+    </p>
 
-  <table>
-    <tr>
-      <th>Funktion</th>
-      <th>Fil</th>
-      <th>Rad</th>
-      <th>Argument</th>
-    </tr>
+    <table class="kwf-runerror-stacktrace pure-table pure-table-striped">
+      <thead>
+        <tr>
+          <th>Funktion</th>
+          <th>Fil</th>
+          <th>Rad</th>
+          <th>Argument</th>
+        </tr>
+      </thead>
 <?php foreach ($error_trace as $t): ?>
-    <tr>
-      <td><?php echo (isset($t['type']) ? $t['type'] . $t['function'] : $t['function']); ?></td>
-      <td><?php echo (isset($t['file']) ? $t['file'] : ""); ?></td>
-      <td><?php echo (isset($t['line']) ? $t['line'] : ""); ?></td>
-      <td><?php (isset($t['file']) ? print_r($t['file'], 1) : ""); ?></td>
-    </tr>
+      <tr>
+        <td><?php echo (isset($t['type']) ? $t['type'] . $t['function'] : $t['function']); ?></td>
+        <td><?php echo (isset($t['file']) ? $t['file'] : ""); ?></td>
+        <td><?php echo (isset($t['line']) ? $t['line'] : ""); ?></td>
+        <td><?php (isset($t['file']) ? print_r($t['file'], 1) : ""); ?></td>
+      </tr>
 <?php endforeach; ?>
-  </table>
+    </table>
+  </div>
