@@ -2,7 +2,7 @@
  * Your Site Style: site.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-02
+ * @date 2013-07-03
  * @version 3.0
  */
 
@@ -126,6 +126,13 @@ ol.text-list
 a
   {
   color: #3969a6;
+  }
+
+/* Forms */
+
+.pure-form label
+  {
+  color: inherit;
   }
 
 /* Footer */
