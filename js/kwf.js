@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-05-09
- * @version 5.0
+ * @date 2013-07-03
+ * @version 5.1
  */
 
 /*global File, ActiveXObject */
@@ -1815,7 +1815,7 @@
           {
           input = Kwf(name);
           label = input.elem.parentNode.getElementsByTagName('label')[0];
-          span = Kwf.create('strong', {'class': 'form-error'});
+          span = Kwf.create('strong', {'class': 'kwf-form-error'});
           span.html(errors[name]);
 
           try
@@ -1844,7 +1844,7 @@
      */
     function removeFormErrors()
       {
-      var errors = K(document).queryAll('.form-error'), 
+      var errors = K(document).queryAll('.kwf-form-error'), 
         e = 0;
 
       while (errors[e])
