@@ -922,8 +922,16 @@
           // 200 if we got a page as response
           if (ajax_req.status === 200)
             {
-            response.success = 1;
-            success(response);
+            // If a runtime error happened at server, this header gets sent
+            if (ajax_req.getResponseHeader('X-kwf-runerror'))
+              {
+              K.Dialog('Debug', response.page, 600, 500);
+              }
+            else
+              {
+              response.success = 1;
+              success(response);
+              }
             }
           // 404 if resource was not found
           else if (ajax_req.status === 404)

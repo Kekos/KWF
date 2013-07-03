@@ -3,8 +3,8 @@
  * KWF Functions: error handling
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-06-08
- * @version 5.0
+ * @date 2013-07-03
+ * @version 5.1
  */
 
 if (!defined('BASE'))
@@ -103,7 +103,7 @@ class ErrorResponse
     $content_type = 'text/html';
     if ($ajax_request)
       {
-      header('X-ajax-error: true');
+      header('X-kwf-runerror: true');
       $content_type = 'text/plain';
       }
 
