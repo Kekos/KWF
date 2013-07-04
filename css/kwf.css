@@ -4,7 +4,7 @@
  * elements, mostly things added by JavaScript or by framework.
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-02
+ * @date 2013-07-03
  * @version 1.0
  */
 
@@ -131,6 +131,19 @@
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
+  box-shadow: 0 0 15px 0 #e0e0e0;
+  -webkit-transform: scale(0.7);
+  transform: scale(0.7);
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  }
+
+.show.kwf-dialog
+  {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  opacity: 1;
   }
 
 .kwf-dialog-bar
@@ -139,7 +152,7 @@
   margin: 2px;
   height: 30px;
   overflow: hidden;
-  background: #eaa852;
+  background: #e0e0e0;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;

@@ -1669,7 +1669,13 @@
      */
     self.close = function()
       {
-      dialog.remove(dialog);
+      dialog.removeClass('show');
+
+      // This is for animation purpose
+      setTimeout(function()
+        {
+        dialog.remove(dialog);
+        }, 100);
       };
 
     /* Initiation */
@@ -1689,7 +1695,14 @@
     content_div = toDOMnode('<div class="kwf-dialog-content"></div>');
     dialog.append(content_div);
     self.setContent(content);
+
     Kwf(document.body).append(dialog);
+
+    // This is for animation purpose
+    setTimeout(function()
+      {
+      dialog.addClass('show');
+      }, 100);
 
     // Add this dialog to the dialog stack
     DialogManager.addDialog(self);
