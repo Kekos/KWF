@@ -925,7 +925,8 @@
             // If a runtime error happened at server, this header gets sent
             if (ajax_req.getResponseHeader('X-kwf-runerror'))
               {
-              K.Dialog('Debug', response.page, 600, 500);
+              // Kwf.Dialogs must be created with "new" or else multiple dialogs will get the same properties!
+              new Kwf.Dialog('Debug', response.page, 600, 500);
               }
             else
               {
@@ -1674,7 +1675,7 @@
       // This is for animation purpose
       setTimeout(function()
         {
-        dialog.remove(dialog);
+        dialog.remove();
         }, 100);
       };
 
