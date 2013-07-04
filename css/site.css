@@ -2,7 +2,7 @@
  * Your Site Style: site.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-03
+ * @date 2013-07-04
  * @version 3.0
  */
 
@@ -36,8 +36,6 @@ body
   text-align: center;
   color: #fff;
   }
-
-.hide { display: none; }
 
 /* Site Header */
 
