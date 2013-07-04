@@ -1394,7 +1394,7 @@
     /**
      * A reference to the Boxing overlayer
      * @property overlayer
-     * @type HTMLDivElement
+     * @type Kwf.element
      * @private
      * @default null
      */
@@ -1402,7 +1402,7 @@
     /**
      * A reference to the Boxing close button
      * @property close_btn
-     * @type HTMLDivElement
+     * @type Kwf.element
      * @private
      * @default null
      */
@@ -1410,7 +1410,7 @@
     /**
      * A reference to the Boxing container
      * @property container
-     * @type HTMLDivElement
+     * @type Kwf.element
      * @private
      * @default null
      */
@@ -1450,11 +1450,12 @@
           }
         }
 
-      overlayer.style.display = 'none';
-      close_btn.style.display = 'none';
-      container.style.display = 'none';
+      overlayer.addClass('hide');
+      close_btn.addClass('hide');
+      container.addClass('hide');
 
-      container.innerHTML = '';
+      container.html('');
+
       html_tag.style.overflow = '';
       onhide_callback = null;
       state = 0;
@@ -1465,36 +1466,29 @@
      */
     Kwf.ready(function()
       {
-      var body = document.body;
-
-      overlayer = document.createElement('div');
-      container = document.createElement('div');
-      close_btn = document.createElement('a');
+      var body = Kwf(document.body);
 
       // Overlayer is the background of dialog, obfuscating the rest of screen
-      overlayer.id = 'boxing-overlayer';
-      body.appendChild(overlayer);
+      overlayer = Kwf.create('div', {'id': 'boxing-overlayer'});
+      body.append(overlayer);
 
       // Clicking on the overlayer should close the dialog, if allowed
-      Kwf(overlayer).addEvent('click', function()
+      overlayer.addEvent('click', function()
         {
         DialogManager.requestRemoval(Boxing);
         });
 
       // Close button
-      close_btn.id = 'close_boxing';
-      close_btn.className = 'hide-boxing';
-      close_btn.href = 'javascript: void(0);';
-      close_btn.innerHTML = 'X';
-      body.appendChild(close_btn);
+      close_btn = Kwf.create('a', {'id': 'close_boxing', 'class': 'hide-boxing', 'href': 'javascript: void(0);'});
+      close_btn.text('X');
+      body.append(close_btn);
 
       // The dialog container should have the ARIA role as dialog
-      container.setAttribute('role', 'dialog');
-      container.id = 'boxing-window';
-      body.appendChild(container);
+      container = Kwf.create('div', {'id': 'boxing-window', 'role': 'dialog'});
+      body.append(container);
 
       // Listen for clicks on elements with "hide-boxing" class
-      Kwf(body).addEvent('click', function(e)
+      body.addEvent('click', function(e)
         {
         if (Kwf(e.target).hasClass('hide-boxing'))
           {
@@ -1528,28 +1522,28 @@
       var w_unit = (width > 100 ? 'px' : '%'), 
         h_unit = (height > 100 ? 'px' : '%');
 
-      overlayer.style.display = 'block';
-      close_btn.style.display = 'block';
-      container.style.display = 'block';
+      overlayer.removeClass('hide');
+      close_btn.removeClass('hide');
+      container.removeClass('hide');
 
-      container.style.width = width + w_unit;
-      container.style.height = height + h_unit;
+      container.style('width', width + w_unit);
+      container.style('height', height + h_unit);
 
       if (h_unit === '%')
         {
-        container.style.margin = '0 0 0 -' + (width / 2) + w_unit;
-        container.style.top = (100 - height) / 2 + '%';
+        container.style('margin', '0 0 0 -' + (width / 2) + w_unit);
+        container.style('top', (100 - height) / 2 + '%');
         }
       else
         {
-        container.style.margin = '-' + (height / 2) + h_unit + ' 0 0 -' + (width / 2) + w_unit;
-        container.style.top = '50%';
+        container.style('margin', '-' + (height / 2) + h_unit + ' 0 0 -' + (width / 2) + w_unit);
+        container.style('top', '50%');
         }
 
-      container.innerHTML = text;
+      container.html(text);
 
-      close_btn.style.top = container.offsetTop - 10 + 'px';
-      close_btn.style.left = container.offsetLeft + container.offsetWidth - 10 + 'px';
+      close_btn.style('top', container.elem.offsetTop - 10 + 'px');
+      close_btn.style('left', container.elem.offsetLeft + container.elem.offsetWidth - 10 + 'px');
 
       html_tag.style.overflow = 'hidden';
 

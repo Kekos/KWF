@@ -81,7 +81,6 @@
 
 #boxing-overlayer
   {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -107,7 +106,6 @@
 
 #boxing-window
   {
-  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
