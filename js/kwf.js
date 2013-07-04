@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-03
+ * @date 2013-07-04
  * @version 5.1
  */
 
@@ -1592,15 +1592,15 @@
     /**
      * Reference to the dialog element
      * @property dialog
-     * @type HTMLDivElement
+     * @type Kwf.element
      * @private
      */
-    dialog = document.createElement('div'), 
+    dialog = Kwf.create('div'), 
 
     /**
      * Reference to the dialog content element
      * @property content_div
-     * @type HTMLDivElement
+     * @type Kwf.element
      * @private
      */
     content_div = null, 
@@ -1642,24 +1642,24 @@
       {
       if (typeof content === 'string')
         {
-        content_div.innerHTML += content;
+        content_div.html(content_div.html() + content);
         }
       else
         {
-        content_div.innerHTML = '';
-        content_div.appendChild(content);
+        content_div.html('');
+        content_div.append(content);
         }
       };
 
     /**
-     * Returns a reference to the Boxing container
+     * Returns a reference to the Dialog container
      * @method getContainer
      * @public
      * @return {HTMLDivElement} The container element
      */
     self.getContainer = function()
       {
-      return content_div;
+      return content_div.elem;
       };
 
     /**
@@ -1669,30 +1669,32 @@
      */
     self.close = function()
       {
-      dialog.parentNode.removeChild(dialog);
+      dialog.remove(dialog);
       };
 
     /* Initiation */
 
     // The dialog should have the ARIA role as dialog
-    dialog.setAttribute('role', 'dialog');
+    dialog.attr('role', 'dialog');
     // The dialog is labeled by kwf-dialog-title with the unique ID
-    dialog.setAttribute('aria-labelledby', 'kwf_dlgtitle_' + uid);
+    dialog.attr('aria-labelledby', 'kwf_dlgtitle_' + uid);
 
-    dialog.className = 'kwf-dialog';
-    dialog.style.width = width + 'px';
-    dialog.style.height = height + 'px';
-    dialog.style.margin = '-' + (height / 2) + 'px 0 0 -' + (width / 2) + 'px';
-    dialog.innerHTML = '<div class="kwf-dialog-bar"><span class="kwf-dialog-title" id="kwf_dlgtitle_' + uid + '">'
-      + title + '</span><span class="kwf-dialog-close dialog-close">X</span></div>';
-    content_div = dialog.appendChild(toDOMnode('<div class="kwf-dialog-content"></div>').elem);
+    dialog.addClass('kwf-dialog');
+    dialog.style('width', width + 'px');
+    dialog.style('height', height + 'px');
+    dialog.style('margin', '-' + (height / 2) + 'px 0 0 -' + (width / 2) + 'px');
+    dialog.html('<div class="kwf-dialog-bar"><span class="kwf-dialog-title" id="kwf_dlgtitle_' + uid + '">'
+      + title + '</span><span class="kwf-dialog-close dialog-close">X</span></div>');
+
+    content_div = toDOMnode('<div class="kwf-dialog-content"></div>');
+    dialog.append(content_div);
     self.setContent(content);
-    document.body.appendChild(dialog);
+    Kwf(document.body).append(dialog);
 
     // Add this dialog to the dialog stack
     DialogManager.addDialog(self);
 
-    Kwf(dialog).addEvent('click', click);
+    dialog.addEvent('click', click);
     };
 
   /**
