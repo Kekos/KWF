@@ -90,7 +90,6 @@
   filter: alpha(opacity=60);
   opacity: 0.6;
   z-index: 100;
-  text-align: center;
   }
 
 #close_boxing
@@ -112,7 +111,6 @@
   background: #fff;
   border: 1px solid #93aebc;
   overflow: auto;
-  text-align: left;
   }
 
 /* KWF Dialog */
@@ -123,7 +121,6 @@
   margin: auto;
   left: 50%;
   top: 50%;
-  z-index: 9999;
   background: #fff;
   border: 1px solid #d8d8d8;
   -moz-border-radius: 5px;
