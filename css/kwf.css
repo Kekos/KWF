@@ -105,11 +105,6 @@
 
 #boxing-window
   {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  background: #fff;
-  border: 1px solid #93aebc;
   overflow: auto;
   }
 

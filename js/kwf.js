@@ -1607,7 +1607,13 @@
 
       overlayer.addClass('hide');
       close_btn.addClass('hide');
-      container.addClass('hide');
+      container.removeClass('show');
+
+      // This is for animation purpose
+      setTimeout(function()
+        {
+        container.addClass('hide');
+        }, 100);
 
       container.html('');
 
@@ -1639,7 +1645,7 @@
       body.append(close_btn);
 
       // The dialog container should have the ARIA role as dialog
-      container = Kwf.create('div', {'id': 'boxing-window', 'role': 'dialog'});
+      container = Kwf.create('div', {'id': 'boxing-window', 'role': 'dialog', 'class': 'kwf-dialog'});
       body.append(container);
 
       // Listen for clicks on elements with "hide-boxing" class
@@ -1683,6 +1689,12 @@
       setWidth(width);
       setHeight(height);
       container.html(text);
+
+      // This is for animation purpose
+      setTimeout(function()
+        {
+        container.addClass('show');
+        }, 100);
 
       html_tag.style.overflow = 'hidden';
 
