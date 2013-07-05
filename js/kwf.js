@@ -1613,9 +1613,8 @@
       setTimeout(function()
         {
         container.addClass('hide');
+        container.html('');
         }, 100);
-
-      container.html('');
 
       html_tag.style.overflow = '';
       onhide_callback = null;
