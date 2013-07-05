@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-04
+ * @date 2013-07-05
  * @version 5.1
  */
 
@@ -1236,7 +1236,14 @@
      * @type HTMLElement
      * @private
      */
-    last_focus = null;
+    last_focus = null,
+    /**
+     * Holds reference to resize timer
+     * @property resize_timer
+     * @type Number
+     * @private
+     */
+    resize_timer = null;
 
     /**
      * Returns the uppermost dialog
@@ -1275,6 +1282,9 @@
 
       // Add to end of the dialogs stack
       dialogs.push(dialog);
+
+      // See if this new dialog fits on screen
+      resizeDialogs(dialog);
       }
 
     /**
@@ -1354,12 +1364,76 @@
         }
       }
 
+    /**
+     * Ensures every dialog has appropriate dimensions relative to client 
+     * dimensions.
+     * @method resizeDialogs
+     * @private
+     * @param {Object} [dialog] Optional dialog to resize. If undefined, all dialogs are resized
+     */
+    function resizeDialogs(dialog)
+      {
+      var width, 
+        height, 
+        resized, 
+        resize_dialogs = (dialog ? [dialog] : dialogs), 
+        i;
+
+      if (window.innerWidth)
+        {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        }
+      else
+        {
+        width = document.body.clientWidth;
+        height = document.body.clientHeight;
+        }
+
+      for (i = 0; i < dialogs.length; i++)
+        {
+        resized = 0;
+
+        if (dialogs[i].getWidth() > width)
+          {
+          dialogs[i].setWidth(width);
+          resized = 1;
+          }
+
+        if (dialogs[i].getHeight() > height)
+          {
+          dialogs[i].setHeight(height);
+          resized = 1;
+          }
+
+        if (!resized)
+          {
+          dialogs[i].restoreSize();
+          }
+        }
+      }
+
+    /**
+     * Listener for resize event. Calls resizeDialogs when user has stopped 
+     * resizing (with help of a timer).
+     * @method resizeListener
+     * @private
+     * @param {Event} e The focus event object
+     */
+    function resizeListener(e)
+      {
+      clearTimeout(resize_timer);
+      resize_timer = setTimeout(resizeDialogs, 50);
+      }
+
     // Start listen for key events to bind the Escape key
     Kwf(document).addEvent('keyup', keyListener);
     // Start listen for focus events to keep focus within the uppermost dialog
     Kwf(document).addEvent('focus', focusListener, 1);
     // For IE < 9
     Kwf(document).addEvent('focusin', focusListener);
+    // Start listen for resize events to resize dialogs appropriately
+    Kwf(window).addEvent('resize', resizeListener);
 
     return {
       'addDialog': addDialog,
@@ -1422,7 +1496,21 @@
      * @private
      * @default null
      */
-    onhide_callback = null;
+    onhide_callback = null, 
+    /**
+     * The initial width of current opened Boxing
+     * @property initial_width
+     * @type Number
+     * @private
+     */
+    initial_width, 
+    /**
+     * The initial height of current opened Boxing
+     * @property initial_height
+     * @type Number
+     * @private
+     */
+    initial_height;
 
     /**
      * Returns a reference to the Boxing container
@@ -1432,7 +1520,74 @@
      */
     function getContainer()
       {
-      return container;
+      return container.elem;
+      }
+
+    /**
+     * Sets the Boxing width
+     * @method setWidth
+     * @public
+     * @param {Number} width New width
+     */
+    function setWidth(width)
+      {
+      var unit = (width > 100 ? 'px' : '%');
+
+      container.style('width', width + unit);
+      container.style('marginLeft', '-' + (width / 2) + unit);
+      close_btn.style('left', container.elem.offsetLeft + container.elem. offsetWidth - 10 + 'px');
+      }
+
+    /**
+     * Returns the Boxing width
+     * @method getWidth
+     * @public
+     * @return {Number} The width
+     */
+    function getWidth() { return parseInt(container.style('width'), 10); }
+
+    /**
+     * Sets the Boxing height
+     * @method setHeight
+     * @public
+     * @param {Number} width New width
+     */
+    function setHeight(height)
+      {
+      var unit = (height > 100 ? 'px' : '%');
+
+      if (unit === '%')
+        {
+        container.style('marginTop', 0);
+        container.style('top', (100 - height) / 2 + '%');
+        }
+      else
+        {
+        container.style('marginTop', '-' + (height / 2) + 'px');
+        container.style('top', '50%');
+        }
+
+      container.style('height', height + unit);
+      close_btn.style('top', container.elem.offsetTop - 10 + 'px');
+      }
+
+    /**
+     * Returns the Boxing height
+     * @method getHeight
+     * @public
+     * @return {Number} The height
+     */
+    function getHeight() { return parseInt(container.style('height'), 10); }
+
+    /**
+     * Restores Boxing to initial width and height
+     * @method restoreSize
+     * @public
+     */
+    function restoreSize()
+      {
+      setWidth(initial_width);
+      setHeight(initial_height);
       }
 
     /**
@@ -1519,31 +1674,15 @@
         onhide_callback = callback;
         }
 
-      var w_unit = (width > 100 ? 'px' : '%'), 
-        h_unit = (height > 100 ? 'px' : '%');
-
       overlayer.removeClass('hide');
       close_btn.removeClass('hide');
       container.removeClass('hide');
 
-      container.style('width', width + w_unit);
-      container.style('height', height + h_unit);
-
-      if (h_unit === '%')
-        {
-        container.style('margin', '0 0 0 -' + (width / 2) + w_unit);
-        container.style('top', (100 - height) / 2 + '%');
-        }
-      else
-        {
-        container.style('margin', '-' + (height / 2) + h_unit + ' 0 0 -' + (width / 2) + w_unit);
-        container.style('top', '50%');
-        }
-
+      initial_width = width;
+      initial_height = height;
+      setWidth(width);
+      setHeight(height);
       container.html(text);
-
-      close_btn.style('top', container.elem.offsetTop - 10 + 'px');
-      close_btn.style('left', container.elem.offsetLeft + container.elem.offsetWidth - 10 + 'px');
 
       html_tag.style.overflow = 'hidden';
 
@@ -1560,7 +1699,12 @@
     return {
       'show': show, 
       'close': close, 
-      'getContainer': getContainer
+      'getContainer': getContainer,
+      'setWidth': setWidth,
+      'getWidth': getWidth,
+      'setHeight': setHeight,
+      'getHeight': getHeight,
+      'restoreSize': restoreSize
       };
     }());
 
@@ -1658,6 +1802,57 @@
       };
 
     /**
+     * Sets the dialog width
+     * @method setWidth
+     * @public
+     * @param {Number} width New width
+     */
+    self.setWidth = function(width)
+      {
+      dialog.style('width', width + 'px');
+      dialog.style('marginLeft', '-' + (width / 2) + 'px');
+      };
+
+    /**
+     * Returns the dialog width
+     * @method getWidth
+     * @public
+     * @return {Number} The width
+     */
+    self.getWidth = function() { return parseInt(dialog.style('width'), 10); };
+
+    /**
+     * Sets the dialog height
+     * @method setHeight
+     * @public
+     * @param {Number} width New width
+     */
+    self.setHeight = function(height)
+      {
+      dialog.style('height', height + 'px');
+      dialog.style('marginTop', '-' + (height / 2) + 'px');
+      };
+
+    /**
+     * Returns the dialog height
+     * @method getHeight
+     * @public
+     * @return {Number} The height
+     */
+    self.getHeight = function() { return parseInt(dialog.style('height'), 10); };
+
+    /**
+     * Restores dialog to initial width and height
+     * @method restoreSize
+     * @public
+     */
+    self.restoreSize = function()
+      {
+      self.setWidth(width);
+      self.setHeight(height);
+      };
+
+    /**
      * Closes this dialog
      * @method close
      * @public
@@ -1681,9 +1876,8 @@
     dialog.attr('aria-labelledby', 'kwf_dlgtitle_' + uid);
 
     dialog.addClass('kwf-dialog');
-    dialog.style('width', width + 'px');
-    dialog.style('height', height + 'px');
-    dialog.style('margin', '-' + (height / 2) + 'px 0 0 -' + (width / 2) + 'px');
+    self.setWidth(width);
+    self.setHeight(height);
     dialog.html('<div class="kwf-dialog-bar"><span class="kwf-dialog-title" id="kwf_dlgtitle_' + uid + '">'
       + title + '</span><span class="kwf-dialog-close dialog-close">X</span></div>');
 
