@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-04
+ * @date 2013-07-16
  * @version 4.1
  */
 
@@ -22,7 +22,7 @@ var Site = (function(window, document, K)
     if (!ajax_loader)
       {
       ajax_loader = K.create('div', {'id': 'ajax_loader'});
-      ajax_loader.text('Laddar...');
+      ajax_loader.text(K.__('AJAX_LOADING'));
       K(document.body).append(ajax_loader);
       }
 

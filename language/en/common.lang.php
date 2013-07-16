@@ -28,12 +28,14 @@ $lang['CLOSE'] = 'Close';
 $lang['OK'] = 'OK';
 $lang['YES'] = 'Yes';
 $lang['NO'] = 'No';
+$lang['AJAX_LOADING'] = 'Loading...';
 $lang['AJAX_FAILURE_TITLE'] = 'Connection error';
 $lang['AJAX_FAILURE_DESC'] = 'The connection was lost. Try again!';
 langExport('CLOSE');
 langExport('OK');
 langExport('YES');
 langExport('NO');
+langExport('AJAX_LOADING');
 langExport('AJAX_FAILURE_TITLE');
 langExport('AJAX_FAILURE_DESC');
 ?>
