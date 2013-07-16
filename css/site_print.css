@@ -2,11 +2,9 @@
  * Your Site Style: site_print.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2011-05-30
- * @version 3.1
+ * @date 2013-07-16
+ * @version 3.2
  */
-
-@import 'kwf_global.min.css';
 
 h1, h2, h3, p, dl, table, form { margin-left: 0; margin-right: 0; }
 a { color: #000; }
