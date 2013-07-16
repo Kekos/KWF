@@ -1,0 +1,18 @@
+  <h1><?php echo __('AED_HEADER_LIST'); ?></h1>
+
+  <form action="<?php echo urlModr($route); ?>" method="post" class="pure-form ajax-form" data-list-view="item_list">
+    <label>
+      <?php echo __('AED_ITEM_NAME'); ?>
+      <input type="text" name="name" />
+    </label>
+
+    <button type="submit" name="new_item_submit" value="yes" class="pure-button"><?php echo __('AED_ITEM_SAVE'); ?></button>
+  </form>
+
+  <ul id="item_list">
+<?php foreach ($items as $id => $item):
+
+require('item.phtml');
+
+endforeach; ?>
+  </ul>

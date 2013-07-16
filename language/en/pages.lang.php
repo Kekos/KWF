@@ -31,4 +31,16 @@ $lang['UPLOAD_INFO_UPLOADED'] = 'You uploaded the file %s';
 
 langExport('UPLOAD_DELETE');
 langExport('UPLOAD_DELETE_CONFIRM');
+
+$lang['AED_HEADER_LIST'] = 'Test case for Adding, Editing and Deleting';
+$lang['AED_ITEM_NAME'] = 'Item name';
+$lang['AED_ITEM_SAVE'] = 'Save';
+$lang['AED_ITEM_DELETE'] = 'Delete';
+$lang['AED_ITEM_EDIT'] = 'Edit';
+$lang['AED_HEADER_EDIT'] = 'Edit item';
+$lang['AED_INFO_CREATED'] = 'Item was saved.';
+$lang['AED_INFO_EDITED'] = 'Item was saved.';
+$lang['AED_INFO_DELETED'] = 'Item was deleted.';
+$lang['AED_HEADER_DELETE'] = 'Delete item';
+$lang['AED_DELETE_CONFIRM'] = 'You are about to remove the item %s, are you sure?';
 ?>

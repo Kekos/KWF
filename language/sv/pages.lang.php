@@ -31,4 +31,16 @@ $lang['UPLOAD_INFO_UPLOADED'] = 'Du laddade upp filen %s';
 
 langExport('UPLOAD_DELETE');
 langExport('UPLOAD_DELETE_CONFIRM');
+
+$lang['AED_HEADER_LIST'] = 'Test för Lägg till, Redigera och Ta bort';
+$lang['AED_ITEM_NAME'] = 'Postnamn';
+$lang['AED_ITEM_SAVE'] = 'Spara';
+$lang['AED_ITEM_DELETE'] = 'Ta bort';
+$lang['AED_ITEM_EDIT'] = 'Redigera';
+$lang['AED_HEADER_EDIT'] = 'Redigera post';
+$lang['AED_INFO_CREATED'] = 'Posten skapades.';
+$lang['AED_INFO_EDITED'] = 'Posten sparades.';
+$lang['AED_INFO_DELETED'] = 'Posten togs bort.';
+$lang['AED_HEADER_DELETE'] = 'Ta bort post';
+$lang['AED_DELETE_CONFIRM'] = 'Är du säker på att du vill ta bort posten %s?';
 ?>

@@ -1,0 +1,10 @@
+  <h1><?php echo __('AED_HEADER_EDIT'); ?></h1>
+
+  <form action="<?php echo urlModr($route, $params); ?>" method="post" class="pure-form ajax-form">
+    <label>
+      <?php echo __('AED_ITEM_NAME'); ?>
+      <input type="text" name="name" value="<?php echo htmlspecialchars($item); ?>" />
+    </label>
+
+    <button type="submit" name="edit_item_submit" value="yes" class="pure-button"><?php echo __('AED_ITEM_SAVE'); ?></button>
+  </form>

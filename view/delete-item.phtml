@@ -1,0 +1,10 @@
+  <h1><?php echo __('AED_HEADER_DELETE'); ?></h1>
+
+  <form action="<?php echo urlModr($route, $params); ?>" method="post" class="ajax-form">
+    <p><?php echo __('AED_DELETE_CONFIRM', $item); ?></p>
+
+    <p>
+      <button type="submit" name="delete_item_yes" value="yes" class="pure-button"><?php echo __('YES'); ?></button>
+      <button type="submit" name="delete_item_no" value="yes" class="pure-button hide-boxing"><?php echo __('NO'); ?></button>
+    </p>
+  </form>

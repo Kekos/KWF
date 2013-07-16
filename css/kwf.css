@@ -179,3 +179,78 @@
   bottom: 2px;
   overflow: auto;
   }
+
+/* Add-Edit-Delete actions */
+
+.kwf-aed-item-added
+  {
+  opacity: 0;
+  -webkit-animation: new-item-animation .3s linear forwards;
+  animation: new-item-animation .3s linear forwards
+  }
+
+.kwf-aed-item-deleted
+  {
+  -webkit-animation: removed-item-animation .6s cubic-bezier(.55,-0.04,.91,.94) forwards;
+  animation: removed-item-animation .6s cubic-bezier(.55,-0.04,.91,.94) forwards;
+  }
+
+@keyframes new-item-animation
+  {
+  from
+    {
+    opacity: 0;
+    transform: scale(0)
+    }
+
+  to
+    {
+    opacity: 1;
+    transform: scale(1)
+    }
+  }
+
+@-webkit-keyframes new-item-animation
+  {
+  from
+    {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    }
+
+  to
+    {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    }
+  }
+
+@keyframes removed-item-animation
+  {
+  from
+    {
+    opacity: 1;
+    transform: scale(1);
+    }
+ 
+  to
+    {
+    opacity: 0;
+    transform: scale(0);
+    }
+  }
+
+@-webkit-keyframes removed-item-animation
+  {
+  from
+    {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    }
+ 
+  to
+    {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    }
+  }

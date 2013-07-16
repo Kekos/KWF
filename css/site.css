@@ -2,7 +2,7 @@
  * Your Site Style: site.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-04
+ * @date 2013-07-16
  * @version 3.0
  */
 
@@ -141,4 +141,20 @@ a
   margin-top: 45px;
   background: #eee;
   font-size: 1.1em;
+  }
+
+/* Test case for AED-actions */
+
+#item_list
+  {
+  padding: 0;
+  list-style: none;
+  }
+
+.list-item
+  {
+  margin: 3px;
+  padding: 5px;
+  background: #eee;
+  border-left: 3px solid #ffb900;
   }

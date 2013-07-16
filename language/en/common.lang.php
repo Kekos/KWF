@@ -17,6 +17,7 @@ $lang['THOUSAND_POINT'] = ',';
 $lang['HEADER_HOME'] = 'Home';
 $lang['HEADER_CONTACT'] = 'Contact';
 $lang['HEADER_UPLOAD'] = 'File upload';
+$lang['HEADER_AED'] = 'AED';
 $lang['HEADER_404'] = '404 - The page could not be found';
 
 $lang['FOOTER_COPYRIGHT'] = 'By %s, %s';

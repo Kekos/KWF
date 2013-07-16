@@ -1,0 +1,5 @@
+    <li id="item_<?php echo $id; ?>" class="list-item">
+      <?php echo htmlspecialchars($item); ?>
+      <a href="<?php echo urlModr($route, 'edit', $id); ?>" class="boxing-context"><?php echo __('AED_ITEM_EDIT'); ?></a>
+      <a href="<?php echo urlModr($route, 'delete', $id); ?>" class="action-delete"><?php echo __('AED_ITEM_DELETE'); ?></a>
+    </li>
