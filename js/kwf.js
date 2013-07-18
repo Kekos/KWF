@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-05
+ * @date 2013-07-18
  * @version 5.1
  */
 
@@ -905,6 +905,7 @@
           response = {
               page: ajax_req.responseText,
               content_type: content_type,
+              redirect_url: ajax_req.getResponseHeader('X-kwf-redirect-url'),
               status: ajax_req.status
             };
 
@@ -2403,7 +2404,7 @@
         {
         if (e.request)
           {
-          var url = e.request.url;
+          var url = e.target.redirect_url || e.request.url;
 
           // We want to scroll back to top so user will notice the page change
           window.scrollTo(0, 0);

@@ -214,6 +214,14 @@ class Response
         {
         $this->content_type = 'text/plain';
         }
+
+      // Tell the JavaScript framework that this response is a result of an
+      // earlier redirect happened.
+      if ($this->request->session->get('kwf_redirect'))
+        {
+        header('X-kwf-redirect-url: ' . urlModr($this->request->params));
+        $this->request->session->delete('kwf_redirect');
+        }
       }
 
     // If no content type has been set yet, let the Page view decide it
@@ -254,6 +262,14 @@ class Response
    */
   public function redirect($url)
     {
+    // The JavaScript framework wants to know when a redirect occured.
+    // The only way to fix this is by saving a session and then append the new
+    // URL when second response is made.
+    if ($this->request->ajax_request)
+      {
+      $this->request->session->set('kwf_redirect', true);
+      }
+
     header('Location: ' . $url);
     die('Redirecting to <a href="' . $url . '">' . $url . '</a>');
     }
