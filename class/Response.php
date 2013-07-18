@@ -3,8 +3,8 @@
  * KWF Class: Response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-03-28
- * @version 5.0
+ * @date 2013-07-18
+ * @version 5.1
  */
 
 class Response
@@ -88,7 +88,7 @@ class Response
     {
     if (isset(Response::$form_messages[$element]))
       {
-      echo '<strong class="form-error">' . Response::$form_messages[$element] . '</strong>';
+      echo '<strong class="kwf-form-error">' . Response::$form_messages[$element] . '</strong>';
       }
 
     echo "\n";
