@@ -4,7 +4,7 @@
  * elements, mostly things added by JavaScript or by framework.
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-03
+ * @date 2013-07-18
  * @version 1.0
  */
 
@@ -178,6 +178,12 @@
   right: 2px;
   bottom: 2px;
   overflow: auto;
+  }
+
+.kwf-dialog > *
+  {
+  margin-left: 1%;
+  margin-right: 1%;
   }
 
 /* Add-Edit-Delete actions */
