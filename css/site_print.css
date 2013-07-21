@@ -2,7 +2,7 @@
  * Your Site Style: site_print.css
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-16
+ * @date 2013-07-21
  * @version 3.2
  */
 
@@ -13,7 +13,7 @@ td, th, dt, dd, p, li, #footer { font-size: 0.8em; }
 
 /* Hide elements */
 
-.no-print, #close_boxing
+.no-print, #menu, #close_boxing
   {
   display: none !important;
   }
@@ -30,13 +30,14 @@ td, th, dt, dd, p, li, #footer { font-size: 0.8em; }
   height: 100%;
   background: #fff;
   z-index: 100;
+  opacity: 1;
   }
 
 #boxing-window
   {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0 !important;
+  left: 0 !important;
   bottom: 0;
   margin: 0 !important;
   width: 100% !important;
