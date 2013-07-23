@@ -3,14 +3,14 @@
  * KWF System: Initiation
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-21
- * @version 5.1
+ * @date 2013-07-23
+ * @version 5.2
  */
 
 if (!defined('BASE'))
   die('Access denied.');
 
-define('KWF_VERSION', '5.1');
+define('KWF_VERSION', '5.2');
 
 if (get_magic_quotes_gpc())
   {
