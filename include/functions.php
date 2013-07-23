@@ -3,8 +3,8 @@
  * KWF Functions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-06-14
- * @version 4.0
+ * @date 2013-07-23
+ * @version 4.1
  */
 
 /**
@@ -402,7 +402,7 @@ function appScriptTags()
   {
   $js_directory = 'js/app';
 
-  foreach (scandir(BASE . $js_directory) as $file)
+  foreach (scandir($js_directory) as $file)
     {
     if ($file != '.' && $file != '..')
       {
