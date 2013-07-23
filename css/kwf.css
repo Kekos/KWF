@@ -4,8 +4,8 @@
  * elements, mostly things added by JavaScript or by framework.
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-18
- * @version 1.0
+ * @date 2013-07-23
+ * @version 1.1
  */
 
 /* Info and error messages sent from application */
@@ -192,7 +192,7 @@
   {
   opacity: 0;
   -webkit-animation: new-item-animation .3s linear forwards;
-  animation: new-item-animation .3s linear forwards
+  animation: new-item-animation .3s linear forwards;
   }
 
 .kwf-aed-item-deleted
@@ -206,13 +206,13 @@
   from
     {
     opacity: 0;
-    transform: scale(0)
+    transform: scale(0);
     }
 
   to
     {
     opacity: 1;
-    transform: scale(1)
+    transform: scale(1);
     }
   }
 
