@@ -3,8 +3,8 @@
  * KWF Class: Response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-18
- * @version 5.1
+ * @date 2013-07-24
+ * @version 5.2
  */
 
 class Response
@@ -244,7 +244,7 @@ class Response
       {
       // Add title and other data to view
       $this->view->addData('title', $this->title);
-      $this->view->addData('params', $this->request->params);
+      $this->view->addData('route_parts', $this->request->params);
       $this->view->addData('error_messages', $this->error_messages);
       $this->view->addData('info_messages', $this->info_messages);
       $this->view->addData('content_data', $this->content_data);
