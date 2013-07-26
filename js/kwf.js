@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-20
- * @version 5.1
+ * @date 2013-07-26
+ * @version 5.2
  */
 
 /*global File, ActiveXObject */
@@ -1279,7 +1279,7 @@
       container.focus();
 
       // Make sure this dialog is on top of the others
-      container.style.zIndex = Z_INDEX_START + dialogs.length;
+      dialog.setZIndex(Z_INDEX_START + dialogs.length);
 
       // Add to end of the dialogs stack
       dialogs.push(dialog);
@@ -1525,6 +1525,17 @@
       }
 
     /**
+     * Sets the Boxing z-index
+     * @method setZIndex
+     * @public
+     * @param {Number} z_index New z-index
+     */
+    function setZIndex(z_index)
+      {
+      container.style('zIndex', z_index);
+      }
+
+    /**
      * Sets the Boxing width
      * @method setWidth
      * @public
@@ -1712,6 +1723,7 @@
       'show': show, 
       'close': close, 
       'getContainer': getContainer,
+      'setZIndex': setZIndex,
       'setWidth': setWidth,
       'getWidth': getWidth,
       'setHeight': setHeight,
@@ -1811,6 +1823,17 @@
     self.getContainer = function()
       {
       return content_div.elem;
+      };
+
+    /**
+     * Sets the dialog z-index
+     * @method setZIndex
+     * @public
+     * @param {Number} z_index New z-index
+     */
+    self.setZIndex = function(z_index)
+      {
+      dialog.style('zIndex', z_index);
       };
 
     /**
