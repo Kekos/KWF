@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-16
- * @version 1.0
+ * @date 2013-08-01
+ * @version 1.1
  */
 
 /*global Kwf */
@@ -32,6 +32,9 @@ Kwf.AEDactions = (function(K)
       view.addClass('kwf-aed-item-added');
       list_view.append(view);
       }
+
+    // Close Boxing
+    K.Boxing.close();
     }
 
   /**
