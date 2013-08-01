@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-26
+ * @date 2013-08-01
  * @version 5.2
  */
 
@@ -1547,7 +1547,11 @@
 
       container.style('width', width + unit);
       container.style('marginLeft', '-' + (width / 2) + unit);
-      close_btn.style('left', container.offsetLeft() + container.elem.offsetWidth - 10 + 'px');
+
+      setTimeout(function()
+        {
+        close_btn.style('left', container.offsetLeft() + container.elem.offsetWidth - 10 + 'px');
+        }, 10);
       }
 
     /**
@@ -1580,7 +1584,11 @@
         }
 
       container.style('height', height + unit);
-      close_btn.style('top', container.offsetTop() - 10 + 'px');
+
+      setTimeout(function()
+        {
+        close_btn.style('top', container.offsetTop() - 10 + 'px');
+        }, 10);
       }
 
     /**
