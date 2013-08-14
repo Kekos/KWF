@@ -3,8 +3,8 @@
  * KWF Class: DbMysqli (MySQL Improved), establish connection, makes queries to the database and returns data
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 1.3
+ * @date 2013-08-14
+ * @version 1.4
  */
 
 class DbMysqli extends Mysqli
@@ -14,10 +14,6 @@ class DbMysqli extends Mysqli
   public $statement;
 
   static $instance = null;
-
-  public function __construct()
-    {
-    }
 
   private function _connect()
     {
@@ -80,10 +76,11 @@ class DbMysqli extends Mysqli
     /* Walkaround for PHP installations without MySQL Native Driver */
     if (method_exists('MySQLi_STMT', 'get_result'))
       {
-      $this->statement = $this->prepare($query);
+      /* Save statement in local variable, or else any error message from prepare() disappears */
+      $statement = $this->prepare($query);
 
       /* Did the preparation succeed? */
-      if (!$this->statement)
+      if (!$statement)
         {
         throw new Exception('Database query error: <code>' . $query . '</code><br />' . $this->error);
         }
@@ -96,6 +93,8 @@ class DbMysqli extends Mysqli
         {
         $new_args[$key + 1] = &$args[$key];
         }
+
+      $this->statement = $statement;
       }
     else
       {
