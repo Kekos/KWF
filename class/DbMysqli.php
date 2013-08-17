@@ -3,7 +3,7 @@
  * KWF Class: DbMysqli (MySQL Improved), establish connection, makes queries to the database and returns data
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-08-14
+ * @date 2013-08-17
  * @version 1.4
  */
 
@@ -110,7 +110,13 @@ class DbMysqli extends Mysqli
       }
 
     /* Execute the query */
-    return ($this->statement->execute() ? true : false);
+    $execution_result = $this->statement->execute();
+    if (!$execution_result)
+      {
+      logMsg('DbMysqli', 'SQL: >' . $query . '< resulted in error >' . $this->error . '<');
+      }
+
+    return $execution_result;
     }
 
   /**
