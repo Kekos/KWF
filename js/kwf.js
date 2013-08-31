@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-08-01
- * @version 5.2
+ * @date 2013-08-31
+ * @version 5.3
  */
 
 /*global File, ActiveXObject */
@@ -863,9 +863,8 @@
      *        means request failed, e.g. HTTP error statuses)
      * @param {String} data Data to send
      * @param {Object} headers Extra HTTP headers
-     * @param {Boolean} ignore_content_type True if Content-Type header should be set by browser
      */
-    function send(url, method, success, fail, data, headers, ignore_content_type)
+    function send(url, method, success, fail, data, headers)
       {
       var ajax_req = (window.ActiveXObject) ? 
           new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest(),
@@ -889,8 +888,8 @@
           }
         }
 
-      // If no Content-Type was set, use default, or ignore Content-Type if needed
-      if (!content_type && !ignore_content_type)
+      // If no Content-Type was set and data is not a FormData object, use default
+      if (!content_type && !(data instanceof FormData))
         {
         ajax_req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
         }
@@ -1011,6 +1010,20 @@
             continue;
             }
 
+          // If we find a "file" input, use the FormData object if it's supported
+          if (inputs[i].type === 'file' && window.FormData)
+            {
+            data = new FormData(form);
+
+            // We still need to add the "clicked" button manually
+            if (sender)
+              {
+              data.append(sender.name, sender.value);
+              }
+
+            return data;
+            }
+
           data += encode(inputs[i]);
           }
 
@@ -1111,7 +1124,7 @@
             }
           }
 
-        send(url, 'POST', success, fail, form_data, [], 1);
+        send(url, 'POST', success, fail, form_data);
         }
       // No FormData support: Resort to <iframe> solution
       else
