@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-08-01
- * @version 1.1
+ * @date 2013-09-05
+ * @version 1.2
  */
 
 /*global Kwf */
@@ -17,14 +17,17 @@ Kwf.AEDactions = (function(K)
    * @private
    * @param {Object} views Collection of new views
    * @param {HTMLElement} list_view The list view to append new views to
-   * @param {HTMLFormElement} data_form The <form> element sending the request
+   * @param {HTMLFormElement} [data_form] The <form> element sending the request
    */
   function addItems(views, list_view, data_form)
     {
     var i, 
       view;
 
-    data_form.reset();
+    if (data_form)
+      {
+      data_form.reset();
+      }
 
     for (i in views)
       {
