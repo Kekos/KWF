@@ -865,8 +865,8 @@
      */
     function send(url, method, success, fail, data)
       {
-      var ajax_req = (window.ActiveXObject) ? 
-          new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest(),
+      var ajax_req = (window.XMLHttpRequest) ? 
+          new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'),
         response, 
         content_type;
 
