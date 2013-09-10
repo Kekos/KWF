@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-08-31
+ * @date 2013-09-10
  * @version 5.3
  */
 
@@ -862,34 +862,19 @@
      * @param {Function} fail Callback to call if request failed (failing 
      *        means request failed, e.g. HTTP error statuses)
      * @param {String} data Data to send
-     * @param {Object} headers Extra HTTP headers
      */
-    function send(url, method, success, fail, data, headers)
+    function send(url, method, success, fail, data)
       {
       var ajax_req = (window.ActiveXObject) ? 
           new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest(),
-        response, content_type = 0, h;
+        response, 
+        content_type;
 
       ajax_req.open(method, url);
       ajax_req.setRequestHeader('X-ajax-request', 'true');
 
-      // Set extra HTTP headers if any
-      if (typeof headers === 'object')
-        {
-        for (h in headers)
-          {
-          if (headers[h][0] === 'Content-Type')
-            {
-            // Fix for Chrome who otherwise concatenates the different content-types
-            content_type = 1;
-            }
-
-          ajax_req.setRequestHeader(headers[h][0], headers[h][1]);
-          }
-        }
-
       // If no Content-Type was set and data is not a FormData object, use default
-      if (!content_type && !(data instanceof FormData))
+      if (!window.FormData ||  !(data instanceof FormData))
         {
         ajax_req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
         }
@@ -958,6 +943,92 @@
       }
 
     /**
+     * Legacy file upload for browsers not supporting XMLHttpRequest2 and FormData.
+     * @method uploadLegacy
+     * @private
+     * @param {String} url URL to load
+     * @param {Function} success Callback to call if request succeeded
+     * @param {Function} fail Callback to call if request failed (failing 
+     *        means request failed, e.g. HTTP error statuses)
+     * @param {String} data Data to send
+     * @param {HTMLElement} [sender] The button that fired the request
+     */
+    function uploadLegacy(url, success, fail, form, sender)
+      {
+      var iframe_form, 
+        frame, 
+        frame_doc, 
+        input_ajax_request = toDOMnode('<input type="hidden" name="X-ajax-request" value="true" />'),
+        input_frame_upload = toDOMnode('<input type="hidden" name="X-frame-upload" value="true" />'), 
+        input_sender, 
+        body = Kwf(document.body), 
+        resp, 
+        is_json = 0;
+
+      if (onbeforeajax)
+        {
+        onbeforeajax();
+        }
+
+      form.target = 'ajax_upload_frame';
+      form.appendChild(input_ajax_request.elem);
+      form.appendChild(input_frame_upload.elem);
+
+      if (sender)
+        {
+        input_sender = toDOMnode('<input type="hidden" name="' + sender.name + '" value="1" />');
+        form.appendChild(input_sender.elem);
+        }
+
+      frame = toDOMnode('<iframe style="visibility: hidden;" src="javascript: false;" '
+         + 'name="ajax_upload_frame" id="ajax_upload_frame"></iframe>');
+      body.append(frame);
+
+      frame.addEvent('load', function()
+        {
+        setTimeout(function()
+          {
+          frame_doc = frame.elem.contentDocument || frame.elem.contentWindow.document;
+          resp = frame_doc.body.firstChild.nodeValue;
+          if (resp === null)
+            {
+            resp = frame_doc.body.innerHTML;
+            }
+
+          if (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}')
+            {
+            is_json = 1;
+            }
+
+          success({
+              page: (is_json ? parseJSON(resp) : resp),
+              content_type: (is_json ? 'application/json' : 'text/plain'),
+              status: '200'
+            });
+
+          frame.remove();
+
+          if (onafterajax)
+            {
+            onafterajax();
+            }
+          }, 1);
+        });
+
+      // Send the form through <iframe>
+      form.submit();
+
+      // Revert the form back to original state
+      form.target = '';
+      input_ajax_request.remove();
+      input_frame_upload.remove();
+      if (sender)
+        {
+        input_sender.remove();
+        }
+      }
+
+    /**
      * Translates an object on form {var1: "val1", var2: "val2"} to query string var1=val1&var2=val2
      * Helper function for get() and send()
      * @method array2query
@@ -979,7 +1050,7 @@
 
     /**
      * Translates form element to query string eg. var1=val1&var2=val2
-     * Helper function for get() and send()
+     * Helper function for post()
      * @method form2query
      * @private
      * @param {HTMLFormElement} form The form to translate
@@ -989,61 +1060,35 @@
     function form2query(form, sender)
       {
       var data = '', 
-        inputs = form.getElementsByTagName('input'), 
-        selects = form.getElementsByTagName('select'), 
-        textareas = form.getElementsByTagName('textarea'), 
+        element, 
         i;
 
-      function encode(elm)
+      for (i = 0; i < form.elements.length; i++)
         {
-        return (elm.name === '' ? '' : '&' + elm.name + '=' + encodeURIComponent(elm.value));
-        }
+        element = form.elements[i];
 
-      if (form)
-        {
-        for (i = 0; i < inputs.length; i++)
+        // Disabled form elements can't be sen, neither
+        // can elements with no name
+        if (!element.disabled && element.name)
           {
-          if (((inputs[i].type === 'radio' || inputs[i].type === 'checkbox')
-              && !inputs[i].checked) || (inputs[i].type === 'button' || 
-              inputs[i].type === 'submit'))
+          // Append this element to query string, but if it's a radio or 
+          // checkbox, it must've been checked. Do not add buttons or files
+          if (((element.type !== 'radio' && element.type !== 'checkbox') || element.checked)
+              && element.type !== 'submit' && element.type !== 'button' 
+              && element.type !== 'file')
             {
-            continue;
+            data += encodeURIComponent(element.name) + '=' + encodeURIComponent(element.value) + '&';
             }
-
-          // If we find a "file" input, use the FormData object if it's supported
-          if (inputs[i].type === 'file' && window.FormData)
-            {
-            data = new FormData(form);
-
-            // We still need to add the "clicked" button manually
-            if (sender)
-              {
-              data.append(sender.name, sender.value);
-              }
-
-            return data;
-            }
-
-          data += encode(inputs[i]);
-          }
-
-        for (i = 0; i < selects.length; i++)
-          {
-          data += encode(selects[i]);
-          }
-
-        for (i = 0; i < textareas.length; i++)
-          {
-          data += encode(textareas[i]);
           }
         }
 
+      // The button that sent the form must be added afterwards
       if (sender)
         {
-        data += encode(sender);
+        data += encodeURIComponent(sender.name) + '=' + encodeURIComponent(sender.value);
         }
 
-      return data.substring(1);
+      return data;
       }
 
     /**
@@ -1081,12 +1126,45 @@
      * @param {String} url URL to load
      * @param {Function} success Callback to call if request succeeded
      * @param {Function} fail Callback to call if request failed
-     * @param {String/HTMLFormElement} data Data to send, as HTML form or object: {var1: "val1", var2: "val2"}
+     * @param {Object|HTMLFormElement} data Data to send, as HTML form or object: {var1: "val1", var2: "val2"}
+     * @param {HTMLElement} [sender] The button that fired the request
      */
     function post(url, success, fail, data, sender)
       {
-      data = (data.nodeType ? form2query(data, sender) : 
-          array2query(data));
+      // Is "data" a form?
+      if (data.nodeType)
+        {
+        // Forms with file upload elements will have the multipart "enctype"
+        if (data.enctype === 'multipart/form-data')
+          {
+          // If the FormData interface is supported
+          if (window.FormData)
+            {
+            data = new FormData(data);
+
+            // We still need to add the "clicked" button manually
+            if (sender)
+              {
+              data.append(sender.name, sender.value);
+              }
+            }
+          else
+            {
+            // Use the legacy <iframe> form uploader instead
+            return uploadLegacy(url, success, fail, data, sender);
+            }
+          }
+        // For "normal" urlencoded forms
+        else
+          {
+          data = form2query(data, sender);
+          }
+        }
+      // No, assume it's an object
+      else
+        {
+        data = array2query(data);
+        }
 
       send(url, 'POST', success, fail, data);
       }
@@ -1098,94 +1176,23 @@
      * @param {String} url URL to load
      * @param {Function} success Callback to call if request succeeded
      * @param {Function} fail Callback to call if request failed
-     * @param {HTMLInputElement|FormData} file_elem The <input type="file"> element to send OR a FormData object
+     * @param {HTMLInputElement|Kwf.element} file_elem The <input type="file"> element to send
+     * @param {HTMLElement} [sender] The button that fired the request
      */
-    function upload(url, success, fail, file_elem)
+    function upload(url, success, fail, file_elem, sender)
       {
-      // Check for File and FormData support
-      if (window.FormData !== undefined && window.File !== undefined)
-        {
-        var form_data, 
-          i, 
-          key_name;
+      var form = Kwf.create('form'), 
+        form_elem = form.elem;
 
-        if (file_elem instanceof FormData)
-          {
-          form_data = file_elem;
-          }
-        else
-          {
-          form_data = new FormData();
-          key_name = file_elem.name + (file_elem.files.length > 1 ? '[]' : '');
+      form_elem.action = url;
+      form_elem.method = 'post';
+      // For IE8 you need both. Obnoxious
+      form_elem.encoding = form_elem.enctype = "multipart/form-data";
+      form.style('visibility', 'hidden');
+      form.append(file_elem);
 
-          for (i = 0; i < file_elem.files.length; i++)
-            {
-            form_data.append(key_name, file_elem.files[i]);
-            }
-          }
-
-        send(url, 'POST', success, fail, form_data);
-        }
-      // No FormData support: Resort to <iframe> solution
-      else
-        {
-        var orig_form = file_elem.parentNode, form, frame, frame_doc, 
-          body = Kwf(document.body), resp, 
-          is_json = 0;
-
-        if (onbeforeajax)
-          {
-          onbeforeajax();
-          }
-
-        form = toDOMnode('<form style="visibility: hidden;" action="' + url 
-           + '" method="post" enctype="multipart/form-data" target="ajax_upload_frame'
-           + '"><input type="hidden" name="X-ajax-request" value="true" />'
-           + '<input type="hidden" name="X-frame-upload" value="true" /></form>');
-        body.append(form);
-
-        orig_form.removeChild(file_elem);
-        form.append(file_elem);
-
-        frame = toDOMnode('<iframe style="visibility: hidden;" src="javascript: false;" '
-           + 'name="ajax_upload_frame" id="ajax_upload_frame"></iframe>');
-        body.append(frame);
-
-        frame.addEvent('load', function()
-          {
-          setTimeout(function()
-            {
-            frame_doc = frame.elem.contentDocument || frame.elem.contentWindow.document;
-            resp = frame_doc.body.firstChild.nodeValue;
-            if (resp === null)
-              {
-              resp = frame_doc.body.innerHTML;
-              }
-
-            if (resp.substring(0, 1) === '{' && resp.substring(resp.length - 1) === '}')
-              {
-              is_json = 1;
-              }
-
-            success({
-                page: (is_json ? parseJSON(resp) : resp),
-                content_type: (is_json ? 'application/json' : 'text/plain'),
-                status: '200'
-              });
-
-            frame.remove();
-
-            if (onafterajax)
-              {
-              onafterajax();
-              }
-            }, 1);
-          });
-
-        form.elem.submit();
-        form.remove();
-        orig_form.appendChild(file_elem);
-        }
+      Kwf(document.body).append(form);
+      post(url, success, fail, form_elem, sender);
       }
 
     /**
