@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-09-10
+ * @date 2013-09-27
  * @version 5.3
  */
 
@@ -1181,7 +1181,11 @@
      */
     function upload(url, success, fail, file_elem, sender)
       {
+      file_elem = (file_elem.elem ? file_elem.elem : file_elem);
+
       var form = Kwf.create('form'), 
+        file_elem_parent = file_elem.parentNode, 
+        file_elem_sibling = file_elem.nextSibling, 
         form_elem = form.elem;
 
       form_elem.action = url;
@@ -1192,7 +1196,12 @@
       form.append(file_elem);
 
       Kwf(document.body).append(form);
-      post(url, success, fail, form_elem, sender);
+      post(url, function(response)
+        {
+        success(response);
+
+        file_elem_parent.insertBefore(file_elem, file_elem_sibling);
+        }, fail, form_elem, sender);
       }
 
     /**
