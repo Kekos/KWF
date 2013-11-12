@@ -3,8 +3,8 @@
  * KWF Functions: error handling
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-03
- * @version 5.1
+ * @date 2013-11-12
+ * @version 5.2
  */
 
 if (!defined('BASE'))
@@ -92,7 +92,10 @@ class ErrorResponse
   {
   public function __construct($layout, $view, $title, $data)
     {
-    ob_end_clean();
+    if (ob_get_length())
+      {
+      ob_end_clean();
+      }
 
     $ajax_request = false;
     if (isset($_SERVER['HTTP_X_AJAX_REQUEST']) && $_SERVER['HTTP_X_AJAX_REQUEST'])
