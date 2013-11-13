@@ -5,8 +5,8 @@
  * Only used when MySQL Native Driver is not present
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 1.1
+ * @date 2013-11-13
+ * @version 1.2
  */
 
 class DbMysqliStatement
@@ -64,7 +64,16 @@ class DbMysqliStatement
           break;
 
           case 's':
-            $arg = "'" . $this->caller->real_escape_string($arg) . "'";
+            // NULL values are allowed to enter the SQL untouched.
+            // This is a must, otherwise NULL values can't be stored.
+            if ($arg === null)
+              {
+              $arg = 'NULL';
+              }
+            else
+              {
+              $arg = "'" . $this->caller->real_escape_string($arg) . "'";
+              }
           break;
           }
 
