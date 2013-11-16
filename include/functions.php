@@ -3,8 +3,8 @@
  * KWF Functions
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-23
- * @version 4.1
+ * @date 2013-11-15
+ * @version 5.0
  */
 
 /**
@@ -197,6 +197,24 @@ function urlSafe($str, $allow_extra = '')
   $repl = array('a', 'a', 'o', 'a', 'a', 'o');
   $str = str_replace($pattern, $repl, $str);
   $str = preg_replace("/[^A-Za-z0-9" . $allow_extra . "]/i", '-', $str);
+  $str = preg_replace("/-+/i", '-', $str);
+  $str = preg_replace("/^-|-$/i", '', $str);
+  return $str;
+  }
+
+/**
+ * Escapes a internationalized string to be suitable for using in an URL
+ *
+ * Replaces everything BUT letters and numbers with dash. Removes double dashes (--)
+ * with a single dash. Changes the lowercase.
+ *
+ * @param string $str The string to escape. Must be in UTF-8
+ * @return string Escaped string
+ */
+function urlSafeI18n($str)
+  {
+  $str = mb_strtolower($str, 'UTF-8');
+  $str = preg_replace("/[^\p{L}0-9]/u", '-', $str);
   $str = preg_replace("/-+/i", '-', $str);
   $str = preg_replace("/^-|-$/i", '', $str);
   return $str;
