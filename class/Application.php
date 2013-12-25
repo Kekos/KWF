@@ -3,8 +3,8 @@
  * KWF Class: Application, caches data common for the whole application
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-01-18
- * @version 1.0
+ * @date 2013-11-20
+ * @version 1.1
  */
 
 class Application
@@ -44,7 +44,7 @@ class Application
     {
     if ($this->is_changed)
       {
-      file_put_contents($this->filename, serialize($this->vars));
+      @file_put_contents($this->filename, serialize($this->vars));
       }
     }
 
