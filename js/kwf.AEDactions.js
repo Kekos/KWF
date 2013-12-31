@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-09-05
- * @version 1.2
+ * @date 2013-12-31
+ * @version 1.3
  */
 
 /*global Kwf */
@@ -111,7 +111,9 @@ Kwf.AEDactions = (function(K)
       // content object only exists if any error/info messages was sent along.
       content = e.target.page.content || e.target.page;
 
-      if (content.action)
+      // Ignore responses containing a reference to a controller
+      // (controllers are for Widget module)
+      if (content.action && !content.controller)
         {
         switch (content.action)
           {
