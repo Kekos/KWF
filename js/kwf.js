@@ -826,7 +826,7 @@
   Kwf.htmlSpecialChars = htmlSpecialChars = function(text)
     {
     return text.replace(/>/gm, '&gt;').replace(/</gm, '&lt;').replace(/"/gm, '&quot;');
-    }
+    };
 
   /**
    * Returns an object describing the current window's dimensions.
