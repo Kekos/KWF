@@ -3,8 +3,8 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-09-27
- * @version 5.3
+ * @date 2014-01-25
+ * @version 5.4
  */
 
 /*global File, ActiveXObject */
@@ -50,6 +50,7 @@
     ready, 
     toDOMnode, 
     htmlSpecialChars, 
+    getWindowDimensions, 
     parseJSON, 
     Ajax, 
     DialogManager, 
@@ -826,6 +827,33 @@
     {
     return text.replace(/>/gm, '&gt;').replace(/</gm, '&lt;').replace(/"/gm, '&quot;');
     }
+
+  /**
+   * Returns an object describing the current window's dimensions.
+   * @method getWindowDimensions
+   * @public
+   * @return {Object} Two properties: 'width' and 'height'
+   */
+  Kwf.getWindowDimensions = getWindowDimensions = function()
+    {
+    var dim = {
+      'width': undefined,
+      'height': undefined
+      };
+
+    if (window.innerWidth)
+      {
+      dim.width = window.innerWidth;
+      dim.height = window.innerHeight;
+      }
+    else
+      {
+      dim.width = document.body.clientWidth;
+      dim.height = document.body.clientHeight;
+      }
+
+    return dim;
+    };
 
   /**
    * AJAX class provides an easy interface for requesting data asynchronous
