@@ -1431,36 +1431,24 @@
      */
     function resizeDialogs(dialog)
       {
-      var width, 
-        height, 
+      var windim = getWindowDimensions(), 
         resized, 
         resize_dialogs = (dialog ? [dialog] : dialogs), 
         i;
-
-      if (window.innerWidth)
-        {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        }
-      else
-        {
-        width = document.body.clientWidth;
-        height = document.body.clientHeight;
-        }
 
       for (i = 0; i < dialogs.length; i++)
         {
         resized = 0;
 
-        if (dialogs[i].getWidth() > width)
+        if (dialogs[i].getWidth() > windim.width)
           {
-          dialogs[i].setWidth(width);
+          dialogs[i].setWidth(windim.width);
           resized = 1;
           }
 
-        if (dialogs[i].getHeight() > height)
+        if (dialogs[i].getHeight() > windim.height)
           {
-          dialogs[i].setHeight(height);
+          dialogs[i].setHeight(windim.height);
           resized = 1;
           }
 
