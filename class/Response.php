@@ -3,8 +3,8 @@
  * KWF Class: Response, handles everything that is outputted
  *
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2013-07-24
- * @version 5.2
+ * @date 2014-02-07
+ * @version 5.3
  */
 
 class Response
@@ -102,51 +102,54 @@ class Response
    */
   public function setContentType($content_type)
     {
-    switch ($content_type)
+    if ($content_type != null)
       {
-      case 'xhtml':
-        if (stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml') || stristr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator'))
-          {
-          $content_type = 'application/xhtml+xml';
-          }
-        else
-          {
+      switch ($content_type)
+        {
+        case 'xhtml':
+          if (stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml') || stristr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator'))
+            {
+            $content_type = 'application/xhtml+xml';
+            }
+          else
+            {
+            $content_type = 'text/html';
+            }
+        break;
+
+        case 'html':
           $content_type = 'text/html';
-          }
-      break;
+        break;
 
-      case 'html':
-        $content_type = 'text/html';
-      break;
+        case 'plain':
+          $content_type = 'text/plain';
+        break;
 
-      case 'plain':
-        $content_type = 'text/plain';
-      break;
+        case 'xml':
+          $content_type = 'application/xml';
+        break;
 
-      case 'xml':
-        $content_type = 'application/xml';
-      break;
+        case 'atom':
+          $content_type = 'application/atom+xml';
+        break;
 
-      case 'atom':
-        $content_type = 'application/atom+xml';
-      break;
+        case 'rss':
+          $content_type = 'application/rss+xml';
+        break;
 
-      case 'rss':
-        $content_type = 'application/rss+xml';
-      break;
+        case 'json':
+          $content_type = 'application/json';
+        break;
+        }
 
-      case 'json':
-        $content_type = 'application/json';
-      break;
-      }
-
-    if ($this->content_type == null)
-      {
-      $this->content_type = $content_type;
-      }
-    else if ($this->content_type != $content_type)
-      {
-      throw new Exception('The controllers tried to set different HTTP content types. This cannot be done. Execution terminated');
+      if ($this->content_type == null)
+        {
+        $this->content_type = $content_type;
+        }
+      else if ($this->content_type != $content_type)
+        {
+        throw new Exception('The controllers tried to set different HTTP content types. This cannot be done. Execution terminated');
+        }
       }
     }
 
