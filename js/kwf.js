@@ -128,17 +128,20 @@
     if (e.button < 1)
       {
       var target = Kwf(e.target), 
+        matching_target = target.findInParents('content-context'), 
         prevent = 0;
 
-      if (target.hasClass('content-context'))
+      if (matching_target)
         {
         prevent = 1;
-        ContentContext.fromLink(target);
+        ContentContext.fromLink(matching_target);
         }
-      else if (target.hasClass('boxing-context'))
+
+      matching_target = target.findInParents('boxing-context');
+      if (matching_target)
         {
         prevent = 1;
-        BoxingContext.fromLink(target);
+        BoxingContext.fromLink(matching_target);
         }
 
       if (click_listener)
