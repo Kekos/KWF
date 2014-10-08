@@ -3,7 +3,7 @@
  * Based on DOMcraft
  * 
  * @author Christoffer Lindahl <christoffer@kekos.se>
- * @date 2014-01-25
+ * @date 2014-10-08
  * @version 5.4
  */
 
@@ -288,6 +288,27 @@
     parent: function()
       {
       return Kwf(this.elem.parentNode);
+      },
+
+    /**
+     * Returns the nearest element in this elements parents matching classname
+     * @method findInParents
+     * @public
+     * @param {String} classname Name of class to test for
+     * @return {Boolean}
+     */
+    findInParents: function(classname)
+      {
+      element = this;
+
+      while (!element.hasClass(classname))
+        {
+        element = element.parent();
+        if (!element)
+          return null;
+        }
+
+      return element;
       },
 
     /**
