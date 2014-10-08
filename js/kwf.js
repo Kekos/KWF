@@ -2608,10 +2608,17 @@
 
       BoxingContext.addEvent('afterload', function(e)
         {
+        var form = K(e.request.data);
+        if (form && form.hasClass('content-on-close') && !e.target.page.errors)
+          {
+          K.ContentContext.parseResponse(e.request, e.target);
+          e.preventDefault();
+          Boxing.close();
+          }
         // We need to open the Boxing dialog manually, but the Context class
         // sets the content HTML by itself. But don't re-open the dialog on JSON
         // responses with JSON content
-        if (e.target.content_type !== 'application/json' || String(e.target.page.content_type).indexOf('text/') === 0)
+        else if (e.target.content_type !== 'application/json' || String(e.target.page.content_type).indexOf('text/') === 0)
           {
           Boxing.show('', BoxingContext.width, BoxingContext.height);
           }
